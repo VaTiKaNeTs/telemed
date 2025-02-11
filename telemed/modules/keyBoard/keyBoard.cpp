@@ -23,15 +23,19 @@ ReplyKeyboardMarkup::Ptr createStartKeyboard(void)
         {
             {KEYBOARD_ACCOUNT, KEYBOARD_MAKE_AN_APPOINTMENT, KEYBOARD_SESSIONS},
         }, keyboardWithLayout);
+    keyboardWithLayout->resizeKeyboard = TRUE;
 
     return keyboardWithLayout;
 }
 
 /***********************************************************************************************/
-ReplyKeyboardRemove::Ptr createRegistartionKeyboard(void)
+ReplyKeyboardMarkup::Ptr createAccountKeyboard(void)
 {
-    ReplyKeyboardRemove::Ptr keyboardWithLayout(new ReplyKeyboardRemove);
-    removeKeyboard(keyboardWithLayout);
+    ReplyKeyboardMarkup::Ptr keyboardWithLayout(new ReplyKeyboardMarkup);
+    createKeyboard(
+        {
+            {KEYBOARD_ACCOUNT_EDIT, KEYBOARD_ACCOUNT_BACK},
+        }, keyboardWithLayout);
 
     return keyboardWithLayout;
 }

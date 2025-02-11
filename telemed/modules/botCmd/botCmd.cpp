@@ -2,7 +2,10 @@
 #include "botCmd.h"
 
 #include "../../config.h"
-#include "../../modules/keyBoard/keyBoard.h"
+#include "../keyBoard/keyBoard.h"
+#include "../keyBoard/keyBoardCfg.h"
+#include "../account/account.h"
+#include "../users/user.h"
 
 #include <csignal>
 #include <cstdio>
@@ -51,14 +54,48 @@ void botCmdInit(Bot& bot)
 /****************************************************************************************************/
 void botCmdStart(Bot& bot)
 {
-    /* Айди чата которое выполняется в даный момент */
-    static long curChatId = 0;
-
     bot.getEvents().onCommand(CMD_START, [&bot](Message::Ptr message)
     {
+        long curChatId = 0;
         printf("User wrote %s\n", message->text.c_str());
         curChatId = message->chat->id;
         bot.getApi().sendMessage(curChatId, u8"👨‍⚕️Привет, я ''ТелеМедБот'.Чем могу помочь?", NULL, NULL, createStartKeyboard());
-        //saveChatId(curChatId);
+        saveChatId(curChatId);
     });
+}
+
+/****************************************************************************************************/
+void BotCmdAny(Bot& bot)
+{
+    bot.getEvents().onAnyMessage([&bot](TgBot::Message::Ptr message)
+        {
+            long curChatId = 0;
+            /* Проверка что пользователь зарегистрирован */
+            if (findUser(message->chat->id) != -1)
+            {
+                curChatId = message->chat->id;
+            }
+            else
+            {
+                return;
+            }
+
+            printf("User wrote %s\n", message->text.c_str());
+            if (StringTools::startsWith(message->text, "/start"))
+            {
+                return;
+            }
+
+            /* Проверяем, что пришла команда Личный кабинет */
+            if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT))
+            {
+                account(bot, curChatId);
+            }
+            /* Проверяем, что пришла команда Личный кабинет */
+            else if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT_BACK))
+            {
+                bot.getApi().sendMessage(curChatId, u8"Назад", NULL, NULL, createStartKeyboard());
+                //bot.getApi().editMessageReplyMarkup(curChatId, NULL, NULL, createStartKeyboard());
+            }
+        });
 }

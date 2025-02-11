@@ -29,7 +29,20 @@ int main()
 
     botCmdInit(bot);
 
+    FILE* file;
+    errno_t err = 0;
+    err = fopen_s(&file, "testic.json", "w");
+    if (err)
+    {
+        printf("file error %d\n", err);
+    }
+    fprintf(file, "{\n");
+    fprintf(file, "\"username\": \"%s\"\n", "Kirill");
+    fprintf(file, "}\n");
+    fclose(file);
+
     botCmdStart(bot);
+    BotCmdAny(bot);
 
     tgLoop(bot);
 

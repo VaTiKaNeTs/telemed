@@ -11,8 +11,8 @@ using namespace TgBot;
 /* Клавиатура для стартового меню */
 ReplyKeyboardMarkup::Ptr createStartKeyboard(void);
 
-/* Клавиатура для меню регистрации */
-ReplyKeyboardRemove::Ptr createRegistartionKeyboard(void);
+/* Клавиатура для меню личного кабинета */
+ReplyKeyboardMarkup::Ptr createAccountKeyboard(void);
 
 /* Клавиатура для меню обратной связи */
 ReplyKeyboardRemove::Ptr createFeedbackKeyboard(void);

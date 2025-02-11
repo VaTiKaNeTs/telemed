@@ -128,16 +128,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="modules\account\account.cpp" />
     <ClCompile Include="modules\botCmd\botCmd.cpp" />
     <ClCompile Include="modules\keyBoard\keyBoard.cpp" />
+    <ClCompile Include="modules\users\user.cpp" />
     <ClCompile Include="telemed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
     <ClInclude Include="knTypes.h" />
+    <ClInclude Include="modules\account\account.h" />
     <ClInclude Include="modules\botCmd\botCmd.h" />
     <ClInclude Include="modules\keyBoard\keyBoard.h" />
     <ClInclude Include="modules\keyBoard\keyBoardCfg.h" />
+    <ClInclude Include="modules\users\user.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

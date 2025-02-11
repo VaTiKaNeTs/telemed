@@ -22,6 +22,12 @@
     <Filter Include="modules\keyBoard">
       <UniqueIdentifier>{1f186557-198a-4072-af1f-c4ef97340c96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\account">
+      <UniqueIdentifier>{5aadda4d-d98a-43df-9174-6800bbca8a7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="modules\users">
+      <UniqueIdentifier>{b9844878-2ad9-4f3b-89fd-36d225f62535}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="telemed.cpp">
@@ -32,6 +38,12 @@
     </ClCompile>
     <ClCompile Include="modules\botCmd\botCmd.cpp">
       <Filter>modules\botCmd</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\account\account.cpp">
+      <Filter>modules\account</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\users\user.cpp">
+      <Filter>modules\users</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="modules\botCmd\botCmd.h">
       <Filter>modules\botCmd</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\account\account.h">
+      <Filter>modules\account</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\users\user.h">
+      <Filter>modules\users</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
