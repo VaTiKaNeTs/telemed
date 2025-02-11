@@ -9,14 +9,15 @@
 #include "knTypes.h"
 
 #include "config.h"
-#include "modules/botCmd/botCmd.h"
+#include "botCmd/botCmd.h"
 
 #include "Windows.h"
 
 #include <stdio.h>
 #include <string.h>
 #include "libs/cJSON/cJSON.h"
-#include "modules/dataBase/dataBase.h"
+#include "dataBase/dataBase.h"
+#include "patients/patients.h"
 
 
 
@@ -31,86 +32,6 @@ void tgLoop(Bot& bot);
 
 /****************************************************************************************************/
 
-// Функция для создания тестового JSON объекта
-cJSON* create_test_json() {
-    // Создаем корневой объект
-    cJSON* root = cJSON_CreateObject();
-
-    // Добавляем простые значения
-    cJSON_AddStringToObject(root, "имя", "Тестовый объект");
-    cJSON_AddNumberToObject(root, "число", 42);
-    cJSON_AddTrueToObject(root, "флаг");  // добавляем true значение
-
-    // Создаем вложенный объект
-    cJSON* address = cJSON_CreateObject();
-    cJSON_AddStringToObject(address, "город", "Москва");
-    cJSON_AddStringToObject(address, "улица", "Ленина");
-    cJSON_AddNumberToObject(address, "дом", 123);
-    cJSON_AddItemToObject(root, "адрес", address);
-
-    // Создаем массив
-    cJSON* colors = cJSON_CreateArray();
-    cJSON_AddItemToArray(colors, cJSON_CreateString("красный"));
-    cJSON_AddItemToArray(colors, cJSON_CreateString("зеленый"));
-    cJSON_AddItemToArray(colors, cJSON_CreateString("синий"));
-    cJSON_AddItemToObject(root, "цвета", colors);
-
-    return root;
-}
-
-// Функция для чтения JSON данных
-void read_json_data(cJSON* json) {
-    // Проверяем корневой JSON
-    if (json == NULL) {
-        fprintf(stderr, "Ошибка: корневой JSON объект не найден\n");
-        return;
-    }
-
-    // Чтение простых значений
-    printf("Простые значения:\n");
-
-    // Имя
-    cJSON* name = cJSON_GetObjectItem(json, "имя");
-    if (name != NULL && name->type == cJSON_String) {
-        printf("- Имя: %s\n", name->valuestring);
-    }
-    else {
-        printf("- Имя: не найдено или неверный тип\n");
-    }
-
-    // Число
-    cJSON* number = cJSON_GetObjectItem(json, "число");
-    if (number != NULL && number->type == cJSON_Number) {
-        printf("- Число: %d\n", (int)number->valuedouble);
-    }
-    else {
-        printf("- Число: не найдено или неверный тип\n");
-    }
-
-    // Флаг
-    cJSON* flag = cJSON_GetObjectItem(json, "флаг");
-    if (flag != NULL && flag->type == cJSON_True || flag->type == cJSON_False) {
-        printf("- Флаг: %s\n", flag->type == cJSON_True ? "да" : "нет");
-    }
-    else {
-        printf("- Флаг: не найден или неверный тип\n");
-    }
-
-    // Остальной код остается без изменений...
-}
-
-// Функция для парсинга JSON строки
-void parse_json_string(const char* json_str) {
-    cJSON* json = cJSON_Parse(json_str);
-    if (json != NULL) {
-        read_json_data(json);
-        cJSON_Delete(json);  // Освобождаем память
-    }
-    else {
-        fprintf(stderr, "Ошибка парсинга JSON!\n");
-    }
-}
-
 
 /****************************************************************************************************/
 int main()
@@ -122,29 +43,36 @@ int main()
 
     setlocale(LC_ALL, "Russian");
 
+    
+    patientInit();
+
+    PatientData* patient1 = createPatientData(
+        0,
+        123456789,
+        "Кирилл",
+        "Таровик",
+        "Михайлович",
+        23,
+        "мужской"
+    );
+    addPatient(patient1);
+
+    PatientData* patient2 = createPatientData(
+        1,
+        9999999,
+        "Петр",
+        "Иванов",
+        "Дмитриевич",
+        30,
+        "мужской"
+    );
+    addPatient(patient1);
+
+
+
+
+
 #if 0
-    // Создаем тестовый JSON объект
-    cJSON* json = create_test_json();
-
-    // Преобразуем его в строку
-    char* json_str = cJSON_Print(json);
-    printf("Созданный JSON:\n%s\n\n", json_str);
-
-    // Освобождаем память от строки
-    free(json_str);
-
-    // Тестируем парсинг строки
-    const char* test_str = "{\"имя\":\"Новый объект\",\"число\":123,\"флаг\":false}";
-    printf("Тестирование парсинга JSON строки:\n");
-    parse_json_string(test_str);
-
-    // Освобождаем память от корневого объекта
-    cJSON_Delete(json);
-#endif
-
-
-
-#if 1
 
     // Создание массива для хранения пациентов
     /*cJSON* patients = cJSON_CreateArray();*/

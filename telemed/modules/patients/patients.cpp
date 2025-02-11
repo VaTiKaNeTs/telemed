@@ -3,8 +3,20 @@
 static cJSON* patients = NULL;
 
 /****************************************************************************************************/
-STATUS savePatient(PatientData* patient)
+void patientInit(void)
 {
+    patients = loadPatientDatabase("patients.json");
+    if (patients == NULL)
+    {
+        patients = cJSON_CreateArray();
+    }
+}
+
+/****************************************************************************************************/
+STATUS addPatient(PatientData* patient)
+{
+    patients = loadPatientDatabase("patients.json");
+
     if (patient != NULL)
     {
         // Преобразование в JSON и добавление в массив
@@ -29,8 +41,44 @@ STATUS savePatient(PatientData* patient)
 }
 
 /****************************************************************************************************/
+STATUS removePatient(long id)
+{
+    STATUS result = KN_ERROR;
+
+    patients = loadPatientDatabase("patients.json");
+
+    int len = cJSON_GetArraySize(patients);
+    // Ищем пациента по ID
+    for (int i = 0; i < len; i++) 
+    {
+        cJSON* item = cJSON_GetArrayItem(patients, i);
+        if (item != NULL) 
+        {
+            cJSON* id_item = cJSON_GetObjectItem(item, "id");
+            if (id_item != NULL && id_item->type == cJSON_Number && id_item->valueint == id) 
+            {
+                // Удаляем найденного пациента
+                cJSON_DeleteItemFromArray(patients, i);
+                result = KN_OK;
+            }
+        }
+    }
+
+    // Освобождение памяти
+    cJSON_Delete(patients);
+
+    return result;
+}
+
+
+#if 0
+/****************************************************************************************************/
 PatientData* findPatientChatId(long chatId)
 {
+    PatientData* patient = NULL;
+
+    patients = loadPatientDatabase("patients.json");
+
     if (patients == NULL || cJSON_GetArraySize(patients) == 0) 
     {
         return NULL;
@@ -44,10 +92,14 @@ PatientData* findPatientChatId(long chatId)
             cJSON* patientId = cJSON_GetObjectItem(patientJson, "chatid");
             if (patientId != NULL && patientId->valuedouble == chatId) 
             {
-                return jsonToPatient(patientJson);
+                patient = jsonToPatient(patientJson);
             }
         }
     }
 
-    return NULL;
+    // Освобождение памяти
+    //cJSON_Delete(patients);
+
+    return patient;
 }
+#endif

@@ -14,4 +14,20 @@
 		"middleName":	"Михайлович",
 		"age":	23,
 		"gender":	"мужской"
+	}, {
+		"id":	0,
+		"chatId":	123456789,
+		"firstName":	"Кирилл",
+		"lastName":	"Таровик",
+		"middleName":	"Михайлович",
+		"age":	23,
+		"gender":	"мужской"
+	}, {
+		"id":	1,
+		"chatId":	9999999,
+		"firstName":	"Петр",
+		"lastName":	"Иванов",
+		"middleName":	"Дмитриевич",
+		"age":	30,
+		"gender":	"мужской"
 	}]
