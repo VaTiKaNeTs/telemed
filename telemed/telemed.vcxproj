@@ -102,7 +102,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Projects\Visual Studio\source\repos\telemed;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -128,20 +128,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="libs\cJSON\cJSON.c" />
     <ClCompile Include="modules\account\account.cpp" />
     <ClCompile Include="modules\botCmd\botCmd.cpp" />
+    <ClCompile Include="modules\dataBase\dataBase.cpp" />
     <ClCompile Include="modules\keyBoard\keyBoard.cpp" />
+    <ClCompile Include="modules\patients\patients.cpp" />
     <ClCompile Include="modules\users\user.cpp" />
     <ClCompile Include="telemed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
     <ClInclude Include="knTypes.h" />
+    <ClInclude Include="libs\cJSON\cJSON.h" />
     <ClInclude Include="modules\account\account.h" />
     <ClInclude Include="modules\botCmd\botCmd.h" />
+    <ClInclude Include="modules\dataBase\dataBase.h" />
     <ClInclude Include="modules\keyBoard\keyBoard.h" />
     <ClInclude Include="modules\keyBoard\keyBoardCfg.h" />
+    <ClInclude Include="modules\patients\patients.h" />
     <ClInclude Include="modules\users\user.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libs\cJSON\.DS_Store" />
+    <None Include="libs\cJSON\LICENSE" />
+    <None Include="libs\cJSON\README" />
+    <None Include="libs\cJSON\tests\test1" />
+    <None Include="libs\cJSON\tests\test2" />
+    <None Include="libs\cJSON\tests\test3" />
+    <None Include="libs\cJSON\tests\test4" />
+    <None Include="libs\cJSON\tests\test5" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

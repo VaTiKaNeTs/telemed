@@ -28,6 +28,21 @@
     <Filter Include="modules\users">
       <UniqueIdentifier>{b9844878-2ad9-4f3b-89fd-36d225f62535}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libs">
+      <UniqueIdentifier>{e6c5209f-47ac-4ad8-88a1-56aa48c9d472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\cJSON">
+      <UniqueIdentifier>{2bf70747-4c76-4ad9-9c22-500cc8e8ae15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\cJSON\tests">
+      <UniqueIdentifier>{19712681-ac15-4abf-bb89-81f30c939953}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="modules\dataBase">
+      <UniqueIdentifier>{7e92240c-e665-4e92-94fa-9d7497463508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="modules\patients">
+      <UniqueIdentifier>{fa8a6095-ad7e-4616-8a13-31530eee0871}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="telemed.cpp">
@@ -44,6 +59,15 @@
     </ClCompile>
     <ClCompile Include="modules\users\user.cpp">
       <Filter>modules\users</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\cJSON\cJSON.c">
+      <Filter>libs\cJSON</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\dataBase\dataBase.cpp">
+      <Filter>modules\dataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\patients\patients.cpp">
+      <Filter>modules\patients</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,5 +92,40 @@
     <ClInclude Include="modules\users\user.h">
       <Filter>modules\users</Filter>
     </ClInclude>
+    <ClInclude Include="libs\cJSON\cJSON.h">
+      <Filter>libs\cJSON</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\dataBase\dataBase.h">
+      <Filter>modules\dataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\patients\patients.h">
+      <Filter>modules\patients</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libs\cJSON\.DS_Store">
+      <Filter>libs\cJSON</Filter>
+    </None>
+    <None Include="libs\cJSON\LICENSE">
+      <Filter>libs\cJSON</Filter>
+    </None>
+    <None Include="libs\cJSON\README">
+      <Filter>libs\cJSON</Filter>
+    </None>
+    <None Include="libs\cJSON\tests\test1">
+      <Filter>libs\cJSON\tests</Filter>
+    </None>
+    <None Include="libs\cJSON\tests\test2">
+      <Filter>libs\cJSON\tests</Filter>
+    </None>
+    <None Include="libs\cJSON\tests\test3">
+      <Filter>libs\cJSON\tests</Filter>
+    </None>
+    <None Include="libs\cJSON\tests\test4">
+      <Filter>libs\cJSON\tests</Filter>
+    </None>
+    <None Include="libs\cJSON\tests\test5">
+      <Filter>libs\cJSON\tests</Filter>
+    </None>
   </ItemGroup>
 </Project>
