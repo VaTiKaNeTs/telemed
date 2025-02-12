@@ -10,6 +10,45 @@ void patientInit(void)
     {
         patients = cJSON_CreateArray();
     }
+
+    // Освобождение памяти
+    cJSON_Delete(patients);
+}
+
+/****************************************************************************************************/
+void patientEdit(int id, PatientData* patient)
+{
+    patients = loadPatientDatabase("patients.json");
+
+    int len = cJSON_GetArraySize(patients);
+    if (id < 0 || id >= len)
+    {
+        return;
+    }
+
+    //cJSON* item = cJSON_GetArrayItem(patients, id);
+    //PatientData* dstPatient = jsonToPatient(item);
+    //memcpy(dstPatient, patient, sizeof(PatientData));
+    cJSON* newItem = patientToJson(patient);
+
+    if (newItem != NULL)
+    {
+        //cJSON_AddItemToArray(patients, item);
+        cJSON_ReplaceItemInArray(patients, id, newItem);
+
+        // Сохранение в файл
+        if (!savePatientDatabase("patients.json", patients))
+        {
+            fprintf(stderr, "Ошибка: не удалось сохранить базу данных\n");
+        }
+
+        //freePatientData(patient);
+    }
+
+    // Освобождение памяти
+    cJSON_Delete(patients);
+
+    return;
 }
 
 /****************************************************************************************************/
@@ -48,21 +87,20 @@ STATUS removePatient(long id)
     patients = loadPatientDatabase("patients.json");
 
     int len = cJSON_GetArraySize(patients);
-    // Ищем пациента по ID
-    for (int i = 0; i < len; i++) 
+    if (id < 0 || id >= len)
     {
-        cJSON* item = cJSON_GetArrayItem(patients, i);
-        if (item != NULL) 
-        {
-            cJSON* id_item = cJSON_GetObjectItem(item, "id");
-            if (id_item != NULL && id_item->type == cJSON_Number && id_item->valueint == id) 
-            {
-                // Удаляем найденного пациента
-                cJSON_DeleteItemFromArray(patients, i);
-                result = KN_OK;
-            }
-        }
+        return KN_ERROR;
+    }    
+
+    cJSON* item = cJSON_GetArrayItem(patients, id);
+    if (item != NULL)
+    {
+        // Удаляем элемент из объекта
+        cJSON_DeleteItemFromArray(patients, id);
+        result = KN_OK;
     }
+
+    savePatientDatabase("patients.json", patients);
 
     // Освобождение памяти
     cJSON_Delete(patients);
@@ -70,6 +108,27 @@ STATUS removePatient(long id)
     return result;
 }
 
+/****************************************************************************************************/
+STATUS cleanAllPatients(void)
+{
+    patients = loadPatientDatabase("patients.json");
+
+    int len = 0;
+    while (len = cJSON_GetArraySize(patients))
+    {
+        for (int i = 0; i < len; i++)
+        {
+            cJSON_DeleteItemFromArray(patients, i);
+        }
+    }    
+
+    savePatientDatabase("patients.json", patients);
+
+    // Освобождение памяти
+    cJSON_Delete(patients);
+
+    return KN_OK;
+}
 
 #if 0
 /****************************************************************************************************/

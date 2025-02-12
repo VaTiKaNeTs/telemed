@@ -46,6 +46,8 @@ int main()
     
     patientInit();
 
+    cleanAllPatients();
+
     PatientData* patient1 = createPatientData(
         0,
         123456789,
@@ -66,7 +68,20 @@ int main()
         30,
         "мужской"
     );
-    addPatient(patient1);
+    addPatient(patient2);
+
+
+    PatientData* patient2Edit = createPatientData(
+        1,
+        987654321,
+        "Петр",
+        "Иванов",
+        "Дмитриевич",
+        30,
+        "мужской"
+    );
+    patientEdit(1, patient2Edit);
+
 
 
 
