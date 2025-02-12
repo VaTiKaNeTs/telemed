@@ -14,7 +14,13 @@ ReplyKeyboardMarkup::Ptr createStartKeyboard(void);
 /* Клавиатура для меню личного кабинета */
 ReplyKeyboardMarkup::Ptr createAccountKeyboard(void);
 
-/* Клавиатура для меню обратной связи */
-ReplyKeyboardRemove::Ptr createFeedbackKeyboard(void);
+
+ReplyKeyboardRemove::Ptr deleteKeyboard(void);
+
+/* Клавиатура приглашение зарегистрироваться */
+InlineKeyboardMarkup::Ptr createRegInlineKeyboard(void);
+
+/* Клавиатура изменение данных пользователя */
+InlineKeyboardMarkup::Ptr createAccEditInlineKeyboard(void);
 
 #endif __KEYBOARD_H_

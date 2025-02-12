@@ -2,6 +2,7 @@
 
 #include "../../config.h"
 #include "../keyBoard/keyBoard.h"
+#include "../patients/patients.h"
 
 #define ACCOUNT_INFO_NAME_LEN 20
 #define ACCOUNT_INFO_SURNAME_LEN 20
@@ -28,7 +29,7 @@ typedef struct
 
 	UINT32 age;
 
-	UINT32 sex;
+	std::string sex;
 
 } ACCOUNT_INFO;
 
@@ -36,23 +37,43 @@ typedef struct
 ACCOUNT_INFO info[MAX_CNT_USERS_CHAT_ID];
 
 /****************************************************************************************************/
+void createAccount(Bot& bot, INT32 curChatId)
+{
+	PatientData* patient = createPatientData(
+		0,
+		curChatId,
+		NULL,
+		NULL,
+		NULL,
+		0,
+		NULL);
+
+	addPatient(patient);
+	bot.getApi().sendMessage(curChatId, "Введите ваше имя:");
+}
+
+/****************************************************************************************************/
 void account(Bot& bot, INT32 curChatId)
 {
-	info->name = { u8"Кирилл" };
-	info->surname = { u8"Таровик" };
-	info->patronymic = { u8"Михайлович" };
-	info->sex = MALE;
-	info->age = 23;
+	PatientData* patient = findPatientChatId(curChatId);
 
-	std::string strSex = { (info->sex == MALE) ? ( u8"Мужской" ) : (u8"Женский") };
+#if 1
+	info->name = { patient->firstName };
+	info->surname = { patient->lastName };
+	info->patronymic = { patient->middleName };
+	info->sex = { patient->gender };
+	info->age = patient->age;
+
 	std::string strAge = { 0 };
 
 	std::string str{u8"Ваши данные:"
 					u8"\nИмя: " + info->name + 
 					u8"\nФамилия " + info->surname + 
 					u8"\nОтчество " + info->patronymic +
-					u8"\n\nПол " + strSex +
-					u8"\n\nВозраст " +  strAge};
+					u8"\n\nПол " + info->sex +
+					u8"\n\nВозраст " + std::to_string(info->age)};
+#endif
+
 
 	bot.getApi().sendMessage(curChatId, str, NULL, NULL, createAccountKeyboard());
 }

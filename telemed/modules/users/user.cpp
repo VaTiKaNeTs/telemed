@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 long usersChatId[MAX_CNT_USERS_CHAT_ID] = { 0 };
-PROCESS_FLAGS flagCurUserProcess[MAX_CNT_USERS_CHAT_ID] = { 0 };
+USER_PROCESS flagCurUserProcess[MAX_CNT_USERS_CHAT_ID] = { 0 };
 
 /* счетчик юзеров */
 int usersRegCnt = 0;
@@ -36,7 +36,7 @@ void deleteUser(long chatId)
 }
 
 /****************************************************************************************************/
-void setUserProcess(long chatId, PROCESS_FLAGS flag)
+void setUserProcess(long chatId, USER_PROCESS flag)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -47,7 +47,7 @@ void setUserProcess(long chatId, PROCESS_FLAGS flag)
 }
 
 /****************************************************************************************************/
-PROCESS_FLAGS getUserProcess(long chatId)
+USER_PROCESS getUserProcess(long chatId)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -57,7 +57,7 @@ PROCESS_FLAGS getUserProcess(long chatId)
     }
     else
     {
-        return FLAG_NONE;
+        return USER_PROCESS_NONE;
     }
    
 }

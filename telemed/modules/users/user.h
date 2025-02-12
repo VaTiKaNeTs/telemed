@@ -4,12 +4,19 @@
 
 typedef enum
 {
-	FLAG_NONE = 0,
-	FLAG_REG_TABLE,
-	FLAG_FEEDBACK,
+	USER_PROCESS_NONE = 0,
+	USER_PROCESS_MAIN_MENU,
+	USER_PROCESS_ACCOUNT,
+	USER_PROCESS_ACCOUNT_EDIT,
+	USER_PROCESS_GET_FIRSTNAME_REG,
+	USER_PROCESS_GET_FIRSTNAME,
+	USER_PROCESS_GET_LASTNAME,
+	USER_PROCESS_GET_MIDDLENAME,
+	USER_PROCESS_GET_AGE,
+	USER_PROCESS_GET_SEX,
 
-	FLAG_PROCESS_CNT,
-} PROCESS_FLAGS;
+	USER_PROCESS_CNT
+} USER_PROCESS;
 
 /* Поиск юзера */
 INT32 findUser(long chatId);
@@ -18,10 +25,10 @@ INT32 findUser(long chatId);
 void deleteUser(long chatId);
 
 /* Установить флаг процесса для пользователя */
-void setUserProcess(long chatId, PROCESS_FLAGS flag);
+void setUserProcess(long chatId, USER_PROCESS flag);
 
 /* Получить флаг процесса пользователя */
-PROCESS_FLAGS getUserProcess(long chatId);
+USER_PROCESS getUserProcess(long chatId);
 
 /* Сохраняем chatId пользователя */
 void saveChatId(long chatId);

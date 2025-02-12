@@ -16,4 +16,6 @@ void botCmdStart(Bot& bot);
 
 void BotCmdAny(Bot& bot);
 
+void botCmdCallback(Bot& bot);
+
 #endif __BOTCMD_H_

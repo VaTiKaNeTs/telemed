@@ -1,17 +1,17 @@
 [{
 		"id":	0,
-		"chatId":	123456789,
-		"firstName":	"Кирилл",
-		"lastName":	"Таровик",
-		"middleName":	"Михайлович",
-		"age":	23,
-		"gender":	"мужской"
+		"chatId":	1026490921,
+		"firstName":	"РљРёСЂ",
+		"lastName":	"РўР°СЂ",
+		"middleName":	"РњРёС…",
+		"age":	234,
+		"gender":	"РњСѓР¶СЃРєРѕР№"
 	}, {
 		"id":	1,
-		"chatId":	987654321,
-		"firstName":	"Петр",
-		"lastName":	"Иванов",
-		"middleName":	"Дмитриевич",
-		"age":	30,
-		"gender":	"мужской"
+		"chatId":	958781908,
+		"firstName":	"РРІР°РЅ",
+		"lastName":	"РЇ",
+		"middleName":	"РЎС‹РЅ РђРЅРґСЂРµСЏ",
+		"age":	24,
+		"gender":	"РњСѓР¶СЃРєРѕР№"
 	}]

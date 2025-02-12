@@ -9,6 +9,12 @@ void patientInit(void)
     if (patients == NULL)
     {
         patients = cJSON_CreateArray();
+
+        // Сохранение в файл
+        if (!savePatientDatabase("patients.json", patients))
+        {
+            fprintf(stderr, "Ошибка: не удалось сохранить базу данных\n");
+        }
     }
 
     // Освобождение памяти
@@ -63,7 +69,7 @@ STATUS addPatient(PatientData* patient)
         if (patientJson != NULL)
         {
             cJSON_AddItemToArray(patients, patientJson);
-            freePatientData(patient);
+            /*freePatientData(patient);*/
         }
     }
 
@@ -78,6 +84,9 @@ STATUS addPatient(PatientData* patient)
 
     return KN_OK;
 }
+
+/****************************************************************************************************/
+
 
 /****************************************************************************************************/
 STATUS removePatient(long id)
@@ -130,7 +139,7 @@ STATUS cleanAllPatients(void)
     return KN_OK;
 }
 
-#if 0
+#if 1
 /****************************************************************************************************/
 PatientData* findPatientChatId(long chatId)
 {
@@ -157,7 +166,7 @@ PatientData* findPatientChatId(long chatId)
     }
 
     // Освобождение памяти
-    //cJSON_Delete(patients);
+    cJSON_Delete(patients);
 
     return patient;
 }

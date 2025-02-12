@@ -6,12 +6,15 @@
 #include "../keyBoard/keyBoardCfg.h"
 #include "../account/account.h"
 #include "../users/user.h"
+#include "../patients/patients.h"
 
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
 #include <exception>
 #include <string>
+
+static char str[1024];
 
 /****************************************************************************************************/
 void botCmdInit(Bot& bot)
@@ -56,11 +59,27 @@ void botCmdStart(Bot& bot)
 {
     bot.getEvents().onCommand(CMD_START, [&bot](Message::Ptr message)
     {
+        
         long curChatId = 0;
         printf("User wrote %s\n", message->text.c_str());
         curChatId = message->chat->id;
-        bot.getApi().sendMessage(curChatId, u8"👨‍⚕️Привет, я ''ТелеМедБот'.Чем могу помочь?", NULL, NULL, createStartKeyboard());
         saveChatId(curChatId);
+
+        PatientData *patient;
+        if (patient = findPatientChatId(curChatId))
+        { /* Пациент зарегистрирован */
+            snprintf(str, sizeof(str), u8"👨‍⚕️Здравствуйте, %s, я \"ТелеМедБот\". Чем могу помочь?", patient->firstName);
+            std::string readyStr(str);
+            bot.getApi().sendMessage(curChatId, readyStr, NULL, NULL, createStartKeyboard());
+            setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+        }
+        else
+        { /* Пациент не зарегистрирован */
+            snprintf(str, sizeof(str), u8"👨‍⚕️Здравствуйте, я \"ТелеМедБот\". Давайте зарегистрируемся!");
+            std::string readyStr(str);
+            bot.getApi().sendMessage(curChatId, readyStr, NULL, NULL, createRegInlineKeyboard());
+            setUserProcess(curChatId, USER_PROCESS_ACCOUNT_EDIT);
+        }
     });
 }
 
@@ -86,16 +105,154 @@ void BotCmdAny(Bot& bot)
                 return;
             }
 
-            /* Проверяем, что пришла команда Личный кабинет */
-            if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT))
+            switch (getUserProcess(curChatId))
             {
-                account(bot, curChatId);
+            case USER_PROCESS_MAIN_MENU:
+            {
+                /* Проверяем, что пришла команда Личный кабинет */
+                if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT))
+                {
+                    account(bot, curChatId);
+                    setUserProcess(curChatId, USER_PROCESS_ACCOUNT);
+                }
+                break;
             }
-            /* Проверяем, что пришла команда Личный кабинет */
-            else if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT_BACK))
+            case USER_PROCESS_ACCOUNT:
             {
-                bot.getApi().sendMessage(curChatId, u8"Назад", NULL, NULL, createStartKeyboard());
-                //bot.getApi().editMessageReplyMarkup(curChatId, NULL, NULL, createStartKeyboard());
+                /* Проверяем, что пришла команда выйти из личного кабинета */
+                if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT_BACK))
+                {
+                    bot.getApi().sendMessage(curChatId, u8"Назад", NULL, NULL, createStartKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+                }
+                else if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT_EDIT))
+                {
+                    bot.getApi().sendMessage(curChatId, u8"Какую информацию, вы хотите изменить?", NULL, NULL, createAccEditInlineKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_ACCOUNT_EDIT);
+                }
+                break;
+            }
+            case USER_PROCESS_GET_FIRSTNAME_REG:
+            {
+                static int idP = 0;
+                PatientData* patient = createPatientData(idP++, curChatId, message->text.c_str(), "NULL", "NULL", 0, "NULL");
+                addPatient(patient);
+                snprintf(str, sizeof(str), u8"%s, спасибо за регистрацию!", patient->firstName);
+                std::string readyStr(str);
+                bot.getApi().sendMessage(curChatId, readyStr);
+                bot.getApi().sendMessage(curChatId, u8"Полную информацию о себе вы можете заполнить в личном кабинете.", NULL, NULL, createStartKeyboard());
+                setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+                break;
+            }
+            case USER_PROCESS_GET_FIRSTNAME:
+            {
+                PatientData* patient = findPatientChatId(curChatId);
+                patient->firstName = _strdup(message->text.c_str());
+                patientEdit(patient->id, patient);
+                account(bot, curChatId);
+                bot.getApi().sendMessage(curChatId, u8"Какую информацию, вы хотите изменить?", NULL, NULL, createAccEditInlineKeyboard());
+                setUserProcess(curChatId, USER_PROCESS_ACCOUNT_EDIT);
+                break;
+            }
+            case USER_PROCESS_GET_LASTNAME:
+            {
+                PatientData* patient = findPatientChatId(curChatId);
+                patient->lastName = _strdup(message->text.c_str());
+                patientEdit(patient->id, patient);
+                account(bot, curChatId);
+                bot.getApi().sendMessage(curChatId, u8"Какую информацию, вы хотите изменить?", NULL, NULL, createAccEditInlineKeyboard());
+                setUserProcess(curChatId, USER_PROCESS_ACCOUNT_EDIT);
+                break;
+            }
+            case USER_PROCESS_GET_MIDDLENAME:
+            {
+                PatientData* patient = findPatientChatId(curChatId);
+                patient->middleName = _strdup(message->text.c_str());
+                patientEdit(patient->id, patient);
+                account(bot, curChatId);
+                bot.getApi().sendMessage(curChatId, u8"Какую информацию, вы хотите изменить?", NULL, NULL, createAccEditInlineKeyboard());
+                setUserProcess(curChatId, USER_PROCESS_ACCOUNT_EDIT);
+                break;
+            }
+            case USER_PROCESS_GET_AGE:
+            {
+                PatientData* patient = findPatientChatId(curChatId);
+                patient->age = stoi(message->text);
+                patientEdit(patient->id, patient);
+                account(bot, curChatId);
+                bot.getApi().sendMessage(curChatId, u8"Какую информацию, вы хотите изменить?", NULL, NULL, createAccEditInlineKeyboard());
+                setUserProcess(curChatId, USER_PROCESS_ACCOUNT_EDIT);
+                break;
+            }
+            case USER_PROCESS_GET_SEX:
+            {
+                PatientData* patient = findPatientChatId(curChatId);
+                if (u8"М" == message->text)
+                {
+                    patient->gender = _strdup(u8"Мужской");
+                }
+                else if (u8"Ж" == message->text)
+                {
+                    patient->gender = _strdup(u8"Женский");
+                }
+                else
+                {
+                    bot.getApi().sendMessage(curChatId, u8"Введите М или Ж");
+                    break;
+                }
+                patientEdit(patient->id, patient);
+                account(bot, curChatId);
+                bot.getApi().sendMessage(curChatId, u8"Какую информацию, вы хотите изменить?", NULL, NULL, createAccEditInlineKeyboard());
+                setUserProcess(curChatId, USER_PROCESS_ACCOUNT_EDIT);
+                break;
+            }
+            case USER_PROCESS_ACCOUNT_EDIT:
+            {
+                if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT_BACK))
+                {
+                    account(bot, curChatId);
+                    setUserProcess(curChatId, USER_PROCESS_ACCOUNT);
+                }
+                break;
+            }
+            }
+        });
+}
+
+/****************************************************************************************************/
+void botCmdCallback(Bot& bot)
+{
+    InlineKeyboardMarkup::Ptr keyboard = createRegInlineKeyboard();
+
+    bot.getEvents().onCallbackQuery([&bot, &keyboard](CallbackQuery::Ptr query) 
+        {
+            if (KN_ERROR != findUser(query->message->chat->id))
+            {
+                /* Приглашение ввести имя */
+                if (StringTools::startsWith(query->data, INLINE_KEYBOARD_REGISTRATION)) {
+                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваше имя:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_FIRSTNAME_REG);
+                }
+                else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_FIRSTNAME)) {
+                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваше имя:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_FIRSTNAME);
+                }
+                else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_LASTNAME)) {
+                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите вашу фамилию:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_LASTNAME);
+                }
+                else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_MIDDLENAME)) {
+                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваше отчество:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_MIDDLENAME);
+                }
+                else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_AGE)) {
+                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваш возраст:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_AGE);
+                }
+                else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_GENDER)) {
+                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваш пол (М или Ж):", NULL, NULL, deleteKeyboard());
+                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_SEX);
+                }
             }
         });
 }
