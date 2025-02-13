@@ -18,8 +18,7 @@
 #include "libs/cJSON/cJSON.h"
 #include "dataBase/dataBase.h"
 #include "patients/patients.h"
-
-
+#include "doctors/doctors.h"
 
 using namespace std;
 using namespace TgBot;
@@ -38,53 +37,11 @@ int main()
 {
     setlocale(LC_ALL, "Russian");
     patientInit();
+    doctorInit();
 
     Bot bot(BOT_API_TOKEN);
 
     botCmdInit(bot);
-
-#if 0
-    PatientData* patient1 = createPatientData(
-        0,
-        123456789,
-        "Кирилл",
-        "Таровик",
-        "Михайлович",
-        23,
-        "мужской"
-    );
-    addPatient(patient1);
-
-    PatientData* patient2 = createPatientData(
-        1,
-        9999999,
-        "Петр",
-        "Иванов",
-        "Дмитриевич",
-        30,
-        "мужской"
-    );
-    addPatient(patient2);
-
-
-    PatientData* patient2Edit = createPatientData(
-        1,
-        987654321,
-        "Петр",
-        "Иванов",
-        "Дмитриевич",
-        30,
-        "мужской"
-    );
-    patientEdit(1, patient2Edit);
-#endif
-
-
-
-
-
-
-
     botCmdStart(bot);
     BotCmdAny(bot);
     botCmdCallback(bot);

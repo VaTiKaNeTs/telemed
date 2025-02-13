@@ -28,20 +28,20 @@ void botCmdInit(Bot& bot)
     cmdArray->description = u8"Старт";
     commands.push_back(cmdArray);
 
-    cmdArray = BotCommand::Ptr(new BotCommand);
-    cmdArray->command = CMD_MAKE_AN_APPOINTMENT;
-    cmdArray->description = u8"Запись";
-    commands.push_back(cmdArray);
+    //cmdArray = BotCommand::Ptr(new BotCommand);
+    //cmdArray->command = CMD_MAKE_AN_APPOINTMENT;
+    //cmdArray->description = u8"Запись";
+    //commands.push_back(cmdArray);
 
-    cmdArray = BotCommand::Ptr(new BotCommand);
-    cmdArray->command = CMD_PERSONAL_ACCOUNT;
-    cmdArray->description = u8"Личный кабиент";
-    commands.push_back(cmdArray);
+    //cmdArray = BotCommand::Ptr(new BotCommand);
+    //cmdArray->command = CMD_PERSONAL_ACCOUNT;
+    //cmdArray->description = u8"Личный кабиент";
+    //commands.push_back(cmdArray);
 
-    cmdArray = BotCommand::Ptr(new BotCommand);
-    cmdArray->command = CMD_CURRENT_SESSIONS;
-    cmdArray->description = u8"Текущие записи";
-    commands.push_back(cmdArray);
+    //cmdArray = BotCommand::Ptr(new BotCommand);
+    //cmdArray->command = CMD_CURRENT_SESSIONS;
+    //cmdArray->description = u8"Текущие записи";
+    //commands.push_back(cmdArray);
 
     bot.getApi().setMyCommands(commands);
 

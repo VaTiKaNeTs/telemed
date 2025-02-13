@@ -1,0 +1,28 @@
+[{
+		"id":	0,
+		"specialty":	1,
+		"firstName":	"Сергей",
+		"lastName":	"Табаско",
+		"middleName":	"Пердонович",
+		"photo_path":	"pathtttt",
+		"experience":	3,
+		"rating":	44
+	}, {
+		"id":	1,
+		"specialty":	1,
+		"firstName":	"Владимир",
+		"lastName":	"Красносолнышко",
+		"middleName":	"Олегович",
+		"photo_path":	"pathtttt",
+		"experience":	10,
+		"rating":	50
+	}, {
+		"id":	2,
+		"specialty":	2,
+		"firstName":	"Ясна",
+		"lastName":	"Мышако",
+		"middleName":	"Михайловна",
+		"photo_path":	"pathtttt",
+		"experience":	5,
+		"rating":	48
+	}]

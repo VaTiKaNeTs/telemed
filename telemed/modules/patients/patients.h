@@ -3,7 +3,6 @@
 
 void patientInit(void);
 
-
 void patientEdit(int id, PatientData* patient);
 
 STATUS addPatient(PatientData* patient);

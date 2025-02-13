@@ -31,10 +31,6 @@ void patientEdit(int id, PatientData* patient)
     {
         return;
     }
-
-    //cJSON* item = cJSON_GetArrayItem(patients, id);
-    //PatientData* dstPatient = jsonToPatient(item);
-    //memcpy(dstPatient, patient, sizeof(PatientData));
     cJSON* newItem = patientToJson(patient);
 
     if (newItem != NULL)

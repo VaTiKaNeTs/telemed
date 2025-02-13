@@ -132,6 +132,8 @@
     <ClCompile Include="modules\account\account.cpp" />
     <ClCompile Include="modules\botCmd\botCmd.cpp" />
     <ClCompile Include="modules\dataBase\dataBase.cpp" />
+    <ClCompile Include="modules\doctors\doctorDataBase.cpp" />
+    <ClCompile Include="modules\doctors\doctors.cpp" />
     <ClCompile Include="modules\keyBoard\keyBoard.cpp" />
     <ClCompile Include="modules\patients\patients.cpp" />
     <ClCompile Include="modules\users\user.cpp" />
@@ -144,6 +146,8 @@
     <ClInclude Include="modules\account\account.h" />
     <ClInclude Include="modules\botCmd\botCmd.h" />
     <ClInclude Include="modules\dataBase\dataBase.h" />
+    <ClInclude Include="modules\doctors\doctorDataBase.h" />
+    <ClInclude Include="modules\doctors\doctors.h" />
     <ClInclude Include="modules\keyBoard\keyBoard.h" />
     <ClInclude Include="modules\keyBoard\keyBoardCfg.h" />
     <ClInclude Include="modules\patients\patients.h" />
