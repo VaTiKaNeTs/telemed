@@ -166,4 +166,18 @@ PatientData* findPatientChatId(long chatId)
 
     return patient;
 }
+
 #endif
+
+/****************************************************************************************************/
+int getPatientsCnt(void)
+{
+    patients = loadPatientDatabase("patients.json");
+
+    int size = cJSON_GetArraySize(patients);
+
+    // Освобождение памяти
+    cJSON_Delete(patients);
+
+    return size;
+}

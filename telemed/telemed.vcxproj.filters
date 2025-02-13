@@ -46,6 +46,9 @@
     <Filter Include="modules\doctors">
       <UniqueIdentifier>{4428a25b-68c5-43d6-bf73-cb3f4bd9a752}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\appointment">
+      <UniqueIdentifier>{6a3e2b8f-4f04-417c-95b5-f19cafc104d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="telemed.cpp">
@@ -77,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="modules\doctors\doctorDataBase.cpp">
       <Filter>modules\doctors</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\appointment\appointment.cpp">
+      <Filter>modules\appointment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="modules\doctors\doctorDataBase.h">
       <Filter>modules\doctors</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\appointment\appointment.h">
+      <Filter>modules\appointment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

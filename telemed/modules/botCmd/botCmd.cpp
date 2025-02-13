@@ -7,6 +7,8 @@
 #include "../account/account.h"
 #include "../users/user.h"
 #include "../patients/patients.h"
+#include "../doctors/doctors.h"
+#include "../appointment/appointment.h"
 
 #include <csignal>
 #include <cstdio>
@@ -27,21 +29,6 @@ void botCmdInit(Bot& bot)
     cmdArray->command = CMD_START;
     cmdArray->description = u8"Старт";
     commands.push_back(cmdArray);
-
-    //cmdArray = BotCommand::Ptr(new BotCommand);
-    //cmdArray->command = CMD_MAKE_AN_APPOINTMENT;
-    //cmdArray->description = u8"Запись";
-    //commands.push_back(cmdArray);
-
-    //cmdArray = BotCommand::Ptr(new BotCommand);
-    //cmdArray->command = CMD_PERSONAL_ACCOUNT;
-    //cmdArray->description = u8"Личный кабиент";
-    //commands.push_back(cmdArray);
-
-    //cmdArray = BotCommand::Ptr(new BotCommand);
-    //cmdArray->command = CMD_CURRENT_SESSIONS;
-    //cmdArray->description = u8"Текущие записи";
-    //commands.push_back(cmdArray);
 
     bot.getApi().setMyCommands(commands);
 
@@ -115,6 +102,11 @@ void BotCmdAny(Bot& bot)
                     account(bot, curChatId);
                     setUserProcess(curChatId, USER_PROCESS_ACCOUNT);
                 }
+                else if (StringTools::startsWith(message->text, KEYBOARD_MAKE_AN_APPOINTMENT))
+                {
+                    bot.getApi().sendMessage(curChatId, u8"Выберите специалиста", NULL, NULL, createChooseSpecInlineKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_CHOOSE_SPECIALIT);
+                }
                 break;
             }
             case USER_PROCESS_ACCOUNT:
@@ -134,8 +126,7 @@ void BotCmdAny(Bot& bot)
             }
             case USER_PROCESS_GET_FIRSTNAME_REG:
             {
-                static int idP = 0;
-                PatientData* patient = createPatientData(idP++, curChatId, message->text.c_str(), "NULL", "NULL", 0, "NULL");
+                PatientData* patient = createPatientData(getPatientsCnt(), curChatId, message->text.c_str(), "NULL", "NULL", 0, "NULL");
                 addPatient(patient);
                 snprintf(str, sizeof(str), u8"%s, спасибо за регистрацию!", patient->firstName);
                 std::string readyStr(str);
@@ -233,6 +224,8 @@ void botCmdCallback(Bot& bot)
                     bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваше имя:", NULL, NULL, deleteKeyboard());
                     setUserProcess(query->message->chat->id, USER_PROCESS_GET_FIRSTNAME_REG);
                 }
+
+                /* Изменение личных данных */
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_FIRSTNAME)) {
                     bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваше имя:", NULL, NULL, deleteKeyboard());
                     setUserProcess(query->message->chat->id, USER_PROCESS_GET_FIRSTNAME);
@@ -252,6 +245,21 @@ void botCmdCallback(Bot& bot)
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_GENDER)) {
                     bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваш пол (М или Ж):", NULL, NULL, deleteKeyboard());
                     setUserProcess(query->message->chat->id, USER_PROCESS_GET_SEX);
+                }
+
+                /* Выбор специалиста */
+                else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_SPEC_THERAPIST)) {
+                    //bot.getApi().sendMessage(query->message->chat->id, u8"Выберите врача:", NULL, NULL, deleteKeyboard());
+                    appointment(bot, query->message->chat->id, THERAPIST);
+                    //setUserProcess(query->message->chat->id, USER_PROCESS_GET_SEX);
+                }
+                else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_SPEC_PEDIATRICIAN)) {
+                    appointment(bot, query->message->chat->id, PEDIATRICIAN);
+                    //setUserProcess(query->message->chat->id, USER_PROCESS_GET_SEX);
+                }
+                else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_SPEC_SURGEON)) {
+                    appointment(bot, query->message->chat->id, SURGEON);
+                    //setUserProcess(query->message->chat->id, USER_PROCESS_GET_SEX);
                 }
             }
         });

@@ -12,3 +12,5 @@ STATUS removePatient(long id);
 STATUS cleanAllPatients(void);
 
 PatientData* findPatientChatId(long chatId);
+
+int getPatientsCnt(void);

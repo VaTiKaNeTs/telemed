@@ -20,7 +20,13 @@ ReplyKeyboardRemove::Ptr deleteKeyboard(void);
 /* Клавиатура приглашение зарегистрироваться */
 InlineKeyboardMarkup::Ptr createRegInlineKeyboard(void);
 
+/* Клавиатура выбрать врача */
+InlineKeyboardMarkup::Ptr createSpecKeyboard(void);
+
 /* Клавиатура изменение данных пользователя */
 InlineKeyboardMarkup::Ptr createAccEditInlineKeyboard(void);
+
+/* Клавиатура выбора специалиста */
+InlineKeyboardMarkup::Ptr createChooseSpecInlineKeyboard(void);
 
 #endif __KEYBOARD_H_

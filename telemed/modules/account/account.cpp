@@ -37,20 +37,6 @@ typedef struct
 ACCOUNT_INFO info[MAX_CNT_USERS_CHAT_ID];
 
 /****************************************************************************************************/
-void createAccount(Bot& bot, INT32 curChatId)
-{
-	PatientData* patient = createPatientData(
-		0,
-		curChatId,
-		NULL,
-		NULL,
-		NULL,
-		0,
-		NULL);
-
-	addPatient(patient);
-	bot.getApi().sendMessage(curChatId, "Введите ваше имя:");
-}
 
 /****************************************************************************************************/
 void account(Bot& bot, INT32 curChatId)

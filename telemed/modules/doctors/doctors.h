@@ -18,4 +18,6 @@ STATUS cleanAllDoctors(void);
 
 Doctor* findDoctorId(int id);
 
+void findDoctorSpec(int* dst, int* size, SPECIALITY spec);
+
 #endif DOCTORS_DB_H

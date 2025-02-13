@@ -1,5 +1,9 @@
 #include "doctors.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <Windows.h>
+
 static cJSON* doctors = NULL;
 
 /****************************************************************************************************/
@@ -20,7 +24,7 @@ void doctorInit(void)
     // Освобождение памяти
     cJSON_Delete(doctors);
 
-#if 1
+#if 0
     Doctor* doctor = createDoctor(0, PEDIATRICIAN, u8"Сергей", u8"Табаско", u8"Пердонович", 3, "pathtttt", 44);
     addDoctor(doctor);
     doctor = createDoctor(1, PEDIATRICIAN, u8"Владимир", u8"Красносолнышко", u8"Олегович", 10, "pathtttt", 50);
@@ -148,7 +152,7 @@ STATUS cleanAllDoctors(void)
 /****************************************************************************************************/
 Doctor* findDoctorId(int id)
 {
-    Doctor* doctor = NULL;
+    Doctor* doctor = (Doctor*)malloc(sizeof(Doctor));
 
     doctors = loadDoctor("doctors.json");
 
@@ -176,3 +180,39 @@ Doctor* findDoctorId(int id)
     return doctor;
 }
 #endif
+
+/****************************************************************************************************/
+void findDoctorSpec(int* dst, int* size, SPECIALITY spec)
+{
+    int slider = 0;
+
+    if (NULL == dst || NULL == size || !size[0])
+    {
+        return;
+    }
+    memset(dst, -1, size[0]);
+
+    doctors = loadDoctor("doctors.json");
+
+    if (doctors == NULL || cJSON_GetArraySize(doctors) == 0)
+    {
+        return;
+    }
+
+    for (int i = 0; i < cJSON_GetArraySize(doctors) && slider < size[0]; i++)
+    {
+        cJSON* doctorJson = cJSON_GetArrayItem(doctors, i);
+        if (doctorJson != NULL)
+        {
+            cJSON* doctorSpec = cJSON_GetObjectItem(doctorJson, "specialty");
+            if (doctorSpec != NULL && (int)doctorSpec->valuedouble == spec)
+            {
+                dst[slider++] = i;
+            }
+        }
+    }
+
+    *size = slider;
+
+    return;
+}

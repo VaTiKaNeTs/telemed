@@ -84,7 +84,8 @@ int savePatientDatabase(const char* filename, cJSON* patients)
     if (file == NULL) return 0;
 
     char* jsonStr = cJSON_Print(patients);
-    if (jsonStr == NULL) {
+    if (jsonStr == NULL) 
+    {
         fclose(file);
         return 0;
     }
