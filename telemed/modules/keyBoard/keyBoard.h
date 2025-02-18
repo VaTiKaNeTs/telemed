@@ -21,7 +21,7 @@ ReplyKeyboardRemove::Ptr deleteKeyboard(void);
 InlineKeyboardMarkup::Ptr createRegInlineKeyboard(void);
 
 /* Клавиатура выбрать врача */
-InlineKeyboardMarkup::Ptr createSpecKeyboard(void);
+InlineKeyboardMarkup::Ptr createSpecKeyboard(int doctorId);
 
 /* Клавиатура изменение данных пользователя */
 InlineKeyboardMarkup::Ptr createAccEditInlineKeyboard(void);

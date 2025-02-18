@@ -8,6 +8,7 @@
 // Перечисление возможных специальностей
 typedef enum
 {
+    DEFAULT_SPEC,                 // Дефолт
     THERAPIST,                    // Терапевт
     PEDIATRICIAN,                 // Педиатр
     SURGEON,                      // Хирург

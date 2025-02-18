@@ -19,6 +19,7 @@
 #include "dataBase/dataBase.h"
 #include "patients/patients.h"
 #include "doctors/doctors.h"
+#include "appointment/appointment.h"
 
 using namespace std;
 using namespace TgBot;
@@ -35,6 +36,11 @@ int main()
     setlocale(LC_ALL, "Russian");
     patientInit();
     doctorInit();
+    appointmentInit();
+    
+
+
+    
 
     Bot bot(BOT_API_TOKEN);
 

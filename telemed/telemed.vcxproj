@@ -131,6 +131,7 @@
     <ClCompile Include="libs\cJSON\cJSON.c" />
     <ClCompile Include="modules\account\account.cpp" />
     <ClCompile Include="modules\appointment\appointment.cpp" />
+    <ClCompile Include="modules\appointment\appointmentDataBase.cpp" />
     <ClCompile Include="modules\botCmd\botCmd.cpp" />
     <ClCompile Include="modules\dataBase\dataBase.cpp" />
     <ClCompile Include="modules\doctors\doctorDataBase.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="libs\cJSON\cJSON.h" />
     <ClInclude Include="modules\account\account.h" />
     <ClInclude Include="modules\appointment\appointment.h" />
+    <ClInclude Include="modules\appointment\appointmentDataBase.h" />
     <ClInclude Include="modules\botCmd\botCmd.h" />
     <ClInclude Include="modules\dataBase\dataBase.h" />
     <ClInclude Include="modules\doctors\doctorDataBase.h" />

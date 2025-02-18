@@ -19,17 +19,29 @@ void doctorInit(void)
         {
             fprintf(stderr, "Ошибка: не удалось сохранить базу данных\n");
         }
+        Doctor* doctor = createDoctor(0, DEFAULT_SPEC, u8"Default", u8"Default", u8"Default", 0, "Default", 0);
+        addDoctor(doctor);
+
+        doctor = createDoctor(1, PEDIATRICIAN, u8"Сергей", u8"Табаско", u8"Пердонович", 3, "pathtttt", 44);
+        addDoctor(doctor);
+        doctor = createDoctor(2, PEDIATRICIAN, u8"Владимир", u8"Красносолнышко", u8"Олегович", 10, "pathtttt", 50);
+        addDoctor(doctor);
+        doctor = createDoctor(3, SURGEON, u8"Ясна", u8"Мышако", u8"Михайловна", 5, "pathtttt", 48);
+        addDoctor(doctor);
+
+        doctors = loadDoctor("doctors.json");
     }
 
     // Освобождение памяти
     cJSON_Delete(doctors);
 
 #if 0
-    Doctor* doctor = createDoctor(0, PEDIATRICIAN, u8"Сергей", u8"Табаско", u8"Пердонович", 3, "pathtttt", 44);
+    
+    Doctor* doctor = createDoctor(1, PEDIATRICIAN, u8"Сергей", u8"Табаско", u8"Пердонович", 3, "pathtttt", 44);
     addDoctor(doctor);
-    doctor = createDoctor(1, PEDIATRICIAN, u8"Владимир", u8"Красносолнышко", u8"Олегович", 10, "pathtttt", 50);
+    doctor = createDoctor(2, PEDIATRICIAN, u8"Владимир", u8"Красносолнышко", u8"Олегович", 10, "pathtttt", 50);
     addDoctor(doctor);
-    doctor = createDoctor(2, SURGEON, u8"Ясна", u8"Мышако", u8"Михайловна", 5, "pathtttt", 48);
+    doctor = createDoctor(3, SURGEON, u8"Ясна", u8"Мышако", u8"Михайловна", 5, "pathtttt", 48);
     addDoctor(doctor);
 #endif
 }

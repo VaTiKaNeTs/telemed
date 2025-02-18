@@ -1,6 +1,15 @@
 [{
 		"id":	0,
-		"specialty":	1,
+		"specialty":	0,
+		"firstName":	"Default",
+		"lastName":	"Default",
+		"middleName":	"Default",
+		"photo_path":	"Default",
+		"experience":	0,
+		"rating":	0
+	}, {
+		"id":	1,
+		"specialty":	2,
 		"firstName":	"Сергей",
 		"lastName":	"Табаско",
 		"middleName":	"Пердонович",
@@ -8,8 +17,8 @@
 		"experience":	3,
 		"rating":	44
 	}, {
-		"id":	1,
-		"specialty":	1,
+		"id":	2,
+		"specialty":	2,
 		"firstName":	"Владимир",
 		"lastName":	"Красносолнышко",
 		"middleName":	"Олегович",
@@ -17,8 +26,8 @@
 		"experience":	10,
 		"rating":	50
 	}, {
-		"id":	2,
-		"specialty":	2,
+		"id":	3,
+		"specialty":	3,
 		"firstName":	"Ясна",
 		"lastName":	"Мышако",
 		"middleName":	"Михайловна",

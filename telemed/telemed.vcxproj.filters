@@ -84,6 +84,9 @@
     <ClCompile Include="modules\appointment\appointment.cpp">
       <Filter>modules\appointment</Filter>
     </ClCompile>
+    <ClCompile Include="modules\appointment\appointmentDataBase.cpp">
+      <Filter>modules\appointment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="knTypes.h">
@@ -123,6 +126,9 @@
       <Filter>modules\doctors</Filter>
     </ClInclude>
     <ClInclude Include="modules\appointment\appointment.h">
+      <Filter>modules\appointment</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\appointment\appointmentDataBase.h">
       <Filter>modules\appointment</Filter>
     </ClInclude>
   </ItemGroup>

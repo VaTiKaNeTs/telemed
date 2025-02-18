@@ -217,50 +217,60 @@ void botCmdCallback(Bot& bot)
 
     bot.getEvents().onCallbackQuery([&bot, &keyboard](CallbackQuery::Ptr query) 
         {
-            if (KN_ERROR != findUser(query->message->chat->id))
+            long curChatId = query->message->chat->id;
+            if (KN_ERROR != findUser(curChatId))
             {
+
                 /* Приглашение ввести имя */
                 if (StringTools::startsWith(query->data, INLINE_KEYBOARD_REGISTRATION)) {
-                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваше имя:", NULL, NULL, deleteKeyboard());
-                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_FIRSTNAME_REG);
+                    bot.getApi().sendMessage(curChatId, u8"Введите ваше имя:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_GET_FIRSTNAME_REG);
+                }
+
+                /* Выбор специалиста для записи */
+                else if (USER_PROCESS_CHOISE_SPEC == getUserProcess(curChatId))
+                {
+                    
                 }
 
                 /* Изменение личных данных */
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_FIRSTNAME)) {
-                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваше имя:", NULL, NULL, deleteKeyboard());
-                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_FIRSTNAME);
+                    bot.getApi().sendMessage(curChatId, u8"Введите ваше имя:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_GET_FIRSTNAME);
                 }
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_LASTNAME)) {
-                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите вашу фамилию:", NULL, NULL, deleteKeyboard());
-                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_LASTNAME);
+                    bot.getApi().sendMessage(curChatId, u8"Введите вашу фамилию:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_GET_LASTNAME);
                 }
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_MIDDLENAME)) {
-                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваше отчество:", NULL, NULL, deleteKeyboard());
-                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_MIDDLENAME);
+                    bot.getApi().sendMessage(curChatId, u8"Введите ваше отчество:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_GET_MIDDLENAME);
                 }
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_AGE)) {
-                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваш возраст:", NULL, NULL, deleteKeyboard());
-                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_AGE);
+                    bot.getApi().sendMessage(curChatId, u8"Введите ваш возраст:", NULL, NULL, deleteKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_GET_AGE);
                 }
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_ACCOUNT_EDIT_GENDER)) {
-                    bot.getApi().sendMessage(query->message->chat->id, u8"Введите ваш пол (М или Ж):", NULL, NULL, deleteKeyboard());
-                    setUserProcess(query->message->chat->id, USER_PROCESS_GET_SEX);
+                    bot.getApi().sendMessage(curChatId, u8"Введите ваш пол (М или Ж):", NULL, NULL, deleteKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_GET_SEX);
                 }
 
                 /* Выбор специалиста */
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_SPEC_THERAPIST)) {
                     //bot.getApi().sendMessage(query->message->chat->id, u8"Выберите врача:", NULL, NULL, deleteKeyboard());
-                    appointment(bot, query->message->chat->id, THERAPIST);
+                    appointment(bot, curChatId, THERAPIST);
                     //setUserProcess(query->message->chat->id, USER_PROCESS_GET_SEX);
                 }
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_SPEC_PEDIATRICIAN)) {
-                    appointment(bot, query->message->chat->id, PEDIATRICIAN);
+                    appointment(bot, curChatId, PEDIATRICIAN);
                     //setUserProcess(query->message->chat->id, USER_PROCESS_GET_SEX);
                 }
                 else if (StringTools::startsWith(query->data, INLINE_KEYBOARD_SPEC_SURGEON)) {
-                    appointment(bot, query->message->chat->id, SURGEON);
+                    appointment(bot, curChatId, SURGEON);
                     //setUserProcess(query->message->chat->id, USER_PROCESS_GET_SEX);
                 }
+
+                /* Выбор времени специалиста */
             }
         });
 }

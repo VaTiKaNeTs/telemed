@@ -15,6 +15,11 @@ void patientInit(void)
         {
             fprintf(stderr, "Ошибка: не удалось сохранить базу данных\n");
         }
+
+        PatientData* patient = createPatientData(0, 0, u8"Default", u8"Default", u8"Default", 0, u8"мужской");
+        addPatient(patient);
+
+        patients = loadPatientDatabase("patients.json");
     }
 
     // Освобождение памяти

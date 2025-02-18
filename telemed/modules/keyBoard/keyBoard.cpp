@@ -147,13 +147,13 @@ InlineKeyboardMarkup::Ptr createChooseSpecInlineKeyboard(void)
 }
 
 /***********************************************************************************************/
-InlineKeyboardMarkup::Ptr createSpecKeyboard(void)
+InlineKeyboardMarkup::Ptr createSpecKeyboard(int doctorId)
 {
     InlineKeyboardMarkup::Ptr keyboard(new InlineKeyboardMarkup);
     vector<InlineKeyboardButton::Ptr> row0;
     InlineKeyboardButton::Ptr choiсeButton(new InlineKeyboardButton);
     choiсeButton->text = INLINE_KEYBOARD_CHOIСE;
-    choiсeButton->callbackData = INLINE_KEYBOARD_CHOIСE;
+    choiсeButton->callbackData = { std::to_string(doctorId) };
     row0.push_back(choiсeButton);
     keyboard->inlineKeyboard.push_back(row0);
     return keyboard;
