@@ -116,6 +116,29 @@ void appointment(Bot& bot, long curChatId, SPECIALITY spec)
 }
 
 /****************************************************************************************************/
+void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
+{
+	if (doctorId)
+	{
+		Doctor *doctor = findDoctorId(doctorId);
+		
+		int appointments[10];
+		int appointmentsCnt = 10;
+		findAppointmentDoctorId(appointments, &appointmentsCnt, doctor->id);
+
+		if (!appointmentsCnt)
+		{
+			bot.getApi().sendMessage(curChatId, u8"К сожалению записи к этому специалисту сейчас нет", NULL, NULL, createStartKeyboard());
+			setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+			return;
+		}
+		
+		bot.getApi().sendMessage(curChatId, "Доступные даты на запись: ", NULL, NULL, createChoiceDateInlineKeyboard(appointments, appointmentsCnt));
+
+	}
+}
+
+/****************************************************************************************************/
 void appointmentEdit(int id, Appointment* ap)
 {
 	aps = loadAp("appointments.json");
@@ -151,9 +174,70 @@ void appointmentChooseTime(long doctorId)
 }
 
 /****************************************************************************************************/
-void findAppointmentDoctorId(long doctorId)
+Appointment* findAppointmentId(int id)
 {
+	Appointment* ap = (Appointment*)malloc(sizeof(Appointment));
 
+	aps = loadAp("appointments.json");
+
+	if (aps == NULL || cJSON_GetArraySize(aps) == 0)
+	{
+		return NULL;
+	}
+
+	for (int i = 0; i < cJSON_GetArraySize(aps); i++)
+	{
+		cJSON* apJson = cJSON_GetArrayItem(aps, i);
+		if (apJson != NULL)
+		{
+			cJSON* jsonDoctorId = cJSON_GetObjectItem(apJson, "id");
+			if (jsonDoctorId != NULL && jsonDoctorId->valuedouble == id)
+			{
+				ap = jsonToAp(apJson);
+			}
+		}
+	}
+
+	// Освобождение памяти
+	cJSON_Delete(aps);
+
+	return ap;
+}
+
+/****************************************************************************************************/
+void findAppointmentDoctorId(int *dst, int* size, int doctorId)
+{
+	int slider = 0;
+
+	if (NULL == dst || NULL == size || !size[0])
+	{
+		return;
+	}
+	memset(dst, -1, size[0]);
+
+	aps = loadDoctor("doctors.json");
+
+	if (aps == NULL || cJSON_GetArraySize(aps) == 0)
+	{
+		return;
+	}
+
+	for (int i = 0; i < cJSON_GetArraySize(aps) && slider < size[0]; i++)
+	{
+		cJSON* apJson = cJSON_GetArrayItem(aps, i);
+		if (apJson != NULL)
+		{
+			cJSON* apDoctorId = cJSON_GetObjectItem(apJson, "doctorId");
+			if (apDoctorId != NULL && (int)apDoctorId->valuedouble == doctorId)
+			{
+				dst[slider++] = i;
+			}
+		}
+	}
+
+	*size = slider;
+
+	return;
 }
 
 /****************************************************************************************************/

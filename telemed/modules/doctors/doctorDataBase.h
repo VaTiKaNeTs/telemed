@@ -33,6 +33,7 @@ typedef enum
 #if 1
 const char* const SPECIALTY_NAMES[] =
 {
+    u8"Default",
     u8"Терапевт",
     u8"Педиатр",
     u8"Хирург",

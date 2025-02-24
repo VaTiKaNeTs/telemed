@@ -153,7 +153,11 @@ InlineKeyboardMarkup::Ptr createSpecKeyboard(int doctorId)
     vector<InlineKeyboardButton::Ptr> row0;
     InlineKeyboardButton::Ptr choiсeButton(new InlineKeyboardButton);
     choiсeButton->text = INLINE_KEYBOARD_CHOIСE;
+#if 1
     choiсeButton->callbackData = { std::to_string(doctorId) };
+#else
+    choiсeButton->callbackData = INLINE_KEYBOARD_CHOIСE;
+#endif
     row0.push_back(choiсeButton);
     keyboard->inlineKeyboard.push_back(row0);
     return keyboard;
@@ -169,6 +173,41 @@ InlineKeyboardMarkup::Ptr createRegInlineKeyboard(void)
     checkButton->callbackData = INLINE_KEYBOARD_REGISTRATION;
     row0.push_back(checkButton);
     keyboard->inlineKeyboard.push_back(row0);
+    return keyboard;
+}
+
+/*std::string strSpec{
+            u8"Специализация: " + info.specialty + "\n" +
+            info.lastName + " " + info.firstName + " " + info.middleName +
+            u8"\nСтаж " + info.experience + u8" лет\n"
+            u8"⭐️" + info.rating
+};*/
+
+/***********************************************************************************************/
+InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int* days)
+{
+    InlineKeyboardMarkup::Ptr keyboard(new InlineKeyboardMarkup);
+    vector<InlineKeyboardButton::Ptr> row;
+    InlineKeyboardButton::Ptr day1(new InlineKeyboardButton);
+    InlineKeyboardButton::Ptr day2(new InlineKeyboardButton);
+    InlineKeyboardButton::Ptr day3(new InlineKeyboardButton);
+    InlineKeyboardButton::Ptr day4(new InlineKeyboardButton);
+    InlineKeyboardButton::Ptr day5(new InlineKeyboardButton);
+    InlineKeyboardButton::Ptr day6(new InlineKeyboardButton);
+    InlineKeyboardButton::Ptr day7(new InlineKeyboardButton);
+
+    //for (UINT32 i = 0; i < 7; i++)
+    //{
+    //    /* выводим этот день */
+    //    if (days[i])
+    //    {
+    //        day1->text = 
+    //    }
+
+    //}
+    //day1->text = ((days[0]) ? (u8"✅") : );
+
+
     return keyboard;
 }
 

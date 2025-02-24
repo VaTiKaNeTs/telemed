@@ -20,6 +20,10 @@ ReplyKeyboardRemove::Ptr deleteKeyboard(void);
 /* Клавиатура приглашение зарегистрироваться */
 InlineKeyboardMarkup::Ptr createRegInlineKeyboard(void);
 
+/* Клавиатура выбора даты. */
+/* принимает массив дней которые надо вывести 7 шт */
+InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int* days);
+
 /* Клавиатура выбрать врача */
 InlineKeyboardMarkup::Ptr createSpecKeyboard(int doctorId);
 
