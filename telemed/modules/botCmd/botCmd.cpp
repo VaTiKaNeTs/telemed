@@ -230,9 +230,12 @@ void botCmdCallback(Bot& bot)
                 /* Выбор специалиста для записи */
                 else if (USER_PROCESS_CHOISE_SPEC == getUserProcess(curChatId))
                 {
-                    //appointmentChoiseDoctor();
-                    bot.getApi().sendMessage(curChatId, u8"Выберите дату: ", NULL, NULL, createChoiceDateInlineKeyboard());
+                    appointmentChoiceDateDoctor(bot, curChatId, std::stoi(query->data));
+                }
 
+                else if (USER_PROCESS_CHOISE_DATE == getUserProcess(curChatId))
+                {
+                    //appointmentChoiceTimeDoctor((bot, curChatId, std::stoi(query->data));
                 }
 
                 /* Изменение личных данных */

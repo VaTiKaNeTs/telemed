@@ -24,6 +24,9 @@ InlineKeyboardMarkup::Ptr createRegInlineKeyboard(void);
 /* принимает массив дней которые надо вывести 7 шт */
 InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int* days);
 
+/* Клавиатруа выбора времени */
+InlineKeyboardMarkup::Ptr createChoiceTimeInlineKeyboard(const std::vector<std::string>& timesStr);
+
 /* Клавиатура выбрать врача */
 InlineKeyboardMarkup::Ptr createSpecKeyboard(int doctorId);
 

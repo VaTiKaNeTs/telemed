@@ -3,6 +3,7 @@
 #include "../doctors/doctors.h"
 #include "../keyBoard/keyBoard.h"
 #include "../users/user.h"
+#include "../config.h"
 
 #define SPECS_MAX_CNT 10
 
@@ -115,6 +116,8 @@ void appointment(Bot& bot, long curChatId, SPECIALITY spec)
 	
 }
 
+#define MAX_CNT 10
+
 /****************************************************************************************************/
 void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
 {
@@ -122,9 +125,13 @@ void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
 	{
 		Doctor *doctor = findDoctorId(doctorId);
 		
-		int appointments[10];
-		int appointmentsCnt = 10;
-		findAppointmentDoctorId(appointments, &appointmentsCnt, doctor->id);
+		std::time_t now = std::time(nullptr);
+		std::tm* ltm = std::localtime(&now);
+		// ltm->tm_mday
+
+		int appointments[MAX_CNT];
+		int appointmentsCnt = MAX_CNT;
+		findAppointmentDoctorIdAndDate(appointments, &appointmentsCnt, doctor->id, ltm->tm_mday);
 
 		if (!appointmentsCnt)
 		{
@@ -132,9 +139,64 @@ void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
 			setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
 			return;
 		}
-		
-		bot.getApi().sendMessage(curChatId, "Доступные даты на запись: ", NULL, NULL, createChoiceDateInlineKeyboard(appointments, appointmentsCnt));
 
+		std::vector<std::string> times;
+
+		for (UINT32 i = 0; i < appointmentsCnt; i++)
+		{
+			Appointment* ap = findAppointmentId(appointments[i]);
+
+			if (ap != NULL)
+			{
+				std::string tmp = { std::to_string(ap->time.hour) + ":" + std::to_string(ap->time.min) };
+				times.push_back(tmp);
+			}
+		}
+
+		bot.getApi().sendMessage(curChatId, u8"Выберите подходящее время приема: ", NULL, NULL, createChoiceTimeInlineKeyboard(times));
+		setUserProcess(curChatId, USER_PROCESS_CHOISE_TIME);
+
+		/* TODO тут нужно определять какие дни предлагать пользователю на основе \ref appointments[] */
+		//int days[7] = { 21, 22, 23, 24, 25, 26, 27 };
+		//bot.getApi().sendMessage(curChatId, u8"Выберите желаемую дату на запись: ", NULL, NULL, createChoiceDateInlineKeyboard(days));
+		//setUserProcess(curChatId, USER_PROCESS_CHOISE_DATE);
+	}
+}
+
+/****************************************************************************************************/
+void appointmentChoiceTimeDoctor(Bot& bot, long curChatId, int doctorId, int date)
+{
+	if (doctorId && date)
+	{
+		Doctor* doctor = findDoctorId(doctorId);
+
+		int appointments[MAX_CNT];
+		int appointmentsCnt = MAX_CNT;
+		findAppointmentDoctorId(appointments, &appointmentsCnt, doctor->id);
+
+		if (!appointmentsCnt)
+		{
+			bot.getApi().sendMessage(curChatId, u8"К сожалению свободных окошек на эту дату нет", NULL, NULL, createStartKeyboard());
+			setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+			return;
+		}
+
+		//AP_TIME times[MAX_CNT];
+		std::vector<std::string> times;
+
+		for (UINT32 i = 0; i < appointmentsCnt; i++)
+		{
+			Appointment* ap = findAppointmentId(appointments[i]);
+
+			if (ap != NULL)
+			{
+				std::string tmp = { std::to_string(ap->time.hour) + ":" + std::to_string(ap->time.min) };
+				times.push_back(tmp);
+			}
+		}
+
+		bot.getApi().sendMessage(curChatId, u8"Выберите подходящее время приема: ", NULL, NULL, createChoiceTimeInlineKeyboard(times));
+		setUserProcess(curChatId, USER_PROCESS_CHOISE_TIME);
 	}
 }
 
@@ -213,9 +275,9 @@ void findAppointmentDoctorId(int *dst, int* size, int doctorId)
 	{
 		return;
 	}
-	memset(dst, -1, size[0]);
+	memset(dst, -1, size[0] * sizeof(int));
 
-	aps = loadDoctor("doctors.json");
+	aps = loadDoctor("appointments.json");
 
 	if (aps == NULL || cJSON_GetArraySize(aps) == 0)
 	{
@@ -230,7 +292,8 @@ void findAppointmentDoctorId(int *dst, int* size, int doctorId)
 			cJSON* apDoctorId = cJSON_GetObjectItem(apJson, "doctorId");
 			if (apDoctorId != NULL && (int)apDoctorId->valuedouble == doctorId)
 			{
-				dst[slider++] = i;
+				cJSON* apId = cJSON_GetObjectItem(apJson, "id");
+				dst[slider++] = apId->valuedouble;
 			}
 		}
 	}
@@ -239,6 +302,58 @@ void findAppointmentDoctorId(int *dst, int* size, int doctorId)
 
 	return;
 }
+
+/****************************************************************************************************/
+void findAppointmentDoctorIdAndDate(int* dst, int* size, int doctorId, int date)
+{
+	int slider = 0;
+
+	if (NULL == dst || NULL == size || !size[0])
+	{
+		return;
+	}
+	memset(dst, -1, size[0] * sizeof(int));
+
+	aps = loadDoctor("appointments.json");
+
+	if (aps == NULL || cJSON_GetArraySize(aps) == 0)
+	{
+		return;
+	}
+
+	for (int i = 0; i < cJSON_GetArraySize(aps) && slider < size[0]; i++)
+	{
+		cJSON* apJson = cJSON_GetArrayItem(aps, i);
+		if (apJson != NULL)
+		{
+			cJSON* apDoctorId = cJSON_GetObjectItem(apJson, "doctorId");
+			if (apDoctorId != NULL && (int)apDoctorId->valuedouble == doctorId)
+			{
+				cJSON* apDate = cJSON_GetObjectItem(apJson, "date");
+				char strDate[12] = { 0 };
+				sprintf(strDate, "%d.3.2025", date);
+				printf("strDate %s\n", strDate);
+				printf("apDate %s\n", apDate->valuestring);
+				if (!strcmp(apDate->valuestring, strDate))
+				{
+					cJSON* apId = cJSON_GetObjectItem(apJson, "id");
+					dst[slider++] = apId->valuedouble;
+				}
+			}
+		}
+	}
+
+	*size = slider;
+
+	return;
+}
+
+//std::string strSpec{
+//			u8"Специализация: " + info.specialty + "\n" +
+//			info.lastName + " " + info.firstName + " " + info.middleName +
+//			u8"\nСтаж " + info.experience + u8" лет\n"
+//			u8"⭐️" + info.rating
+//};
 
 /****************************************************************************************************/
 STATUS addAppointment(Appointment* ap)

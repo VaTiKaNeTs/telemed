@@ -69,7 +69,8 @@ void tgLoop(Bot& bot)
         bot.getApi().deleteWebhook();
 
         TgLongPoll longPoll(bot);
-        while (true) {
+        while (true) 
+        {
             printf("Long poll started\n");
             longPoll.start();
         }

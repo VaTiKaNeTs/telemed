@@ -176,13 +176,6 @@ InlineKeyboardMarkup::Ptr createRegInlineKeyboard(void)
     return keyboard;
 }
 
-/*std::string strSpec{
-            u8"Специализация: " + info.specialty + "\n" +
-            info.lastName + " " + info.firstName + " " + info.middleName +
-            u8"\nСтаж " + info.experience + u8" лет\n"
-            u8"⭐️" + info.rating
-};*/
-
 /***********************************************************************************************/
 InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int* days)
 {
@@ -196,17 +189,54 @@ InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int* days)
     InlineKeyboardButton::Ptr day6(new InlineKeyboardButton);
     InlineKeyboardButton::Ptr day7(new InlineKeyboardButton);
 
-    //for (UINT32 i = 0; i < 7; i++)
-    //{
-    //    /* выводим этот день */
-    //    if (days[i])
-    //    {
-    //        day1->text = 
-    //    }
+    day1->text = std::to_string(days[0]);
+    day1->callbackData = std::to_string(days[0]);
+    row.push_back(day1);
 
-    //}
-    //day1->text = ((days[0]) ? (u8"✅") : );
+    day2->text = std::to_string(days[1]);
+    day2->callbackData = std::to_string(days[1]);
+    row.push_back(day2);
 
+    day3->text = std::to_string(days[2]);
+    day3->callbackData = std::to_string(days[2]);
+    row.push_back(day3);
+
+    day4->text = std::to_string(days[3]);
+    day4->callbackData = std::to_string(days[3]);
+    row.push_back(day4);
+
+    day5->text = std::to_string(days[4]);
+    day5->callbackData = std::to_string(days[4]);
+    row.push_back(day5);
+
+    day6->text = std::to_string(days[5]);
+    day6->callbackData = std::to_string(days[5]);
+    row.push_back(day6);
+
+    day7->text = std::to_string(days[6]);
+    day7->callbackData = std::to_string(days[6]);
+    row.push_back(day7);
+
+    keyboard->inlineKeyboard.push_back(row);
+
+    return keyboard;
+}
+
+/***********************************************************************************************/
+InlineKeyboardMarkup::Ptr createChoiceTimeInlineKeyboard(const std::vector<std::string>& timesStr)
+{
+    InlineKeyboardMarkup::Ptr keyboard(new InlineKeyboardMarkup);
+    vector<InlineKeyboardButton::Ptr> row;
+
+    for (const auto& str : timesStr) 
+    {
+        InlineKeyboardButton::Ptr tmpTime(new InlineKeyboardButton);
+        tmpTime->text = str;
+        tmpTime->callbackData = str;
+        row.push_back(tmpTime);
+        keyboard->inlineKeyboard.push_back(row);
+        row.clear();
+    }
 
     return keyboard;
 }

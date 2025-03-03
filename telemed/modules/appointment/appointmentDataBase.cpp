@@ -76,7 +76,7 @@ Appointment* jsonToAp(cJSON* json)
         (int)cJSON_GetObjectItem(json, "doctorId")->valueint,
         (int)cJSON_GetObjectItem(json, "patientId")->valueint,
         &date,
-        (AP_TIME*)cJSON_GetObjectItem(json, "time")->valuestring
+        &time
     );
 
 
