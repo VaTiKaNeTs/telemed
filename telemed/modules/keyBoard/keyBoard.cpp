@@ -29,6 +29,19 @@ ReplyKeyboardMarkup::Ptr createStartKeyboard(void)
 }
 
 /***********************************************************************************************/
+ReplyKeyboardMarkup::Ptr createSessionsKeyboard(void)
+{
+    ReplyKeyboardMarkup::Ptr keyboardWithLayout(new ReplyKeyboardMarkup);
+    createKeyboard(
+        {
+            {KEYBOARD_ACCOUNT_BACK},
+        }, keyboardWithLayout);
+    keyboardWithLayout->resizeKeyboard = TRUE;
+
+    return keyboardWithLayout;
+}
+
+/***********************************************************************************************/
 ReplyKeyboardMarkup::Ptr createAccountKeyboard(void)
 {
     ReplyKeyboardMarkup::Ptr keyboardWithLayout(new ReplyKeyboardMarkup);
@@ -238,18 +251,22 @@ InlineKeyboardMarkup::Ptr createChoiceTimeInlineKeyboard(const std::vector<std::
         row.clear();
     }
 
-#if 0
-    for (const auto& str : timesStr) 
-    {
-        InlineKeyboardButton::Ptr tmpTime(new InlineKeyboardButton);
-        tmpTime->callbackData = INLINE_KEYBOARD_CHOOSE_TIME + str;
-        const auto& cbStr : str;
-        tmpTime->text = str;
-        row.push_back(tmpTime);
-        keyboard->inlineKeyboard.push_back(row);
-        row.clear();
-    }
-#endif
+    return keyboard;
+}
+
+/***********************************************************************************************/
+InlineKeyboardMarkup::Ptr createSessionShowInlineKeyboard(int id)
+{
+    InlineKeyboardMarkup::Ptr keyboard(new InlineKeyboardMarkup);
+    vector<InlineKeyboardButton::Ptr> row;
+
+    InlineKeyboardButton::Ptr btn(new InlineKeyboardButton);
+    btn->callbackData = std::to_string(id);
+    btn->text = KEYBOARD_SESSION_CANCEL;
+    row.push_back(btn);
+
+    keyboard->inlineKeyboard.push_back(row);
+
     return keyboard;
 }
 

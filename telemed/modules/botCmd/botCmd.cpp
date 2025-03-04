@@ -107,6 +107,10 @@ void BotCmdAny(Bot& bot)
                     bot.getApi().sendMessage(curChatId, u8"Выберите специалиста", NULL, NULL, createChooseSpecInlineKeyboard());
                     setUserProcess(curChatId, USER_PROCESS_CHOOSE_SPECIALIT);
                 }
+                else if (StringTools::startsWith(message->text, KEYBOARD_SESSIONS))
+                {
+                    appointmentShow(bot, curChatId);
+                }
                 break;
             }
             case USER_PROCESS_ACCOUNT:
@@ -206,6 +210,19 @@ void BotCmdAny(Bot& bot)
                 }
                 break;
             }
+            case USER_PROCESS_SESSION:
+            {
+                if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT_BACK))
+                {
+                    bot.getApi().sendMessage(curChatId, u8"Главное меню", NULL, NULL, createStartKeyboard());
+                    setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+                }
+                break;
+            }
+            default:
+            {
+                break;
+            }
             }
         });
 }
@@ -233,9 +250,16 @@ void botCmdCallback(Bot& bot)
                     appointmentChoiceDateDoctor(bot, curChatId, std::stoi(query->data));
                 }
 
+                /* Выбор времени на запись */
                 else if (USER_PROCESS_CHOISE_TIME == getUserProcess(curChatId))
                 {
-                        appointmentReg(bot, curChatId, std::stoi(query->data));
+                    appointmentReg(bot, curChatId, std::stoi(query->data));
+                }
+
+                /* Отмена записи */
+                else if (USER_PROCESS_SESSION == getUserProcess(curChatId))
+                {
+                    appointmentDelete(bot, curChatId, std::stoi(query->data));
                 }
 
                 /* Изменение личных данных */

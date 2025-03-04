@@ -147,7 +147,73 @@ void appointmentReg(Bot& bot, long curChatId, int id)
 	setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
 }
 
+/****************************************************************************************************/
+void appointmentDelete(Bot& bot, long curChatId, int id)
+{
+	Appointment* ap = findAppointmentId(id);
+
+	if (ap == NULL)
+	{
+		bot.getApi().sendMessage(curChatId, u8"К сожалению произошла ошибка, попробуйте позже", NULL, NULL, createStartKeyboard());
+		setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+		return;
+	}
+
+	ap->patientId = 0;
+
+	appointmentEdit(ap->id, ap);
+
+	bot.getApi().sendMessage(curChatId, u8"Запись отменена.", NULL, NULL, createStartKeyboard());
+	setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+}
+
 #define MAX_CNT 10
+
+/****************************************************************************************************/
+void appointmentShow(Bot& bot, long curChatId)
+{
+	PatientData* patient = findPatientChatId(curChatId);
+
+	if (patient == NULL)
+	{
+		return;
+	}
+
+	int appointments[MAX_CNT];
+	int appointmentsCnt = MAX_CNT;
+
+	findAppointmentPatientId(appointments, &appointmentsCnt, patient->id);
+
+	if (!appointmentsCnt)
+	{
+		bot.getApi().sendMessage(curChatId, u8"У вас пока нет записей.\nСамое время записаться!", NULL, NULL, createStartKeyboard());
+		setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+		return;
+	}
+
+	bot.getApi().sendMessage(curChatId, u8"Вы записаны:");
+
+	for (UINT32 i = 0; i < appointmentsCnt; i++)
+	{
+		Appointment* ap = findAppointmentId(appointments[i]);
+
+		if (ap != NULL)
+		{
+			Doctor* doctor = findDoctorId(ap->doctorId);
+
+			std::string tmp = 
+			{ 
+				std::to_string(ap->date.day) + "." + std::to_string(ap->date.month) + "." + std::to_string(ap->date.year) +
+				u8" в " + std::to_string(ap->time.hour) + ":" + std::to_string(ap->time.min) +
+				u8"\n к " + doctor->firstName + " " + doctor->lastName + " " + doctor->middleName +
+				u8"\n Специализация " + SPECIALTY_NAMES[doctor->specialty]
+			};
+			bot.getApi().sendMessage(curChatId, tmp, NULL, NULL, createSessionShowInlineKeyboard(ap->id));
+		}
+	}
+	bot.getApi().sendMessage(curChatId, u8"Это все ваши записи.", NULL, NULL, createSessionsKeyboard());
+	setUserProcess(curChatId, USER_PROCESS_SESSION);
+}
 
 /****************************************************************************************************/
 void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
@@ -297,6 +363,43 @@ Appointment* findAppointmentId(int id)
 }
 
 /****************************************************************************************************/
+void findAppointmentPatientId(int* dst, int* size, int patientId)
+{
+	int slider = 0;
+
+	if (NULL == dst || NULL == size || !size[0])
+	{
+		return;
+	}
+	memset(dst, -1, size[0] * sizeof(int));
+
+	aps = loadAp("appointments.json");
+
+	if (aps == NULL || cJSON_GetArraySize(aps) == 0)
+	{
+		return;
+	}
+
+	for (int i = 0; i < cJSON_GetArraySize(aps) && slider < size[0]; i++)
+	{
+		cJSON* apJson = cJSON_GetArrayItem(aps, i);
+		if (apJson != NULL)
+		{
+			cJSON* apPatientId = cJSON_GetObjectItem(apJson, "patientId");
+			if (apPatientId != NULL && (int)apPatientId->valueint == patientId)
+			{
+				cJSON* apId = cJSON_GetObjectItem(apJson, "id");
+				dst[slider++] = apId->valueint;
+			}
+		}
+	}
+
+	*size = slider;
+
+	return;
+}
+
+/****************************************************************************************************/
 void findAppointmentDoctorId(int *dst, int* size, int doctorId)
 {
 	int slider = 0;
@@ -307,7 +410,7 @@ void findAppointmentDoctorId(int *dst, int* size, int doctorId)
 	}
 	memset(dst, -1, size[0] * sizeof(int));
 
-	aps = loadDoctor("appointments.json");
+	aps = loadAp("appointments.json");
 
 	if (aps == NULL || cJSON_GetArraySize(aps) == 0)
 	{

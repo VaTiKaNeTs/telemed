@@ -17,11 +17,17 @@ void appointment(Bot& bot, long curChatId, SPECIALITY spec);
 
 void appointmentReg(Bot& bot, long curChatId, int id);
 
+void appointmentDelete(Bot& bot, long curChatId, int id);
+
+void appointmentShow(Bot& bot, long curChatId);
+
 STATUS addAppointment(Appointment* ap);
 
 void appointmentEdit(int id, Appointment* ap);
 
 void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId);
+
+void findAppointmentPatientId(int* dst, int* size, int patientId);
 
 void findAppointmentDoctorId(int* dst, int* size, int doctorId);
 

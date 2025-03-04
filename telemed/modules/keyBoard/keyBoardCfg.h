@@ -7,6 +7,8 @@
 #define KEYBOARD_ACCOUNT_EDIT	u8"✏️Изменить данные"
 #define KEYBOARD_ACCOUNT_BACK	u8"◀️Назад"
 
+#define KEYBOARD_SESSION_CANCEL u8"Отменить запись"
+
 #define INLINE_KEYBOARD_REGISTRATION u8"Зарегистрироваться"
 
 #define INLINE_KEYBOARD_CHOIСE u8"Выбрать" 

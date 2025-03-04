@@ -11,11 +11,16 @@ using namespace TgBot;
 /* Клавиатура для стартового меню */
 ReplyKeyboardMarkup::Ptr createStartKeyboard(void);
 
+/* Клавиатура для меню записей */
+ReplyKeyboardMarkup::Ptr createSessionsKeyboard(void);
+
 /* Клавиатура для меню личного кабинета */
 ReplyKeyboardMarkup::Ptr createAccountKeyboard(void);
 
-
 ReplyKeyboardRemove::Ptr deleteKeyboard(void);
+
+/* Клавиатура для действия с записью */
+InlineKeyboardMarkup::Ptr createSessionShowInlineKeyboard(int id);
 
 /* Клавиатура приглашение зарегистрироваться */
 InlineKeyboardMarkup::Ptr createRegInlineKeyboard(void);
