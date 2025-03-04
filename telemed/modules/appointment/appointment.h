@@ -15,7 +15,11 @@ Appointment* findAppointmentId(int id);
 
 void appointment(Bot& bot, long curChatId, SPECIALITY spec);
 
+void appointmentReg(Bot& bot, long curChatId, int id);
+
 STATUS addAppointment(Appointment* ap);
+
+void appointmentEdit(int id, Appointment* ap);
 
 void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId);
 

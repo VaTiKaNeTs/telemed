@@ -228,16 +228,28 @@ InlineKeyboardMarkup::Ptr createChoiceTimeInlineKeyboard(const std::vector<std::
     InlineKeyboardMarkup::Ptr keyboard(new InlineKeyboardMarkup);
     vector<InlineKeyboardButton::Ptr> row;
 
-    for (const auto& str : timesStr) 
+    for (int i = 0; i < timesStr.size(); i += 2)
     {
         InlineKeyboardButton::Ptr tmpTime(new InlineKeyboardButton);
-        tmpTime->text = str;
-        tmpTime->callbackData = str;
+        tmpTime->callbackData = timesStr[i + 1];
+        tmpTime->text = timesStr[i];
         row.push_back(tmpTime);
         keyboard->inlineKeyboard.push_back(row);
         row.clear();
     }
 
+#if 0
+    for (const auto& str : timesStr) 
+    {
+        InlineKeyboardButton::Ptr tmpTime(new InlineKeyboardButton);
+        tmpTime->callbackData = INLINE_KEYBOARD_CHOOSE_TIME + str;
+        const auto& cbStr : str;
+        tmpTime->text = str;
+        row.push_back(tmpTime);
+        keyboard->inlineKeyboard.push_back(row);
+        row.clear();
+    }
+#endif
     return keyboard;
 }
 

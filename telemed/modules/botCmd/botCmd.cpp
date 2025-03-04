@@ -233,9 +233,9 @@ void botCmdCallback(Bot& bot)
                     appointmentChoiceDateDoctor(bot, curChatId, std::stoi(query->data));
                 }
 
-                else if (USER_PROCESS_CHOISE_DATE == getUserProcess(curChatId))
+                else if (USER_PROCESS_CHOISE_TIME == getUserProcess(curChatId))
                 {
-                    //appointmentChoiceTimeDoctor((bot, curChatId, std::stoi(query->data));
+                        appointmentReg(bot, curChatId, std::stoi(query->data));
                 }
 
                 /* Изменение личных данных */
