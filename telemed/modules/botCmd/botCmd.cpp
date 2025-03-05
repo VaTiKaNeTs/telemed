@@ -18,6 +18,8 @@
 
 static char str[1024];
 
+static bool rootMode = FALSE;
+
 /****************************************************************************************************/
 void botCmdInit(Bot& bot)
 {
@@ -83,6 +85,10 @@ void BotCmdAny(Bot& bot)
             }
             else
             {
+                if (rootMode)
+                {
+                    /* TODO Тут нужно запомнить чат в который нас добавили */
+                }
                 return;
             }
 
@@ -221,6 +227,10 @@ void BotCmdAny(Bot& bot)
             }
             default:
             {
+                if (StringTools::startsWith(message->text, KEYBOARD_ROOT_ACCESS))
+                {
+                    rootMode = !rootMode;
+                }
                 break;
             }
             }
@@ -302,4 +312,10 @@ void botCmdCallback(Bot& bot)
                 /* Выбор времени специалиста */
             }
         });
+}
+
+/****************************************************************************************************/
+void BotGroup(Bot& bot)
+{
+    //bot.getEvents().chatUpdate
 }

@@ -86,37 +86,30 @@ typedef struct {
 } Doctor;
 
 /***************************************************************************//**
- * @brief Создает новый экземпляр PatientData
- *
- * @param firstName Имя пациента
- * @param lastName Фамилия пациента
- * @param middleName Отчество пациента
- * @param age Возраст пациента
- * @param gender Пол пациента
- *
+ * @brief Создает новый экземпляр Doctor
  * @return Указатель на созданную структуру PatientData или NULL в случае ошибки
  *******************************************************************************/
 Doctor* createDoctor(int id, SPECIALITY specialty, const char* firstName, const char* lastName,
     const char* middleName, float experience, const char* photo_path, float rating);
 
 /***************************************************************************//**
- * @brief Освобождает память, выделенную для PatientData
+ * @brief Освобождает память, выделенную для Doctor
  *
  * @param patient Указатель на структуру PatientData для освобождения
  *******************************************************************************/
 void freeDoctor(Doctor* doctor);
 
 /***************************************************************************//**
- * @brief Преобразует структуру PatientData в JSON объект
+ * @brief Преобразует структуру Doctor в JSON объект
  *
- * @param patient Указатель на структуру PatientData для преобразования
+ * @param patient Указатель на структуру Doctor для преобразования
  *
  * @return Указатель на созданный JSON объект или NULL в случае ошибки
  *******************************************************************************/
 cJSON* doctorToJson(Doctor* doctor);
 
 /***************************************************************************//**
- * @brief Создает структуру PatientData из JSON объекта
+ * @brief Создает структуру Doctor из JSON объекта
  *
  * @param json Указатель на JSON объект для преобразования
  *
@@ -125,7 +118,7 @@ cJSON* doctorToJson(Doctor* doctor);
 Doctor* jsonToDoctor(cJSON* json);
 
 /***************************************************************************//**
- * @brief Сохраняет базу данных пациентов в JSON файл
+ * @brief Сохраняет базу данных Doctors в JSON файл
  *
  * @param filename Имя файла для сохранения
  * @param patients Указатель на JSON массив с данными пациентов

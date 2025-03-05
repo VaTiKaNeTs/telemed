@@ -29,3 +29,5 @@
 #define INLINE_KEYBOARD_SPEC_UROLOGIST u8"Уролог"
 
 #define INLINE_KEYBOARD_CHOOSE_TIME "chT_"
+
+#define KEYBOARD_ROOT_ACCESS "rootroot"

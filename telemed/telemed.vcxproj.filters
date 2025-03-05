@@ -49,6 +49,12 @@
     <Filter Include="modules\appointment">
       <UniqueIdentifier>{6a3e2b8f-4f04-417c-95b5-f19cafc104d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\meeting">
+      <UniqueIdentifier>{64eb067b-d4b5-4fd0-b008-12d71c22d703}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="modules\group">
+      <UniqueIdentifier>{6bdbb856-1b3c-4d7d-b937-248a8bc832fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="telemed.cpp">
@@ -86,6 +92,15 @@
     </ClCompile>
     <ClCompile Include="modules\appointment\appointmentDataBase.cpp">
       <Filter>modules\appointment</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\group\group.cpp">
+      <Filter>modules\group</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\group\groupDataBase.cpp">
+      <Filter>modules\group</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\meeting\meeting.cpp">
+      <Filter>modules\meeting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +145,15 @@
     </ClInclude>
     <ClInclude Include="modules\appointment\appointmentDataBase.h">
       <Filter>modules\appointment</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\group\group.h">
+      <Filter>modules\group</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\group\groupDataBase.h">
+      <Filter>modules\group</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\meeting\meeting.h">
+      <Filter>modules\meeting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

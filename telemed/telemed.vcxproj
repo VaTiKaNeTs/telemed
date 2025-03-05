@@ -136,7 +136,10 @@
     <ClCompile Include="modules\dataBase\dataBase.cpp" />
     <ClCompile Include="modules\doctors\doctorDataBase.cpp" />
     <ClCompile Include="modules\doctors\doctors.cpp" />
+    <ClCompile Include="modules\group\group.cpp" />
+    <ClCompile Include="modules\group\groupDataBase.cpp" />
     <ClCompile Include="modules\keyBoard\keyBoard.cpp" />
+    <ClCompile Include="modules\meeting\meeting.cpp" />
     <ClCompile Include="modules\patients\patients.cpp" />
     <ClCompile Include="modules\users\user.cpp" />
     <ClCompile Include="telemed.cpp" />
@@ -152,8 +155,11 @@
     <ClInclude Include="modules\dataBase\dataBase.h" />
     <ClInclude Include="modules\doctors\doctorDataBase.h" />
     <ClInclude Include="modules\doctors\doctors.h" />
+    <ClInclude Include="modules\group\group.h" />
+    <ClInclude Include="modules\group\groupDataBase.h" />
     <ClInclude Include="modules\keyBoard\keyBoard.h" />
     <ClInclude Include="modules\keyBoard\keyBoardCfg.h" />
+    <ClInclude Include="modules\meeting\meeting.h" />
     <ClInclude Include="modules\patients\patients.h" />
     <ClInclude Include="modules\users\user.h" />
   </ItemGroup>
