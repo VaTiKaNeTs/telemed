@@ -20,6 +20,7 @@
 #include "patients/patients.h"
 #include "doctors/doctors.h"
 #include "appointment/appointment.h"
+#include "group/group.h"
 
 using namespace std;
 using namespace TgBot;
@@ -34,9 +35,11 @@ void tgLoop(Bot& bot);
 int main()
 {
     setlocale(LC_ALL, "Russian");
+
     patientInit();
     doctorInit();
     appointmentInit();
+    groupInit();
     
 
 

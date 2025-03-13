@@ -9,6 +9,7 @@
 #include "../patients/patients.h"
 #include "../doctors/doctors.h"
 #include "../appointment/appointment.h"
+#include "../group/group.h"
 
 #include <csignal>
 #include <cstdio>
@@ -18,7 +19,7 @@
 
 static char str[1024];
 
-static bool rootMode = FALSE;
+static bool rootMode = TRUE; /* позже исправить на FALSE */
 
 /****************************************************************************************************/
 void botCmdInit(Bot& bot)
@@ -64,7 +65,7 @@ void botCmdStart(Bot& bot)
         }
         else
         { /* Пациент не зарегистрирован */
-            snprintf(str, sizeof(str), u8"👨‍⚕️Здравствуйте, я \"ТелеМедБот\". Давайте зарегистрируемся!");
+            snprintf(str, sizeof(str), u8"👨‍⚕️Здравствуйте, я \"ТелеМедБот\". Мы не знакомы, давайте зарегистрируемся!");
             std::string readyStr(str);
             bot.getApi().sendMessage(curChatId, readyStr, NULL, NULL, createRegInlineKeyboard());
             setUserProcess(curChatId, USER_PROCESS_ACCOUNT_EDIT);
@@ -87,7 +88,43 @@ void BotCmdAny(Bot& bot)
             {
                 if (rootMode)
                 {
-                    /* TODO Тут нужно запомнить чат в который нас добавили */
+                    // Добавление бота в группу
+                    if (!message->newChatMembers.empty()) 
+                    {
+                        // Получаем данные о боте
+                        auto botUser = bot.getApi().getMe();
+                        // Проходим по всем новым участникам
+                        for (auto newMember : message->newChatMembers) 
+                        {
+                            // Если бот был добавлен в чат
+                            if (newMember->id == botUser->id) 
+                            {
+                                // Функция для сохранения идентификатора группы
+                                Group group = { groupGetCnt(), message->chat->id, 0, 0, 0, 0 };
+                                addGroup(&group);
+                                // Можно отправить уведомление о сохранении группы
+                                bot.getApi().sendMessage(message->chat->id, u8"Группа успешно сохранена!");
+                                break;
+                            }
+                        }
+                    }
+                    else if (message->leftChatMember) 
+                    {
+                        // Получаем данные о самом боте
+                        auto me = bot.getApi().getMe();
+                        // Если покинул чат именно бот
+                        if (message->leftChatMember->id == me->id) 
+                        {
+                            // Здесь удаляем идентификатор группы из вашей базы данных
+                            removeGroupChatId(message->chat->id);
+
+                            // Логируем событие или выполняем другие необходимые действия
+                            std::cout << "Бот был удален из группы с chatId: " << message->chat->id << std::endl;
+
+                            // Прерываем дальнейшую обработку этого сообщения
+                            return;
+                        }
+                    }
                 }
                 return;
             }
@@ -116,6 +153,11 @@ void BotCmdAny(Bot& bot)
                 else if (StringTools::startsWith(message->text, KEYBOARD_SESSIONS))
                 {
                     appointmentShow(bot, curChatId);
+                }
+                else if (StringTools::startsWith(message->text, KEYBOARD_ROOT_ACCESS))
+                {
+                    rootMode = !rootMode;
+                    bot.getApi().sendMessage(curChatId, u8"Вход в режим админа");
                 }
                 break;
             }
@@ -227,10 +269,7 @@ void BotCmdAny(Bot& bot)
             }
             default:
             {
-                if (StringTools::startsWith(message->text, KEYBOARD_ROOT_ACCESS))
-                {
-                    rootMode = !rootMode;
-                }
+                
                 break;
             }
             }
