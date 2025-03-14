@@ -6,13 +6,12 @@
 #include "../../libs/cJSON/cJSON.h"
 
 /****************************************************************************************************/
-Group* createGroup(int id, long chatId, long doctorId, long doctorChatId,
+Group* createGroup(long chatId, long doctorId, long doctorChatId,
     long patientId, long patientChatId)
 {
     Group* group = (Group*)malloc(sizeof(Group));
     if (group == NULL) return NULL;
 
-    group->id = id;
     group->chatId = chatId;
     group->doctorId = doctorId;
     group->doctorChatId = doctorChatId;
@@ -30,7 +29,6 @@ cJSON* groupToJson(Group* group)
     cJSON* json = cJSON_CreateObject();
     if (json == NULL) return NULL;
 
-    cJSON_AddNumberToObject(json, "id", group->id);
     cJSON_AddNumberToObject(json, "chatId", group->chatId);
     cJSON_AddNumberToObject(json, "doctorId", group->doctorId);
     cJSON_AddNumberToObject(json, "doctorChatId", group->doctorChatId);
@@ -46,7 +44,6 @@ Group* jsonToGroup(cJSON* json)
     if (json == NULL) return NULL;
 
     Group* group = createGroup(
-        (int)cJSON_GetObjectItem(json, "id")->valueint,
         (long)cJSON_GetObjectItem(json, "chatId")->valuedouble,
         (long)cJSON_GetObjectItem(json, "doctorId")->valuedouble,
         (long)cJSON_GetObjectItem(json, "doctorChatId")->valuedouble,

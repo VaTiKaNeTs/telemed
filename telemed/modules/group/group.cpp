@@ -6,6 +6,36 @@
 
 static cJSON* groups = NULL;
 
+static UINT32 findIndex(long chatId)
+{
+    UINT32 i = 0;
+
+    //groups = loadGroup("groups.json");
+
+    if (groups == NULL || cJSON_GetArraySize(groups) == 0)
+    {
+        return 0;
+    }
+
+    for (i = 0; i < cJSON_GetArraySize(groups); i++)
+    {
+        cJSON* groupJson = cJSON_GetArrayItem(groups, i);
+        if (groupJson != NULL)
+        {
+            cJSON* groupId = cJSON_GetObjectItem(groupJson, "chatId");
+            if (groupId != NULL && groupId->valuedouble == chatId)
+            {
+                break;
+            }
+        }
+    }
+
+    // Освобождение памяти
+    //cJSON_Delete(groups);
+
+    return i;
+}
+
 /****************************************************************************************************/
 void groupInit(void)
 {
@@ -19,15 +49,8 @@ void groupInit(void)
         {
             fprintf(stderr, "Ошибка: не удалось сохранить базу данных\n");
         }
-        Group* group = createGroup(0, 0, 0, 0, 0, 0);
+        Group* group = createGroup(0, 0, 0, 0, 0);
         addGroup(group);
-
-        //group = createGroup(1, PEDIATRICIAN, u8"Сергей", u8"Табаско", u8"Пердонович", 3, "pathtttt", 44);
-        //addGroup(group);
-        //group = createGroup(2, PEDIATRICIAN, u8"Владимир", u8"Красносолнышко", u8"Олегович", 10, "pathtttt", 50);
-        //addGroup(group);
-        //group = createGroup(3, SURGEON, u8"Ясна", u8"Мышако", u8"Михайловна", 5, "pathtttt", 48);
-        //addGroup(group);
 
         groups = loadGroup("groups.json");
     }
@@ -37,12 +60,12 @@ void groupInit(void)
 }
 
 /****************************************************************************************************/
-void groupEdit(int id, Group* group)
+void groupEdit(int chatId, Group* group)
 {
     groups = loadGroup("groups.json");
 
     int len = cJSON_GetArraySize(groups);
-    if (id < 0 || id >= len)
+    if (chatId == 0)
     {
         return;
     }
@@ -50,7 +73,7 @@ void groupEdit(int id, Group* group)
 
     if (newItem != NULL)
     {
-        //cJSON_AddItemToArray(groups, item);
+        UINT32 id = findIndex(chatId);
         cJSON_ReplaceItemInArray(groups, id, newItem);
 
         // Сохранение в файл
@@ -58,8 +81,6 @@ void groupEdit(int id, Group* group)
         {
             fprintf(stderr, "Ошибка: не удалось сохранить базу данных\n");
         }
-
-        //freedoctorData(group);
     }
 
     // Освобождение памяти
@@ -80,7 +101,6 @@ STATUS addGroup(Group* group)
         if (doctorJson != NULL)
         {
             cJSON_AddItemToArray(groups, doctorJson);
-            /*freedoctorData(group);*/
         }
     }
 
@@ -97,28 +117,33 @@ STATUS addGroup(Group* group)
 }
 
 /****************************************************************************************************/
-STATUS removeGroup(long id)
+STATUS removeGroup(long chatId)
 {
     STATUS result = KN_ERROR;
 
     groups = loadGroup("groups.json");
 
     int len = cJSON_GetArraySize(groups);
-    if (id < 0 || id >= len)
+    if (chatId == 0)
     {
         return KN_ERROR;
     }
 
-    cJSON* item = cJSON_GetArrayItem(groups, id);
-    if (item != NULL)
+    UINT32 id = findIndex(chatId);
+
+    if (id)
     {
-        // Удаляем элемент из объекта
-        cJSON_DeleteItemFromArray(groups, id);
-        result = KN_OK;
+        cJSON* item = cJSON_GetArrayItem(groups, id);
+        if (item != NULL)
+        {
+            // Удаляем элемент из объекта
+            cJSON_DeleteItemFromArray(groups, id);
+            result = KN_OK;
+        }
+
+        saveGroup("groups.json", groups);
     }
-
-    saveGroup("groups.json", groups);
-
+    
     // Освобождение памяти
     cJSON_Delete(groups);
 
@@ -148,6 +173,7 @@ STATUS cleanAllGroups(void)
 }
 
 /****************************************************************************************************/
+#if 0
 Group* findGroupId(int id)
 {
     Group* group = (Group*)malloc(sizeof(Group));
@@ -176,6 +202,43 @@ Group* findGroupId(int id)
     cJSON_Delete(groups);
 
     return group;
+}
+#endif
+
+/****************************************************************************************************/
+void findGroupChatId(Group *group, long chatId)
+{
+    if (group == NULL)
+    {
+        return;
+    }
+
+    groups = loadGroup("groups.json");
+
+    if (groups == NULL || cJSON_GetArraySize(groups) == 0)
+    {
+        return;
+    }
+
+    for (int i = 0; i < cJSON_GetArraySize(groups); i++)
+    {
+        cJSON* groupJson = cJSON_GetArrayItem(groups, i);
+        if (groupJson != NULL)
+        {
+            cJSON* groupId = cJSON_GetObjectItem(groupJson, "chatId");
+            if (groupId != NULL && groupId->valuedouble == chatId)
+            {
+                Group *tmpGroup = jsonToGroup(groupJson);
+                memcpy(group, tmpGroup, sizeof(Group));
+                break;
+            }
+        }
+    }
+
+    // Освобождение памяти
+    cJSON_Delete(groups);
+
+    return;
 }
 
 /****************************************************************************************************/

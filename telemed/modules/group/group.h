@@ -15,7 +15,7 @@ void group(Bot& bot);
 
 void groupInit(void);
 
-void groupEdit(int id, Group* group);
+void groupEdit(int chatId, Group* group);
 
 STATUS addGroup(Group* group);
 
@@ -24,6 +24,8 @@ STATUS removeGroup(long id);
 STATUS cleanAllGroups(void);
 
 Group* findGroupId(int id);
+
+void findGroupChatId(Group* group, long chatId);
 
 UINT32 groupGetCnt(void);
 

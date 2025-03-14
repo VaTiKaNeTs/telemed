@@ -100,7 +100,7 @@ void BotCmdAny(Bot& bot)
                             if (newMember->id == botUser->id) 
                             {
                                 // Функция для сохранения идентификатора группы
-                                Group group = { groupGetCnt(), message->chat->id, 0, 0, 0, 0 };
+                                Group group = { message->chat->id, 0, 0, 0, 0 };
                                 addGroup(&group);
                                 // Можно отправить уведомление о сохранении группы
                                 bot.getApi().sendMessage(message->chat->id, u8"Группа успешно сохранена!");
@@ -116,8 +116,12 @@ void BotCmdAny(Bot& bot)
                         if (message->leftChatMember->id == me->id) 
                         {
                             // Здесь удаляем идентификатор группы из вашей базы данных
-                            removeGroupChatId(message->chat->id);
-
+                            Group group = { 0 };
+                            findGroupChatId(&group, message->chat->id);
+                            if (KN_ERROR == removeGroup(group.chatId))
+                            {
+                                printf("error of remove group\n");
+                            }
                             // Логируем событие или выполняем другие необходимые действия
                             std::cout << "Бот был удален из группы с chatId: " << message->chat->id << std::endl;
 

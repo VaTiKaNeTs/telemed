@@ -1,0 +1,15 @@
+D:\Projects\Visual Studio\source\repos\telemed\telemed\libs\cJSON\cJSON.c;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\cJSON.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\account\account.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\account.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\appointment\appointment.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\appointment.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\appointment\appointmentDataBase.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\appointmentDataBase.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\botCmd\botCmd.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\botCmd.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\dataBase\dataBase.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\dataBase.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\doctors\doctorDataBase.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\doctorDataBase.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\doctors\doctors.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\doctors.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\group\group.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\group.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\group\groupDataBase.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\groupDataBase.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\keyBoard\keyBoard.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\keyBoard.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\meeting\meeting.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\meeting.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\patients\patients.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\patients.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\modules\users\user.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\user.obj
+D:\Projects\Visual Studio\source\repos\telemed\telemed\telemed.cpp;D:\Projects\Visual Studio\source\repos\telemed\telemed\x64\Debug\telemed.obj

@@ -7,8 +7,6 @@
 
 /****************************************************************************************************/
 typedef struct {
-    int id;                     /**< ”никальный идентификатор группы */
-
     long chatId;                /**< јйди чата */
 
     long doctorId;
@@ -19,11 +17,10 @@ typedef struct {
 
     long patientChatId;
 
-
 } Group;
 
 /****************************************************************************************************/
-Group* createGroup(int id, long chatId, long doctorId, long doctorChatId, 
+Group* createGroup(long chatId, long doctorId, long doctorChatId, 
     long patientId, long patientChatId);
 
 /****************************************************************************************************/
