@@ -69,6 +69,8 @@ const char* const SPECIALTY_NAMES[] =
 typedef struct {
     int id;                     /**< ”никальный идентификатор врача */
 
+    long chatId;
+
     SPECIALITY specialty;       /**< ћедицинска€ специализаци€ */
 
     char* firstName;             /**< »м€ врача */
@@ -89,7 +91,7 @@ typedef struct {
  * @brief —оздает новый экземпл€р Doctor
  * @return ”казатель на созданную структуру PatientData или NULL в случае ошибки
  *******************************************************************************/
-Doctor* createDoctor(int id, SPECIALITY specialty, const char* firstName, const char* lastName,
+Doctor* createDoctor(int id, long chatId, SPECIALITY specialty, const char* firstName, const char* lastName,
     const char* middleName, float experience, const char* photo_path, float rating);
 
 /***************************************************************************//**

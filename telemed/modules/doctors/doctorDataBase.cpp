@@ -7,7 +7,7 @@
 
 /****************************************************************************************************/
 // Функция для создания нового доктора
-Doctor* createDoctor(int id, SPECIALITY specialty, const char* firstName, const char* lastName,
+Doctor* createDoctor(int id, long chatId, SPECIALITY specialty, const char* firstName, const char* lastName,
     const char* middleName, float experience, const char* photo_path, float rating)
 {
     Doctor* doctor = (Doctor*)malloc(sizeof(Doctor));
@@ -18,6 +18,7 @@ Doctor* createDoctor(int id, SPECIALITY specialty, const char* firstName, const 
     doctor->middleName = _strdup(middleName);
     doctor->photo_path = _strdup(photo_path);
     doctor->id = id;
+    doctor->chatId = chatId;
     doctor->specialty = specialty;
     doctor->experience = experience;
     doctor->rating = rating;
@@ -48,6 +49,7 @@ cJSON* doctorToJson(Doctor* doctor)
     if (json == NULL) return NULL;
 
     cJSON_AddNumberToObject(json, "id", doctor->id);
+    cJSON_AddNumberToObject(json, "chatId", doctor->chatId);
     cJSON_AddNumberToObject(json, "specialty", doctor->specialty);
     cJSON_AddStringToObject(json, "firstName", doctor->firstName);
     cJSON_AddStringToObject(json, "lastName", doctor->lastName);
@@ -67,7 +69,8 @@ Doctor* jsonToDoctor(cJSON* json)
 
     Doctor* doctor = createDoctor(
         (int)cJSON_GetObjectItem(json, "id")->valueint,
-        (SPECIALITY)cJSON_GetObjectItem(json, "specialty")->valuedouble,
+        (int)cJSON_GetObjectItem(json, "chatId")->valueint,
+        (SPECIALITY)cJSON_GetObjectItem(json, "specialty")->valueint,
         cJSON_GetObjectItem(json, "firstName")->valuestring,
         cJSON_GetObjectItem(json, "lastName")->valuestring,
         cJSON_GetObjectItem(json, "middleName")->valuestring,

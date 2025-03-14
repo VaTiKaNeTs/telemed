@@ -1,5 +1,6 @@
 [{
 		"id":	0,
+		"chatId":	0,
 		"specialty":	0,
 		"firstName":	"Default",
 		"lastName":	"Default",
@@ -9,24 +10,27 @@
 		"rating":	0
 	}, {
 		"id":	1,
+		"chatId":	365545361,
 		"specialty":	2,
-		"firstName":	"Сергей",
-		"lastName":	"Табаско",
-		"middleName":	"Пердонович",
+		"firstName":	"Кирилл",
+		"lastName":	"Таровик",
+		"middleName":	"Врачевич",
 		"photo_path":	"pathtttt",
 		"experience":	3,
-		"rating":	44
+		"rating":	50
 	}, {
 		"id":	2,
+		"chatId":	234,
 		"specialty":	2,
 		"firstName":	"Владимир",
 		"lastName":	"Красносолнышко",
 		"middleName":	"Олегович",
 		"photo_path":	"pathtttt",
 		"experience":	10,
-		"rating":	50
+		"rating":	44
 	}, {
 		"id":	3,
+		"chatId":	567,
 		"specialty":	3,
 		"firstName":	"Ясна",
 		"lastName":	"Мышако",
