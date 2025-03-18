@@ -12,6 +12,7 @@ using namespace TgBot;
 void group(Bot& bot);
 
 
+void groupUpdate(void);
 
 void groupInit(void);
 
@@ -23,7 +24,9 @@ STATUS removeGroup(long id);
 
 STATUS cleanAllGroups(void);
 
-Group* findGroupId(int id);
+void findGroupId(Group* group, int id);
+
+void findFreeGroup(Group *group);
 
 void findGroupChatId(Group* group, long chatId);
 

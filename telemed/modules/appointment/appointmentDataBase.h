@@ -5,43 +5,47 @@
 #include <string.h>
 #include "../libs/cJSON/cJSON.h"
 
+///****************************************************************************************************/
+//typedef struct
+//{
+//    int day;
+//
+//    int month;
+//
+//    int year;
+//
+//} AP_DATE;
+//
+///****************************************************************************************************/
+//typedef struct
+//{
+//    int hour;
+//
+//    int min;
+//
+//} AP_TIME;
+
 /****************************************************************************************************/
-typedef struct
+typedef struct 
 {
-    int day;
-
-    int month;
-
-    int year;
-
-} AP_DATE;
-
-/****************************************************************************************************/
-typedef struct
-{
-    int hour;
-
-    int min;
-
-} AP_TIME;
-
-/****************************************************************************************************/
-typedef struct {
     int id;
 
     int doctorId;
 
     int patientId;
 
-    AP_DATE date;
+    int day;
+    int month;
+    int year;
 
-    AP_TIME time;
+    int hour;
+    int minute;
 
 } Appointment;
 
 /****************************************************************************************************/
-Appointment* createAp(int id, int doctorId, int patientId, AP_DATE* date,
-    AP_TIME* time);
+void createAp(Appointment* ap, int id, int doctorId, int patientId, int day, int month, int yaer,
+    int hour, int min);
 
 /****************************************************************************************************/
 void freeAp(Appointment* ap);
@@ -50,7 +54,7 @@ void freeAp(Appointment* ap);
 cJSON* apToJson(Appointment* ap);
 
 /****************************************************************************************************/
-Appointment* jsonToAp(cJSON* json);
+void jsonToAp(cJSON* json, Appointment* ap);
 
 /****************************************************************************************************/
 int saveAp(const char* filename, cJSON* ap);

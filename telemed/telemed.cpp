@@ -74,8 +74,11 @@ void tgLoop(Bot& bot)
         TgLongPoll longPoll(bot);
         while (true) 
         {
-            
-            
+            appointmentUpdate();
+            groupUpdate();
+
+            group(bot);            
+
             printf("Long poll started\n");
             longPoll.start();
         }

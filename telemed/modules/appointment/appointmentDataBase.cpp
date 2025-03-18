@@ -9,19 +9,19 @@
 #include <iostream>
 
 /****************************************************************************************************/
-Appointment* createAp(int id, int doctorId, int patientId, AP_DATE* date,
-    AP_TIME* time)
+void createAp(Appointment* ap, int id, int doctorId, int patientId, int day, int month, int year,
+    int hour, int min)
 {
-    Appointment* ap = (Appointment*)malloc(sizeof(Appointment));
-    if (ap == NULL) return NULL;
+    if (ap == NULL) return;
 
     ap->id = id;
     ap->doctorId = doctorId;
     ap->patientId = patientId;
-    memcpy(&ap->date, date, sizeof(AP_DATE));
-    memcpy(&ap->time, time, sizeof(AP_TIME));
-
-    return ap;
+    ap->day = day;
+    ap->month = month;
+    ap->year = year;
+    ap->hour = hour;
+    ap->minute = min;
 }
 
 /****************************************************************************************************/
@@ -44,44 +44,30 @@ cJSON* apToJson(Appointment* ap)
     cJSON_AddNumberToObject(json, "id", ap->id);
     cJSON_AddNumberToObject(json, "doctorId", ap->doctorId);
     cJSON_AddNumberToObject(json, "patientId", ap->patientId);
-    std::string dateStr = { std::to_string(ap->date.day) + "." + std::to_string(ap->date.month) + "." + std::to_string(ap->date.year)};
-    std::string timeStr = { std::to_string(ap->time.hour) + ":" + std::to_string(ap->time.min) };
-    cJSON_AddStringToObject(json, "date", dateStr.c_str());
-    cJSON_AddStringToObject(json, "time", timeStr.c_str());
+    cJSON_AddNumberToObject(json, "day", ap->day);
+    cJSON_AddNumberToObject(json, "month", ap->month);
+    cJSON_AddNumberToObject(json, "year", ap->year);
+    cJSON_AddNumberToObject(json, "hour", ap->hour);
+    cJSON_AddNumberToObject(json, "min", ap->minute);
 
     return json;
 }
 
 /****************************************************************************************************/
-Appointment* jsonToAp(cJSON* json)
+void jsonToAp(cJSON* json, Appointment *ap)
 {
-    if (json == NULL) return NULL;
+    if (json == NULL) return;
 
-    std::string dateStr = cJSON_GetObjectItem(json, "date")->valuestring;
-    std::string timeStr = cJSON_GetObjectItem(json, "time")->valuestring;
-
-    /* Парсим строку с датой */
-    AP_DATE date;
-    std::stringstream ss(dateStr);
-    char dot1, dot2;  // Для точек разделителей
-    ss >> date.day >> dot1 >> date.month >> dot2 >> date.year;
-
-    /* Парсим строку времени */
-    AP_TIME time;
-    std::stringstream ss1(timeStr);
-    ss1 >> time.hour >> dot1 >> time.min;
-
-    Appointment* ap = createAp(
+    createAp(ap,
         (int)cJSON_GetObjectItem(json, "id")->valueint,
         (int)cJSON_GetObjectItem(json, "doctorId")->valueint,
         (int)cJSON_GetObjectItem(json, "patientId")->valueint,
-        &date,
-        &time
+        (int)cJSON_GetObjectItem(json, "day")->valueint,
+        (int)cJSON_GetObjectItem(json, "month")->valueint,
+        (int)cJSON_GetObjectItem(json, "year")->valueint,
+        (int)cJSON_GetObjectItem(json, "hour")->valueint,
+        (int)cJSON_GetObjectItem(json, "min")->valueint
     );
-
-
-
-    return ap;
 }
 
 /****************************************************************************************************/

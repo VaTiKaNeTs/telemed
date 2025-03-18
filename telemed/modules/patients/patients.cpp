@@ -140,6 +140,38 @@ STATUS cleanAllPatients(void)
     return KN_OK;
 }
 
+/****************************************************************************************************/
+void findPatientId(PatientData *patient, int id)
+{
+    patients = loadPatientDatabase("patients.json");
+
+    if (patients == NULL || cJSON_GetArraySize(patients) == 0)
+    {
+        return;
+    }
+
+    for (int i = 0; i < cJSON_GetArraySize(patients); i++)
+    {
+        cJSON* patientJson = cJSON_GetArrayItem(patients, i);
+        if (patientJson != NULL)
+        {
+            cJSON* patientId = cJSON_GetObjectItem(patientJson, "id");
+            if (patientId != NULL && patientId->valuedouble == id)
+            {
+                PatientData*tmpPatient = jsonToPatient(patientJson);
+                memcpy(patient, tmpPatient, sizeof(PatientData));
+                break;
+            }
+        }
+    }
+
+    // Освобождение памяти
+    cJSON_Delete(patients);
+
+    return;
+}
+
+
 #if 1
 /****************************************************************************************************/
 PatientData* findPatientChatId(long chatId)
