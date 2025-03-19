@@ -20,15 +20,13 @@ void groupEdit(int chatId, Group* group);
 
 STATUS addGroup(Group* group);
 
-STATUS removeGroup(long id);
+STATUS removeGroup(std::int64_t chatId);
 
 STATUS cleanAllGroups(void);
 
-void findGroupId(Group* group, int id);
-
 void findFreeGroup(Group *group);
 
-void findGroupChatId(Group* group, long chatId);
+void findGroupChatId(Group* group, std::int64_t chatId);
 
 UINT32 groupGetCnt(void);
 

@@ -3,31 +3,32 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <cstdint>
 #include "../libs/cJSON/cJSON.h"
 
 /****************************************************************************************************/
 typedef struct {
-    long chatId;                /**< јйди чата */
+    std::int64_t chatId;                /**< јйди чата */
 
     long doctorId;
 
-    long doctorChatId;
+    std::int64_t doctorChatId;
 
     long patientId;
 
-    long patientChatId;
+    std::int64_t patientChatId;
 
 } Group;
 
 /****************************************************************************************************/
-Group* createGroup(long chatId, long doctorId, long doctorChatId, 
-    long patientId, long patientChatId);
+void createGroup(Group* group, std::int64_t chatId, long doctorId, std::int64_t doctorChatId,
+    long patientId, std::int64_t patientChatId);
 
 /****************************************************************************************************/
 cJSON* groupToJson(Group* group);
 
 /****************************************************************************************************/
-Group* jsonToGroup(cJSON* json);
+void jsonToGroup(cJSON* json, Group* group);
 
 /****************************************************************************************************/
 int saveGroup(const char* filename, cJSON* group);

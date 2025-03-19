@@ -6,11 +6,10 @@
 #include "../../libs/cJSON/cJSON.h"
 
 /****************************************************************************************************/
-Group* createGroup(long chatId, long doctorId, long doctorChatId,
-    long patientId, long patientChatId)
+void createGroup(Group* group, std::int64_t chatId, long doctorId, std::int64_t doctorChatId,
+    long patientId, std::int64_t patientChatId)
 {
-    Group* group = (Group*)malloc(sizeof(Group));
-    if (group == NULL) return NULL;
+    if (group == NULL) return;
 
     group->chatId = chatId;
     group->doctorId = doctorId;
@@ -18,7 +17,7 @@ Group* createGroup(long chatId, long doctorId, long doctorChatId,
     group->patientId = patientId;
     group->patientChatId = patientChatId;
 
-    return group;
+    return;
 }
 
 /****************************************************************************************************/
@@ -39,19 +38,19 @@ cJSON* groupToJson(Group* group)
 }
 
 /****************************************************************************************************/
-Group* jsonToGroup(cJSON* json)
+void jsonToGroup(cJSON* json, Group* group)
 {
-    if (json == NULL) return NULL;
+    if (json == NULL) return;
 
-    Group* group = createGroup(
-        (long)cJSON_GetObjectItem(json, "chatId")->valuedouble,
-        (long)cJSON_GetObjectItem(json, "doctorId")->valuedouble,
-        (long)cJSON_GetObjectItem(json, "doctorChatId")->valuedouble,
-        (long)cJSON_GetObjectItem(json, "patientId")->valuedouble,
-        (long)cJSON_GetObjectItem(json, "patientChatId")->valuedouble
+     createGroup(group,
+        (std::int64_t)cJSON_GetObjectItem(json, "chatId")->valuedouble,
+        (long)cJSON_GetObjectItem(json, "doctorId")->valueint,
+        (std::int64_t)cJSON_GetObjectItem(json, "doctorChatId")->valuedouble,
+        (long)cJSON_GetObjectItem(json, "patientId")->valueint,
+        (std::int64_t)cJSON_GetObjectItem(json, "patientChatId")->valuedouble
     );
 
-    return group;
+    return;
 }
 
 /****************************************************************************************************/

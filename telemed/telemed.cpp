@@ -42,7 +42,7 @@ int main()
     groupInit();
     
 
-
+    int len = sizeof(long);
     
 
     Bot bot(BOT_API_TOKEN);

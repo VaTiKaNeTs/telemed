@@ -74,11 +74,10 @@ void group(Bot& bot)
                     group.doctorId = doctor->id;
                     group.doctorChatId = doctor->chatId;
                 }
-                
-                bot.getApi().getChatAdministrators(group.chatId);
-                /*std::string inviteLink = */ bot.getApi().exportChatInviteLink(group.chatId);
-                //bot.getApi().sendMessage(group.doctorChatId, "Приглашение в группу: " + inviteLink);
-                //bot.getApi().sendMessage(group.patientChatId, "Приглашение в группу: " + inviteLink);
+
+                ChatInviteLink::Ptr inviteLink = bot.getApi().createChatInviteLink(group.chatId, 0, 2);
+                bot.getApi().sendMessage(group.patientChatId, u8"Приглашение в группу: " + inviteLink->inviteLink);
+                bot.getApi().sendMessage(group.doctorChatId, u8"Приглашение в группу: " + inviteLink->inviteLink);
             }
         }
     }
@@ -91,7 +90,7 @@ void startGroup(Appointment* ap)
 }
 
 /****************************************************************************************************/
-static UINT32 findIndex(long chatId)
+static UINT32 findIndex(std::int64_t chatId)
 {
     UINT32 i = 0;
 
@@ -102,6 +101,8 @@ static UINT32 findIndex(long chatId)
         return 0;
     }
 
+    UINT32 index = 0;
+
     for (i = 0; i < cJSON_GetArraySize(groups); i++)
     {
         cJSON* groupJson = cJSON_GetArrayItem(groups, i);
@@ -110,6 +111,7 @@ static UINT32 findIndex(long chatId)
             cJSON* groupId = cJSON_GetObjectItem(groupJson, "chatId");
             if (groupId != NULL && groupId->valuedouble == chatId)
             {
+                index = i;
                 break;
             }
         }
@@ -118,7 +120,7 @@ static UINT32 findIndex(long chatId)
     // Освобождение памяти
     //cJSON_Delete(groups);
 
-    return i;
+    return index;
 }
 
 /****************************************************************************************************/
@@ -140,8 +142,9 @@ void groupInit(void)
         {
             fprintf(stderr, "Ошибка: не удалось сохранить базу данных\n");
         }
-        Group* group = createGroup(0, 0, 0, 0, 0);
-        addGroup(group);
+        Group group = { 0 }; 
+        createGroup(&group, 0, 0, 0, 0, 0);
+        addGroup(&group);
 
         groups = loadGroup("groups.json");
     }
@@ -197,7 +200,7 @@ STATUS addGroup(Group* group)
 }
 
 /****************************************************************************************************/
-STATUS removeGroup(long chatId)
+STATUS removeGroup(std::int64_t chatId)
 {
     STATUS result = KN_ERROR;
 
@@ -244,34 +247,7 @@ STATUS cleanAllGroups(void)
 }
 
 /****************************************************************************************************/
-#if 1
-void findGroupId(Group* group, int id)
-{
-
-    if (groups == NULL || cJSON_GetArraySize(groups) == 0)
-    {
-        return;
-    }
-
-    for (int i = 0; i < cJSON_GetArraySize(groups); i++)
-    {
-        cJSON* doctorJson = cJSON_GetArrayItem(groups, i);
-        if (doctorJson != NULL)
-        {
-            cJSON* doctorId = cJSON_GetObjectItem(doctorJson, "id");
-            if (doctorId != NULL && doctorId->valuedouble == id)
-            {
-                group = jsonToGroup(doctorJson);
-            }
-        }
-    }
-
-    return;
-}
-#endif
-
-/****************************************************************************************************/
-void findGroupChatId(Group *group, long chatId)
+void findGroupChatId(Group *group, std::int64_t chatId)
 {
     if (group == NULL)
     {
@@ -291,8 +267,7 @@ void findGroupChatId(Group *group, long chatId)
             cJSON* groupId = cJSON_GetObjectItem(groupJson, "chatId");
             if (groupId != NULL && groupId->valuedouble == chatId)
             {
-                Group *tmpGroup = jsonToGroup(groupJson);
-                memcpy(group, tmpGroup, sizeof(Group));
+                jsonToGroup(groupJson, group);
                 break;
             }
         }
@@ -321,8 +296,7 @@ void findFreeGroup(Group* group)
                 groupDoctorId != NULL && groupDoctorId->valuedouble == 0 &&
                 groupPatientId != NULL && groupPatientId->valuedouble == 0)
             {
-                Group* tmpGroup = jsonToGroup(groupJson);
-                memcpy(group, tmpGroup, sizeof(Group));
+                jsonToGroup(groupJson, group);
                 break;
             }
         }
