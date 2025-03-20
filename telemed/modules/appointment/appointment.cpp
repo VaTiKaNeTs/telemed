@@ -30,6 +30,14 @@ typedef struct
 } DOCTOR_INFO;
 
 /****************************************************************************************************/
+static std::string formatTime(int hours, int minutes) {
+	std::stringstream ss;
+	ss << std::setw(2) << std::setfill('0') << hours << ":"
+		<< std::setw(2) << std::setfill('0') << minutes;
+	return ss.str();
+}
+
+/****************************************************************************************************/
 void appointmentUpdate(void)
 {
 	aps = loadDoctor("appointments.json");
@@ -136,7 +144,7 @@ void appointmentReg(Bot& bot, long curChatId, int id)
 
 	std::string str{
 			u8"Вы записаны " + std::to_string(ap.day) + "." + std::to_string(ap.month) + "." + std::to_string(ap.year) +
-			u8" в " + std::to_string(ap.hour) + ":" + std::to_string(ap.minute) +
+			u8" в " + formatTime(ap.hour, ap.minute) +
 			u8"\n к " + doctor->firstName + " " + doctor->lastName + " " + doctor->middleName +
 			u8"\n Специализация " + SPECIALTY_NAMES[doctor->specialty]
 	};
@@ -199,14 +207,11 @@ void appointmentShow(Bot& bot, long curChatId)
 		if (&ap != NULL)
 		{
 			Doctor* doctor = findDoctorId(ap.doctorId);
-
-			std::string tmp = 
-			{ 
-				std::to_string(ap.day) + "." + std::to_string(ap.month) + "." + std::to_string(ap.year) +
-				u8" в " + std::to_string(ap.hour) + ":" + std::to_string(ap.minute) +
-				u8"\n к " + doctor->firstName + " " + doctor->lastName + " " + doctor->middleName +
-				u8"\n Специализация " + SPECIALTY_NAMES[doctor->specialty]
-			};
+			std::string tmp =
+			std::to_string(ap.day) + "." + std::to_string(ap.month) + "." + std::to_string(ap.year) +
+			u8" в " + formatTime(ap.hour, ap.minute) +  // Используем функцию для форматирования времени
+			u8"\n к " + doctor->firstName + " " + doctor->lastName + " " + doctor->middleName +
+			u8"\n Специализация " + SPECIALTY_NAMES[doctor->specialty];
 			bot.getApi().sendMessage(curChatId, tmp, NULL, NULL, createSessionShowInlineKeyboard(ap.id));
 		}
 	}
@@ -248,13 +253,29 @@ void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
 
 			if (&ap != NULL)
 			{
-				std::string tmp = { std::to_string(ap.hour) + ":" + std::to_string(ap.minute)};
+				std::string tmp = formatTime(ap.hour, ap.minute);
 				times.push_back(tmp);
 				times.push_back(std::to_string(ap.id));
 			}
 		}
 
-		bot.getApi().sendMessage(curChatId, u8"Выберите подходящее время приема: ", NULL, NULL, createChoiceTimeInlineKeyboard(times));
+		DOCTOR_INFO info;
+		info.specialty = SPECIALTY_NAMES[doctor->specialty];
+		info.firstName = { doctor->firstName };
+		info.lastName = { doctor->lastName };
+		info.middleName = { doctor->middleName };
+		info.experience = { std::to_string(doctor->experience) };
+		info.rating = { std::to_string(doctor->rating / 10) + "." + std::to_string(doctor->rating % 10) };
+
+		std::string strSpec{
+			u8"Специализация: " + info.specialty + "\n" +
+			info.lastName + " " + info.firstName + " " + info.middleName +
+			u8"\nСтаж " + info.experience + u8" лет\n"
+			u8"⭐️" + info.rating + u8"\nВыберите подходящее время приема:"
+		};
+
+		bot.getApi().sendPhoto(curChatId, doctor->photo_path, strSpec, NULL, createChoiceTimeInlineKeyboard(times));
+		//bot.getApi().sendMessage(curChatId, u8"Выберите подходящее время приема: ", NULL, NULL, createChoiceTimeInlineKeyboard(times));
 		setUserProcess(curChatId, USER_PROCESS_CHOISE_TIME);
 	}
 }
