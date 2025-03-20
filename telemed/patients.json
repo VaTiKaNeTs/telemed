@@ -22,4 +22,12 @@
 		"middleName":	"NULL",
 		"age":	0,
 		"gender":	"NULL"
+	}, {
+		"id":	3,
+		"chatId":	958781908,
+		"firstName":	"Иван",
+		"lastName":	"А",
+		"middleName":	"Б",
+		"age":	19,
+		"gender":	"Мужской"
 	}]

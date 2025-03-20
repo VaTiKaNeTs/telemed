@@ -67,12 +67,20 @@ void group(Bot& bot)
                     group.patientId = patient.id;
                     group.patientChatId = patient.chatId;
                 }
+                else
+                {
+                    break;
+                }
 
                 Doctor* doctor = findDoctorId(ap.doctorId);
                 if (doctor->chatId != 0)
                 {
                     group.doctorId = doctor->id;
                     group.doctorChatId = doctor->chatId;
+                }
+                else
+                {
+                    break;
                 }
 
                 ChatInviteLink::Ptr inviteLink = bot.getApi().createChatInviteLink(group.chatId, 0, 2);

@@ -6,6 +6,8 @@
 #include "../users/user.h"
 #include "../config.h"
 
+#include <string.h>
+
 #define SPECS_MAX_CNT 10
 
 static cJSON* aps = NULL;
@@ -48,16 +50,16 @@ void appointmentInit(void)
 		}
 
 		Appointment ap = { 0 };
-		createAp(&ap, 1, 0, 0, 20, 3, 2025, 18, 30);
+		createAp(&ap, 0, 0, 0, 20, 3, 2025, 18, 30);
 		addAppointment(&ap);
 		memset(&ap, 0, sizeof(Appointment));
 
 		
-		createAp(&ap, 2, 0, 0, 20, 3, 2025, 19, 0);
+		createAp(&ap, 1, 0, 0, 20, 3, 2025, 19, 0);
 		addAppointment(&ap);
 		memset(&ap, 0, sizeof(Appointment));
 
-		createAp(&ap, 3, 0, 0, 20, 3, 2025, 19, 30);
+		createAp(&ap, 2, 0, 0, 20, 3, 2025, 19, 30);
 		addAppointment(&ap);
 		memset(&ap, 0, sizeof(Appointment));
 
@@ -80,7 +82,7 @@ void appointment(Bot& bot, long curChatId, SPECIALITY spec)
 	}
 
 	std::string str1{ u8"У нас есть " + std::to_string(specsCnt) + u8" подходящих специалиста(ов). \nВыберите подходящего врача:" };
-	bot.getApi().sendMessage(curChatId, str1, NULL, NULL, deleteKeyboard());
+	bot.getApi().sendMessage(curChatId, str1, NULL, NULL, createSessionsKeyboard());
 
 	while (--specsCnt >= 0)
 	{		
@@ -102,8 +104,10 @@ void appointment(Bot& bot, long curChatId, SPECIALITY spec)
 			u8"\nСтаж " + info.experience + u8" лет\n"
 			u8"⭐️" + info.rating
 		};
+
+		bot.getApi().sendPhoto(curChatId, doctor->photo_path, strSpec, NULL, createSpecKeyboard(doctor->id));
 #endif
-		bot.getApi().sendMessage(curChatId, strSpec, NULL, NULL, createSpecKeyboard(doctor->id));
+		//bot.getApi().sendMessage(curChatId, strSpec, NULL, NULL, createSpecKeyboard(doctor->id));
 		setUserProcess(curChatId, USER_PROCESS_CHOISE_SPEC);
 	}
 	

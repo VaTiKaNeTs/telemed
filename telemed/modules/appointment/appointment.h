@@ -41,3 +41,4 @@ void findAppointmentDateAndTime();
 
 int findAppointment(int* dst, int size, int id, int doctorId, int patientId, int day, int month, int year, int hour, int min);
 
+//STATUS appointmentCreateByDoctor(std::int64_t c);

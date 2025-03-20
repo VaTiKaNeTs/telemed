@@ -5,9 +5,12 @@
 #define KEYBOARD_SESSIONS		u8"📋Мои записи"
 
 #define KEYBOARD_ACCOUNT_EDIT	u8"✏️Изменить данные"
-#define KEYBOARD_ACCOUNT_BACK	u8"◀️Назад"
+#define KEYBOARD_ACCOUNT_BACK	u8"↩️Назад"
+#define KEYBOARD_LEFT u8"⬅️"
+#define KEYBOARD_RIGHT u8"➡️"
 
 #define KEYBOARD_SESSION_CANCEL u8"Отменить запись"
+#define KEYBOARD_SESSION_CANCEL_CB "cancelAp"
 
 #define INLINE_KEYBOARD_REGISTRATION u8"Зарегистрироваться"
 
@@ -27,6 +30,14 @@
 #define INLINE_KEYBOARD_SPEC_GASTROENTEROLOGIST u8"Гастроэнтеролог"
 #define INLINE_KEYBOARD_SPEC_DERMATOLOGIST u8"Дерматолог"
 #define INLINE_KEYBOARD_SPEC_UROLOGIST u8"Уролог"
+#define INLINE_KEYBOARD_SPEC_OPHTHALMOLOGIST u8"Офтальмолог"
+#define INLINE_KEYBOARD_SPEC_PHYSIOTHERAPIST u8"Физиотерапевт"
+#define INLINE_KEYBOARD_SPEC_REHABILITATION_DOCTOR u8"Реабилитолог"
+#define INLINE_KEYBOARD_SPEC_SPORTS_MEDICINE u8"Спортивный-врач"
+#define INLINE_KEYBOARD_SPEC_GYNECOLOGIST u8"Гинеколог"
+#define INLINE_KEYBOARD_SPEC_PSYCHIATRIST u8"Психиатр"
+#define INLINE_KEYBOARD_SPEC_DENTIST u8"Стоматолог"
+#define INLINE_KEYBOARD_SPEC_ALLERGIST u8"Аллерголог"
 
 #define INLINE_KEYBOARD_CHOOSE_TIME "chT_"
 

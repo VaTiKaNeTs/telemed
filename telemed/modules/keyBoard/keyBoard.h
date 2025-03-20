@@ -39,6 +39,6 @@ InlineKeyboardMarkup::Ptr createSpecKeyboard(int doctorId);
 InlineKeyboardMarkup::Ptr createAccEditInlineKeyboard(void);
 
 /* Клавиатура выбора специалиста */
-InlineKeyboardMarkup::Ptr createChooseSpecInlineKeyboard(void);
+InlineKeyboardMarkup::Ptr createChooseSpecInlineKeyboard(UINT32 page);
 
 #endif __KEYBOARD_H_

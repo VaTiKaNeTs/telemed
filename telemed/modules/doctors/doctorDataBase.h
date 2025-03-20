@@ -1,9 +1,12 @@
 #ifndef DOCTOR_DB_H_
 #define DOCTOR_DB_H_
 
+
+#include "../libs/cJSON/cJSON.h"
 #include <stdio.h>
 #include <string.h>
-#include "../libs/cJSON/cJSON.h"
+
+#include "../modules/keyBoard/keyBoardCfg.h"
 
 // Перечисление возможных специальностей
 typedef enum
@@ -17,7 +20,6 @@ typedef enum
     GASTROENTEROLOGIST,           // Гастроэнтеролог
     DERMATOLOGIST,                // Дерматолог
     UROLOGIST,                    // Уролог
-    ONCOLOGIST,                   // Онколог
     OPHTHALMOLOGIST,              // Офтальмолог
     PHYSIOTHERAPIST,              // Физиотерапевт
     REHABILITATION_DOCTOR,        // Реабилитолог
@@ -34,28 +36,27 @@ typedef enum
 const char* const SPECIALTY_NAMES[] =
 {
     u8"Default",
-    u8"Терапевт",
-    u8"Педиатр",
-    u8"Хирург",
-    u8"Кардиолог",
-#if 0
-    u8"Невролог",
-    u8"Гастроэнтеролог",
-    u8"Дерматолог",
-    u8"Уролог",
-    u8"Онколог",
-    u8"Офтальмолог",
-    u8"Физиотерапевт",
-    u8"Реабилитолог",
-    u8"Спортивный-врач",
-    u8"Гинеколог",
-    u8"Психиатр",
-    u8"Стоматолог общей практики",
-    u8"Аллерголог",
-#endif
+    INLINE_KEYBOARD_SPEC_THERAPIST,
+    INLINE_KEYBOARD_SPEC_PEDIATRICIAN,
+    INLINE_KEYBOARD_SPEC_SURGEON,
+    INLINE_KEYBOARD_SPEC_CARDIOLOGIST,
+    INLINE_KEYBOARD_SPEC_NEUROLOGIST,
+    INLINE_KEYBOARD_SPEC_GASTROENTEROLOGIST,
+    INLINE_KEYBOARD_SPEC_DERMATOLOGIST,
+    INLINE_KEYBOARD_SPEC_UROLOGIST,
+    INLINE_KEYBOARD_SPEC_OPHTHALMOLOGIST,
+    INLINE_KEYBOARD_SPEC_PHYSIOTHERAPIST,
+    INLINE_KEYBOARD_SPEC_REHABILITATION_DOCTOR,
+    INLINE_KEYBOARD_SPEC_SPORTS_MEDICINE,
+    INLINE_KEYBOARD_SPEC_GYNECOLOGIST,
+    INLINE_KEYBOARD_SPEC_PSYCHIATRIST,
+    INLINE_KEYBOARD_SPEC_DENTIST,
+    INLINE_KEYBOARD_SPEC_ALLERGIST,
     u8"Прочее"
 };
 #endif
+
+#define PHOTO_PATH_MAX 40
 
 /***************************************************************************//**
  * @struct PatientData
@@ -66,7 +67,8 @@ const char* const SPECIALTY_NAMES[] =
  * - возраст
  * - пол
  *******************************************************************************/
-typedef struct {
+typedef struct 
+{
     int id;                     /**< Уникальный идентификатор врача */
 
     long chatId;

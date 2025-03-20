@@ -97,64 +97,150 @@ InlineKeyboardMarkup::Ptr createAccEditInlineKeyboard(void)
 }
 
 /***********************************************************************************************/
-InlineKeyboardMarkup::Ptr createChooseSpecInlineKeyboard(void)
+InlineKeyboardMarkup::Ptr createChooseSpecInlineKeyboard(UINT32 page)
 {
     InlineKeyboardMarkup::Ptr keyboard(new InlineKeyboardMarkup);
 
-    /* Первая строка */
-    vector<InlineKeyboardButton::Ptr> row0;
+    if (page == 0)
+    {
+        /* Первая строка */
+        vector<InlineKeyboardButton::Ptr> row0;
 
-    InlineKeyboardButton::Ptr specTherapist(new InlineKeyboardButton);
-    specTherapist->text = INLINE_KEYBOARD_SPEC_THERAPIST;
-    specTherapist->callbackData = INLINE_KEYBOARD_SPEC_THERAPIST;
-    row0.push_back(specTherapist);
+        InlineKeyboardButton::Ptr spec00(new InlineKeyboardButton);
+        spec00->text = INLINE_KEYBOARD_SPEC_THERAPIST;
+        spec00->callbackData = INLINE_KEYBOARD_SPEC_THERAPIST;
+        row0.push_back(spec00);
 
-    InlineKeyboardButton::Ptr specPediatrician(new InlineKeyboardButton);
-    specPediatrician->text = INLINE_KEYBOARD_SPEC_PEDIATRICIAN;
-    specPediatrician->callbackData = INLINE_KEYBOARD_SPEC_PEDIATRICIAN;
-    row0.push_back(specPediatrician);
+        InlineKeyboardButton::Ptr spec01(new InlineKeyboardButton);
+        spec01->text = INLINE_KEYBOARD_SPEC_PEDIATRICIAN;
+        spec01->callbackData = INLINE_KEYBOARD_SPEC_PEDIATRICIAN;
+        row0.push_back(spec01);
 
-    InlineKeyboardButton::Ptr specSurgeon(new InlineKeyboardButton);
-    specSurgeon->text = INLINE_KEYBOARD_SPEC_SURGEON;
-    specSurgeon->callbackData = INLINE_KEYBOARD_SPEC_SURGEON;
-    row0.push_back(specSurgeon);
+        InlineKeyboardButton::Ptr spec02(new InlineKeyboardButton);
+        spec02->text = INLINE_KEYBOARD_SPEC_SURGEON;
+        spec02->callbackData = INLINE_KEYBOARD_SPEC_SURGEON;
+        row0.push_back(spec02);
 
-    keyboard->inlineKeyboard.push_back(row0);
+        keyboard->inlineKeyboard.push_back(row0);
 
-    /* Вторая строка */
-    vector<InlineKeyboardButton::Ptr> row1;
+        /* Вторая строка */
+        vector<InlineKeyboardButton::Ptr> row1;
 
-    InlineKeyboardButton::Ptr specCardiologist(new InlineKeyboardButton);
-    specCardiologist->text = INLINE_KEYBOARD_SPEC_CARDIOLOGIST;
-    specCardiologist->callbackData = INLINE_KEYBOARD_SPEC_CARDIOLOGIST;
-    row1.push_back(specCardiologist);
+        InlineKeyboardButton::Ptr spec10(new InlineKeyboardButton);
+        spec10->text = INLINE_KEYBOARD_SPEC_CARDIOLOGIST;
+        spec10->callbackData = INLINE_KEYBOARD_SPEC_CARDIOLOGIST;
+        row1.push_back(spec10);
 
-    InlineKeyboardButton::Ptr specNeurologist(new InlineKeyboardButton);
-    specNeurologist->text = INLINE_KEYBOARD_SPEC_NEUROLOGIST;
-    specNeurologist->callbackData = INLINE_KEYBOARD_SPEC_NEUROLOGIST;
-    row1.push_back(specNeurologist);
+        InlineKeyboardButton::Ptr spec11(new InlineKeyboardButton);
+        spec11->text = INLINE_KEYBOARD_SPEC_NEUROLOGIST;
+        spec11->callbackData = INLINE_KEYBOARD_SPEC_NEUROLOGIST;
+        row1.push_back(spec11);
 
-    InlineKeyboardButton::Ptr specGastroenterologist(new InlineKeyboardButton);
-    specGastroenterologist->text = INLINE_KEYBOARD_SPEC_GASTROENTEROLOGIST;
-    specGastroenterologist->callbackData = INLINE_KEYBOARD_SPEC_GASTROENTEROLOGIST;
-    row1.push_back(specGastroenterologist);
+        InlineKeyboardButton::Ptr spec12(new InlineKeyboardButton);
+        spec12->text = INLINE_KEYBOARD_SPEC_GASTROENTEROLOGIST;
+        spec12->callbackData = INLINE_KEYBOARD_SPEC_GASTROENTEROLOGIST;
+        row1.push_back(spec12);
 
-    keyboard->inlineKeyboard.push_back(row1);
+        keyboard->inlineKeyboard.push_back(row1);
 
-    /* Третья строка */
-    vector<InlineKeyboardButton::Ptr> row2;
+        /* Третья строка */
+        vector<InlineKeyboardButton::Ptr> row2;
 
-    InlineKeyboardButton::Ptr specDermatologist(new InlineKeyboardButton);
-    specDermatologist->text = INLINE_KEYBOARD_SPEC_DERMATOLOGIST;
-    specDermatologist->callbackData = INLINE_KEYBOARD_SPEC_DERMATOLOGIST;
-    row2.push_back(specDermatologist);
+        InlineKeyboardButton::Ptr spec20(new InlineKeyboardButton);
+        spec20->text = INLINE_KEYBOARD_SPEC_DERMATOLOGIST;
+        spec20->callbackData = INLINE_KEYBOARD_SPEC_DERMATOLOGIST;
+        row2.push_back(spec20);
 
-    InlineKeyboardButton::Ptr specUrologist(new InlineKeyboardButton);
-    specUrologist->text = INLINE_KEYBOARD_SPEC_UROLOGIST;
-    specUrologist->callbackData = INLINE_KEYBOARD_SPEC_UROLOGIST;
-    row2.push_back(specUrologist);
+        InlineKeyboardButton::Ptr spec21(new InlineKeyboardButton);
+        spec21->text = INLINE_KEYBOARD_SPEC_UROLOGIST;
+        spec21->callbackData = INLINE_KEYBOARD_SPEC_UROLOGIST;
+        row2.push_back(spec21);
 
-    keyboard->inlineKeyboard.push_back(row2);
+        keyboard->inlineKeyboard.push_back(row2);
+    }
+    else if (page == 1)
+    {
+        /* Первая строка */
+        vector<InlineKeyboardButton::Ptr> row0;
+
+        InlineKeyboardButton::Ptr spec00(new InlineKeyboardButton);
+        spec00->text = INLINE_KEYBOARD_SPEC_OPHTHALMOLOGIST;
+        spec00->callbackData = INLINE_KEYBOARD_SPEC_OPHTHALMOLOGIST;
+        row0.push_back(spec00);
+
+        InlineKeyboardButton::Ptr spec01(new InlineKeyboardButton);
+        spec01->text = INLINE_KEYBOARD_SPEC_PHYSIOTHERAPIST;
+        spec01->callbackData = INLINE_KEYBOARD_SPEC_PHYSIOTHERAPIST;
+        row0.push_back(spec01);
+
+        InlineKeyboardButton::Ptr spec02(new InlineKeyboardButton);
+        spec02->text = INLINE_KEYBOARD_SPEC_REHABILITATION_DOCTOR;
+        spec02->callbackData = INLINE_KEYBOARD_SPEC_REHABILITATION_DOCTOR;
+        row0.push_back(spec02);
+
+        keyboard->inlineKeyboard.push_back(row0);
+
+        /* Вторая строка */
+        vector<InlineKeyboardButton::Ptr> row1;
+
+        InlineKeyboardButton::Ptr spec10(new InlineKeyboardButton);
+        spec10->text = INLINE_KEYBOARD_SPEC_SPORTS_MEDICINE;
+        spec10->callbackData = INLINE_KEYBOARD_SPEC_SPORTS_MEDICINE;
+        row1.push_back(spec10);
+
+        InlineKeyboardButton::Ptr spec11(new InlineKeyboardButton);
+        spec11->text = INLINE_KEYBOARD_SPEC_GYNECOLOGIST;
+        spec11->callbackData = INLINE_KEYBOARD_SPEC_GYNECOLOGIST;
+        row1.push_back(spec11);
+
+        InlineKeyboardButton::Ptr spec12(new InlineKeyboardButton);
+        spec12->text = INLINE_KEYBOARD_SPEC_PSYCHIATRIST;
+        spec12->callbackData = INLINE_KEYBOARD_SPEC_PSYCHIATRIST;
+        row1.push_back(spec12);
+
+        keyboard->inlineKeyboard.push_back(row1);
+
+        /* Третья строка */
+        vector<InlineKeyboardButton::Ptr> row2;
+
+        InlineKeyboardButton::Ptr spec20(new InlineKeyboardButton);
+        spec20->text = INLINE_KEYBOARD_SPEC_DENTIST;
+        spec20->callbackData = INLINE_KEYBOARD_SPEC_DENTIST;
+        row2.push_back(spec20);
+
+        InlineKeyboardButton::Ptr spec21(new InlineKeyboardButton);
+        spec21->text = INLINE_KEYBOARD_SPEC_ALLERGIST;
+        spec21->callbackData = INLINE_KEYBOARD_SPEC_ALLERGIST;
+        row2.push_back(spec21);
+
+        keyboard->inlineKeyboard.push_back(row2);
+    }
+    
+
+    /* Четвертая строка */
+    vector<InlineKeyboardButton::Ptr> row3;
+
+    InlineKeyboardButton::Ptr left(new InlineKeyboardButton);
+    left->text = KEYBOARD_LEFT;
+    left->callbackData = KEYBOARD_LEFT;
+    row3.push_back(left);
+
+    InlineKeyboardButton::Ptr right(new InlineKeyboardButton);
+    right->text = KEYBOARD_RIGHT;
+    right->callbackData = KEYBOARD_RIGHT;
+    row3.push_back(right);
+
+    keyboard->inlineKeyboard.push_back(row3);
+
+    /* Пятая строка */
+    vector<InlineKeyboardButton::Ptr> row4;
+
+    InlineKeyboardButton::Ptr back(new InlineKeyboardButton);
+    back->text = KEYBOARD_ACCOUNT_BACK;
+    back->callbackData = KEYBOARD_ACCOUNT_BACK;
+    row4.push_back(back);
+
+    keyboard->inlineKeyboard.push_back(row4);
 
     return keyboard;
 }
@@ -261,7 +347,7 @@ InlineKeyboardMarkup::Ptr createSessionShowInlineKeyboard(int id)
     vector<InlineKeyboardButton::Ptr> row;
 
     InlineKeyboardButton::Ptr btn(new InlineKeyboardButton);
-    btn->callbackData = std::to_string(id);
+    btn->callbackData = { KEYBOARD_SESSION_CANCEL_CB + std::to_string(id) };
     btn->text = KEYBOARD_SESSION_CANCEL;
     row.push_back(btn);
 
