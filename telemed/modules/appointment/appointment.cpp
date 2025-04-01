@@ -4,6 +4,7 @@
 #include "../patients/patients.h"
 #include "../keyBoard/keyBoard.h"
 #include "../users/user.h"
+#include "../general/general.h"
 #include "../config.h"
 
 #include <string.h>
@@ -91,6 +92,7 @@ void appointment(Bot& bot, long curChatId, SPECIALITY spec)
 
 	std::string str1{ u8"У нас есть " + std::to_string(specsCnt) + u8" подходящих специалиста(ов). \nВыберите подходящего врача:" };
 	bot.getApi().sendMessage(curChatId, str1, NULL, NULL, createSessionsKeyboard());
+	setUserSpec(curChatId, spec);
 
 	while (--specsCnt >= 0)
 	{		
@@ -117,6 +119,7 @@ void appointment(Bot& bot, long curChatId, SPECIALITY spec)
 #endif
 		//bot.getApi().sendMessage(curChatId, strSpec, NULL, NULL, createSpecKeyboard(doctor->id));
 		setUserProcess(curChatId, USER_PROCESS_CHOISE_SPEC);
+		setUserDoctorId(curChatId, doctor->id);
 	}
 	
 }
@@ -224,17 +227,66 @@ void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
 {
 	if (doctorId)
 	{
-		Doctor *doctor = findDoctorId(doctorId);
+		Doctor* doctor = findDoctorId(doctorId);
+
+		std::time_t now = std::time(nullptr);
+		std::tm* ltm = std::localtime(&now);
+
+		int day = dayOfYear(ltm->tm_mday, ltm->tm_mon + 1, 0);
+
+		DOCTOR_INFO info;
+		info.specialty = SPECIALTY_NAMES[doctor->specialty];
+		info.firstName = { doctor->firstName };
+		info.lastName = { doctor->lastName };
+		info.middleName = { doctor->middleName };
+		info.experience = { std::to_string(doctor->experience) };
+		info.rating = { std::to_string(doctor->rating / 10) + "." + std::to_string(doctor->rating % 10) };
+
+		std::string strSpec{
+			u8"Специализация: " + info.specialty + "\n" +
+			info.lastName + " " + info.firstName + " " + info.middleName +
+			u8"\nСтаж " + info.experience + u8" лет\n"
+			u8"⭐️" + info.rating + u8"\nВыберите дату:"
+		};
+
+		bot.getApi().sendPhoto(curChatId, doctor->photo_path, strSpec, NULL, createChoiceDateInlineKeyboard(day, doctorId));
+		//bot.getApi().sendMessage(curChatId, u8"Выберите дату", NULL, NULL, createChoiceDateInlineKeyboard(day, doctorId));
+		setUserProcess(curChatId, USER_PROCESS_CHOISE_DATE);
+	}
+}
+
+typedef struct 
+{
+	int dayOfYear;
+	int doctorId;
+
+} APPOINTMENT_DATE_DATA;
+
+static void parseAppointment(const char* input, APPOINTMENT_DATE_DATA* dateData)
+{
+	sscanf(input, "%d %d", &dateData->dayOfYear, &dateData->doctorId);
+}
+
+/****************************************************************************************************/
+void appointmentChoiceTimeDoctor(Bot& bot, long curChatId, const char* str)
+{
+	if (str != NULL)
+	{
+		APPOINTMENT_DATE_DATA dateData = { 0 };
+		parseAppointment(str, &dateData);
+
+		Doctor *doctor = findDoctorId(dateData.doctorId);
 		
 		std::time_t now = std::time(nullptr);
 		std::tm* ltm = std::localtime(&now);
 
-		int day = ltm->tm_mday;
-		int month = ltm->tm_mon + 1;
+		int day = dayOfMonth(dateData.dayOfYear, 0);
+		int month = monthOfYear(dateData.dayOfYear, 0);
 		int year = ltm->tm_year + 1900;
 
 		int appointments[MAX_CNT];
-		int appointmentsCnt = MAX_CNT;
+		int appointmentsCnt = MAX_CNT;		
+
 		findAppointmentDoctorIdAndDate(appointments, &appointmentsCnt, doctor->id, day, month, year);
 
 		if (!appointmentsCnt)
@@ -429,7 +481,7 @@ void findAppointmentDoctorIdAndDate(int* dst, int* size, int doctorId, int day, 
 				//char strDate[12] = { 0 };
 				//sprintf(strDate, "%d.3.2025", date);
 				/* Проверка что даты совпадают, и никто еще не записан */
-				if (apDay->valueint == day && apMonth->valueint == month && apYear->valueint == year && !apPatientId->valueint)
+				if (apDay->valueint == day && apMonth->valueint == month && apYear->valueint + 1900 == year && !apPatientId->valueint)
 				{
 					cJSON* apId = cJSON_GetObjectItem(apJson, "id");
 					dst[slider++] = apId->valuedouble;

@@ -8,6 +8,8 @@
 #include "keyBoard.h"
 #include "keyBoardCfg.h"
 
+#include "../modules/general/general.h"
+
 using namespace std;
 using namespace TgBot;
 /***********************************************************************************************/
@@ -276,7 +278,7 @@ InlineKeyboardMarkup::Ptr createRegInlineKeyboard(void)
 }
 
 /***********************************************************************************************/
-InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int* days)
+InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int day, int doctorId)
 {
     InlineKeyboardMarkup::Ptr keyboard(new InlineKeyboardMarkup);
     vector<InlineKeyboardButton::Ptr> row;
@@ -288,32 +290,33 @@ InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int* days)
     InlineKeyboardButton::Ptr day6(new InlineKeyboardButton);
     InlineKeyboardButton::Ptr day7(new InlineKeyboardButton);
 
-    day1->text = std::to_string(days[0]);
-    day1->callbackData = std::to_string(days[0]);
-    row.push_back(day1);
 
-    day2->text = std::to_string(days[1]);
-    day2->callbackData = std::to_string(days[1]);
+    day1->text = std::to_string(dayOfMonth(day, 0));
+    day1->callbackData = std::to_string(day) + " " + std::to_string(doctorId);
+    row.push_back(day1);
+    
+    day2->text = std::to_string(dayOfMonth(day + 1, 0));
+    day2->callbackData = std::to_string(day + 1) + " " + std::to_string(doctorId);
     row.push_back(day2);
 
-    day3->text = std::to_string(days[2]);
-    day3->callbackData = std::to_string(days[2]);
+    day3->text = std::to_string(dayOfMonth(day + 2, 0));
+    day3->callbackData = std::to_string(day + 2) + " " + std::to_string(doctorId);
     row.push_back(day3);
 
-    day4->text = std::to_string(days[3]);
-    day4->callbackData = std::to_string(days[3]);
+    day4->text = std::to_string(dayOfMonth(day + 3, 0));
+    day4->callbackData = std::to_string(day + 3) + " " + std::to_string(doctorId);
     row.push_back(day4);
 
-    day5->text = std::to_string(days[4]);
-    day5->callbackData = std::to_string(days[4]);
+    day5->text = std::to_string(dayOfMonth(day + 4, 0));
+    day5->callbackData = std::to_string(day + 4) + " " + std::to_string(doctorId);
     row.push_back(day5);
 
-    day6->text = std::to_string(days[5]);
-    day6->callbackData = std::to_string(days[5]);
+    day6->text = std::to_string(dayOfMonth(day + 5, 0));
+    day6->callbackData = std::to_string(day + 5) + " " + std::to_string(doctorId);
     row.push_back(day6);
 
-    day7->text = std::to_string(days[6]);
-    day7->callbackData = std::to_string(days[6]);
+    day7->text = std::to_string(dayOfMonth(day + 6, 0));
+    day7->callbackData = std::to_string(day + 6) + " " + std::to_string(doctorId);
     row.push_back(day7);
 
     keyboard->inlineKeyboard.push_back(row);

@@ -136,6 +136,7 @@
     <ClCompile Include="modules\dataBase\dataBase.cpp" />
     <ClCompile Include="modules\doctors\doctorDataBase.cpp" />
     <ClCompile Include="modules\doctors\doctors.cpp" />
+    <ClCompile Include="modules\general\gengeral.cpp" />
     <ClCompile Include="modules\group\group.cpp" />
     <ClCompile Include="modules\group\groupDataBase.cpp" />
     <ClCompile Include="modules\keyBoard\keyBoard.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="modules\dataBase\dataBase.h" />
     <ClInclude Include="modules\doctors\doctorDataBase.h" />
     <ClInclude Include="modules\doctors\doctors.h" />
+    <ClInclude Include="modules\general\general.h" />
     <ClInclude Include="modules\group\group.h" />
     <ClInclude Include="modules\group\groupDataBase.h" />
     <ClInclude Include="modules\keyBoard\keyBoard.h" />

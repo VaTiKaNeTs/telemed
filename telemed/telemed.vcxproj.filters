@@ -55,6 +55,9 @@
     <Filter Include="modules\group">
       <UniqueIdentifier>{6bdbb856-1b3c-4d7d-b937-248a8bc832fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules\general">
+      <UniqueIdentifier>{79b7332c-1631-45bb-bb88-e8192b05bba6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="telemed.cpp">
@@ -101,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="modules\meeting\meeting.cpp">
       <Filter>modules\meeting</Filter>
+    </ClCompile>
+    <ClCompile Include="modules\general\gengeral.cpp">
+      <Filter>modules\general</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="modules\meeting\meeting.h">
       <Filter>modules\meeting</Filter>
+    </ClInclude>
+    <ClInclude Include="modules\general\general.h">
+      <Filter>modules\general</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

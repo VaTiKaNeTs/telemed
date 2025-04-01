@@ -31,6 +31,8 @@ void appointmentEdit(int id, Appointment* ap);
 
 void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId);
 
+void appointmentChoiceTimeDoctor(Bot& bot, long curChatId, const char* str);
+
 void findAppointmentPatientId(int* dst, int* size, int patientId);
 
 void findAppointmentDoctorId(int* dst, int* size, int doctorId);

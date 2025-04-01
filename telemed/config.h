@@ -1,7 +1,7 @@
 #ifndef __CONFIG_H_
 #define __CONFIG_H_
 
-#define MAX_CNT_USERS_CHAT_ID 10
+#define MAX_CNT_USERS_CHAT_ID 20
 
 
 #define CMD_START				"start"

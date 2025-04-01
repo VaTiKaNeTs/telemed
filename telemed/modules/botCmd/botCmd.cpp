@@ -293,13 +293,22 @@ void BotCmdAny(Bot& bot)
                 }
                 break;
             }
+            case USER_PROCESS_CHOISE_DATE:
+            {
+                if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT_BACK))
+                {
+                    appointment(bot, curChatId, getUserSpec(curChatId));
+                }
+                break;
+            }
             case USER_PROCESS_CHOISE_TIME:
             {
                 if (StringTools::startsWith(message->text, KEYBOARD_ACCOUNT_BACK))
                 {
-                    bot.getApi().sendMessage(curChatId, u8"Выберите специалиста", NULL, NULL, createChooseSpecInlineKeyboard(pageChooseSpecialist));
-                    bot.getApi().sendMessage(curChatId, u8"Используйте кнопки ↩️ ⬅️ ➡️ для навигации", NULL, NULL, deleteKeyboard());
-                    setUserProcess(curChatId, (USER_PROCESS)(USER_PROCESS_CHOOSE_SPECIALIT_0 + pageChooseSpecialist));
+                    appointmentChoiceDateDoctor(bot, curChatId, getUserDoctorId(curChatId));
+                    //bot.getApi().sendMessage(curChatId, u8"Выберите специалиста", NULL, NULL, createChooseSpecInlineKeyboard(pageChooseSpecialist));
+                    //bot.getApi().sendMessage(curChatId, u8"Используйте кнопки ↩️ ⬅️ ➡️ для навигации", NULL, NULL, deleteKeyboard());
+                    //setUserProcess(curChatId, (USER_PROCESS)(USER_PROCESS_CHOOSE_SPECIALIT_0 + pageChooseSpecialist));
                 }
                 break;
             }
@@ -330,8 +339,14 @@ void botCmdCallback(Bot& bot)
                 }
 
                 /* Выбор времени для записи */
+                else if (USER_PROCESS_CHOISE_DATE == getUserProcess(curChatId))
+                {
+                    appointmentChoiceTimeDoctor(bot, curChatId, query->data.c_str());
+                }
+
                 else if (USER_PROCESS_CHOISE_SPEC == getUserProcess(curChatId))
                 {
+
                     appointmentChoiceDateDoctor(bot, curChatId, std::stoi(query->data));
                 }
 

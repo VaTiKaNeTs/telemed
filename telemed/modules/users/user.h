@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../knTypes.h"
+#include "../doctors/doctorDataBase.h"
 
 typedef enum
 {
@@ -36,6 +37,24 @@ void setUserProcess(long chatId, USER_PROCESS flag);
 
 /* Получить флаг процесса пользователя */
 USER_PROCESS getUserProcess(long chatId);
+
+/* Установить флаг специалиста при вывыборе */
+void setUserSpec(long chatId, SPECIALITY spec);
+
+/* Установить айди доктора */
+void setUserDoctorId(long chatId, int doctorId);
+
+/* Получить айди доктора */
+int getUserDoctorId(long chatId);
+
+///* Установить день выбора специалиста */
+//void setUserDate(long chatId, int day);
+//
+///* Получить день выбора специалиста */
+//int getUserDay(long chatId);
+
+/* Получить флаг специалиста при выборе */
+SPECIALITY getUserSpec(long chatId);
 
 /* Сохраняем chatId пользователя */
 void saveChatId(long chatId);
