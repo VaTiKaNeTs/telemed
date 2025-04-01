@@ -291,8 +291,10 @@ void appointmentChoiceTimeDoctor(Bot& bot, long curChatId, const char* str)
 
 		if (!appointmentsCnt)
 		{
-			bot.getApi().sendMessage(curChatId, u8"К сожалению записи к этому специалисту сейчас нет", NULL, NULL, createStartKeyboard());
-			setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
+			bot.getApi().sendMessage(curChatId, u8"К сожалению свободных приемов в этот день нет");
+			appointmentChoiceDateDoctor(bot, curChatId, doctor->id);
+			
+			//setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
 			return;
 		}
 
