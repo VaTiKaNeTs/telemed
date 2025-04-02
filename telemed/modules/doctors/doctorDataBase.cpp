@@ -7,7 +7,7 @@
 
 /****************************************************************************************************/
 // Функция для создания нового доктора
-Doctor* createDoctor(int id, long chatId, SPECIALITY specialty, const char* firstName, const char* lastName,
+Doctor* createDoctor(int id, int64_t chatId, SPECIALITY specialty, const char* firstName, const char* lastName,
     const char* middleName, float experience, const char* photo_path, float rating)
 {
     Doctor* doctor = (Doctor*)malloc(sizeof(Doctor));

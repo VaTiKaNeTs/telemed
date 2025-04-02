@@ -16,7 +16,7 @@ void groupUpdate(void);
 
 void groupInit(void);
 
-void groupEdit(int chatId, Group* group);
+void groupEdit(std::int64_t chatId, Group* group);
 
 STATUS addGroup(Group* group);
 

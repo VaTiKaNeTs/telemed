@@ -5,6 +5,8 @@
 #include <string.h>
 #include "../../libs/cJSON/cJSON.h"
 
+#include <cstdint>
+
 /***************************************************************************//**
  * @struct PatientData
  * @brief Структура для хранения данных пациента
@@ -17,7 +19,7 @@
 typedef struct 
 {
     int id;
-    double chatId;    
+    int64_t chatId;
     char* firstName;    /**< Имя пациента */
     char* lastName;     /**< Фамилия пациента */
     char* middleName;   /**< Отчество пациента */
@@ -37,7 +39,7 @@ typedef struct
  *
  * @return Указатель на созданную структуру PatientData или NULL в случае ошибки
  *******************************************************************************/
-PatientData* createPatientData(int id, long chatId, const char* firstName, const char* lastName,
+PatientData* createPatientData(int id, int64_t chatId, const char* firstName, const char* lastName,
     const char* middleName, int age, const char* gender);
 
 /***************************************************************************//**

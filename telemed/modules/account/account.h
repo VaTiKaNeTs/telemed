@@ -7,6 +7,6 @@
 using namespace std;
 using namespace TgBot;
 
-void account(Bot& bot, INT32 curChatId);
+void account(Bot& bot, int64_t curChatId);
 
 #endif __ACCOUNT_H_

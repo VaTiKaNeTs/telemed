@@ -13,6 +13,6 @@ STATUS cleanAllPatients(void);
 
 void findPatientId(PatientData* patient, int id);
 
-PatientData* findPatientChatId(long chatId);
+PatientData* findPatientChatId(std::int64_t chatId);
 
 int getPatientsCnt(void);

@@ -5,9 +5,9 @@
 
 #include <stdio.h>
 
-long usersChatId[MAX_CNT_USERS_CHAT_ID] = { 0 };
-USER_PROCESS flagCurUserProcess[MAX_CNT_USERS_CHAT_ID] = { 0 };
-SPECIALITY userCurSpec[MAX_CNT_USERS_CHAT_ID] = { 0 };
+std::int64_t usersChatId[MAX_CNT_USERS_CHAT_ID] = { 0 };
+USER_PROCESS flagCurUserProcess[MAX_CNT_USERS_CHAT_ID] = { USER_PROCESS_NONE };
+SPECIALITY userCurSpec[MAX_CNT_USERS_CHAT_ID] = { DEFAULT_SPEC };
 int userCurDoctorId[MAX_CNT_USERS_CHAT_ID] = { 0 };
 int userCurDay[MAX_CNT_USERS_CHAT_ID] = { 0 };
 
@@ -16,7 +16,7 @@ int userCurDay[MAX_CNT_USERS_CHAT_ID] = { 0 };
 int usersRegCnt = 0;
 
 /****************************************************************************************************/
-INT32 findUser(long chatId)
+INT32 findUser(std::int64_t chatId)
 {
     for (UINT32 i = 0; i < MAX_CNT_USERS_CHAT_ID; i++)
     {
@@ -29,7 +29,7 @@ INT32 findUser(long chatId)
 }
 
 /****************************************************************************************************/
-void deleteUser(long chatId)
+void deleteUser(std::int64_t chatId)
 {
     for (UINT32 i = 0; i < MAX_CNT_USERS_CHAT_ID; i++)
     {
@@ -41,7 +41,7 @@ void deleteUser(long chatId)
 }
 
 /****************************************************************************************************/
-void setUserProcess(long chatId, USER_PROCESS flag)
+void setUserProcess(std::int64_t chatId, USER_PROCESS flag)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -52,7 +52,7 @@ void setUserProcess(long chatId, USER_PROCESS flag)
 }
 
 /****************************************************************************************************/
-USER_PROCESS getUserProcess(long chatId)
+USER_PROCESS getUserProcess(std::int64_t chatId)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -68,7 +68,7 @@ USER_PROCESS getUserProcess(long chatId)
 }
 
 /****************************************************************************************************/
-void setUserSpec(long chatId, SPECIALITY spec)
+void setUserSpec(std::int64_t chatId, SPECIALITY spec)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -79,7 +79,7 @@ void setUserSpec(long chatId, SPECIALITY spec)
 }
 
 /****************************************************************************************************/
-SPECIALITY getUserSpec(long chatId)
+SPECIALITY getUserSpec(std::int64_t chatId)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -95,7 +95,7 @@ SPECIALITY getUserSpec(long chatId)
 
 
 /****************************************************************************************************/
-void setUserDoctorId(long chatId, int doctorId)
+void setUserDoctorId(std::int64_t chatId, int doctorId)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -106,7 +106,7 @@ void setUserDoctorId(long chatId, int doctorId)
 }
 
 /****************************************************************************************************/
-int getUserDoctorId(long chatId)
+int getUserDoctorId(std::int64_t chatId)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -121,7 +121,7 @@ int getUserDoctorId(long chatId)
 }
 
 /****************************************************************************************************/
-void setUserDay(long chatId, int day)
+void setUserDay(std::int64_t chatId, int day)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -132,7 +132,7 @@ void setUserDay(long chatId, int day)
 }
 
 /****************************************************************************************************/
-int getUserDay(long chatId)
+int getUserDay(std::int64_t chatId)
 {
     INT32 user = -1;
     user = findUser(chatId);
@@ -147,7 +147,7 @@ int getUserDay(long chatId)
 }
 
 /****************************************************************************************************/
-void saveChatId(long chatId)
+void saveChatId(std::int64_t chatId)
 {
     UINT8 flagUserReg = 0;
     /* ѕровер€ем что такого id у нас не зарестрировано */

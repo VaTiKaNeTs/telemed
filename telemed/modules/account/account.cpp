@@ -39,7 +39,7 @@ ACCOUNT_INFO info[MAX_CNT_USERS_CHAT_ID];
 /****************************************************************************************************/
 
 /****************************************************************************************************/
-void account(Bot& bot, INT32 curChatId)
+void account(Bot& bot, int64_t curChatId)
 {
 	PatientData* patient = findPatientChatId(curChatId);
 

@@ -7,7 +7,7 @@
 
 /****************************************************************************************************/
 // Функция для создания нового пациента
-PatientData* createPatientData(int id, long chatId, const char* firstName, const char* lastName,
+PatientData* createPatientData(int id, int64_t chatId, const char* firstName, const char* lastName,
     const char* middleName, int age, const char* gender) {
     PatientData* patient = (PatientData*)malloc(sizeof(PatientData));
     if (patient == NULL) return NULL;

@@ -57,7 +57,7 @@
 	}, {
 		"id":	8,
 		"doctorId":	3,
-		"patientId":	1,
+		"patientId":	0,
 		"dayOfYear":	92,
 		"year":	2025,
 		"minOfDay":	720
@@ -433,12 +433,12 @@
 		"year":	2025,
 		"minOfDay":	840
 	}, {
-		"id":	63,
+		"id":	62,
 		"doctorId":	21,
 		"patientId":	0,
 		"dayOfYear":	92,
 		"year":	2025,
-		"minOfDay":	870
+		"minOfDay":	840
 	}, {
 		"id":	64,
 		"doctorId":	22,

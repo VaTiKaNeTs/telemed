@@ -77,16 +77,7 @@ void appointmentInit(void)
 #define TODAY getCurrentDayOfYear()
 		Appointment ap = { 0 };
 		int id = 1;
-#if 0
-		createAp(&ap, 0, 1, 0, TODAY, 2025, minOfDay(18, 30));
-		addAppointment(&ap);
-		
-		createAp(&ap, 1, 1, 0, TODAY, 2025, minOfDay(19, 0));
-		addAppointment(&ap);
 
-		createAp(&ap, 2, 1, 0, TODAY, 2025, minOfDay(19, 30));
-		addAppointment(&ap);
-#else 
 		// Для каждого врача от 1 до 22
 		for (int doctorId = 1; doctorId <= 22; doctorId++) 
 		{
@@ -103,7 +94,8 @@ void appointmentInit(void)
 			// Создаем вторую встречу: через 30 минут от базового времени
 			int minute2 = baseMinute + 30;
 			int hour2 = baseHour;
-			if (minute2 >= 60) {
+			if (minute2 >= 60) 
+			{
 				minute2 -= 60;
 				hour2++;
 			}
@@ -113,14 +105,15 @@ void appointmentInit(void)
 			// Создаем третью встречу: через 60 минут от базового времени
 			int minute3 = baseMinute + 60;
 			int hour3 = baseHour;
-			if (minute3 >= 60) {
+			if (minute3 >= 60) 
+			{
 				minute3 -= 60;
 				hour3++;
 			}
 			createAp(&ap, id++, doctorId, 0, TODAY, 2025, minOfDay(hour3, minute3));
 			addAppointment(&ap);
 		}
-#endif
+
 		aps = loadDoctor("appointments.json");
 	}
 }
@@ -337,7 +330,7 @@ static Appointment* sortAppointments(Appointment* appointments, size_t count)
 }
 
 /****************************************************************************************************/
-void appointmentChoiceTimeDoctor(Bot& bot, int64_t curChatId, const char* str)
+void appointmentChoiceTimeDoctor(Bot& bot, std::int64_t curChatId, const char* str)
 {
 	if (str != NULL)
 	{
@@ -369,7 +362,7 @@ void appointmentChoiceTimeDoctor(Bot& bot, int64_t curChatId, const char* str)
 
 		/* Находим все приемы и сортируем их */
 		Appointment ap[MAX_CNT] = { 0 };
-		for (UINT32 i = 0; i < appointmentsCnt; i++)
+		for (int i = 0; i < appointmentsCnt; i++)
 		{
 			findAppointmentId(&ap[i], appointments[i]);	
 		}
@@ -378,7 +371,7 @@ void appointmentChoiceTimeDoctor(Bot& bot, int64_t curChatId, const char* str)
 
 		/* формируем строку времен */
 		std::vector<std::string> times;
-		for (UINT32 i = 0; i < appointmentsCnt; i++)
+		for (int i = 0; i < appointmentsCnt; i++)
 		{
 			if (&ap != NULL)
 			{
@@ -516,7 +509,7 @@ void findAppointmentDoctorId(int *dst, int* size, int doctorId)
 			if (apDoctorId != NULL && (int)apDoctorId->valuedouble == doctorId)
 			{
 				cJSON* apId = cJSON_GetObjectItem(apJson, "id");
-				dst[slider++] = apId->valuedouble;
+				dst[slider++] = apId->valueint;
 			}
 		}
 	}
@@ -560,7 +553,7 @@ void findAppointmentDoctorIdAndDate(int* dst, int* size, int doctorId, int dayOf
 				if (apDay->valueint == dayOfYear && apYear->valueint == year && !apPatientId->valueint)
 				{
 					cJSON* apId = cJSON_GetObjectItem(apJson, "id");
-					dst[slider++] = apId->valuedouble;
+					dst[slider++] = apId->valueint;
 				}
 			}
 		}
@@ -596,7 +589,6 @@ STATUS addAppointment(Appointment* ap)
 /****************************************************************************************************/
 int findAppointment(int* dst, int size, int id, int doctorId, int patientId, int day, int year, int minute) 
 {
-	cJSON* appointment;
 	int count = cJSON_GetArraySize(aps);
 	int cntMatch = 0;
 	for (int i = 0; i < count; i++) 

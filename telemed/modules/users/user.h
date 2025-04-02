@@ -27,34 +27,34 @@ typedef enum
 } USER_PROCESS;
 
 /* Поиск юзера */
-INT32 findUser(long chatId);
+INT32 findUser(std::int64_t chatId);
 
 /* Удаление юзера */
-void deleteUser(long chatId);
+void deleteUser(std::int64_t chatId);
 
 /* Установить флаг процесса для пользователя */
-void setUserProcess(long chatId, USER_PROCESS flag);
+void setUserProcess(std::int64_t chatId, USER_PROCESS flag);
 
 /* Получить флаг процесса пользователя */
-USER_PROCESS getUserProcess(long chatId);
+USER_PROCESS getUserProcess(std::int64_t chatId);
 
 /* Установить флаг специалиста при вывыборе */
-void setUserSpec(long chatId, SPECIALITY spec);
+void setUserSpec(std::int64_t chatId, SPECIALITY spec);
 
 /* Установить айди доктора */
-void setUserDoctorId(long chatId, int doctorId);
+void setUserDoctorId(std::int64_t chatId, int doctorId);
 
 /* Получить айди доктора */
-int getUserDoctorId(long chatId);
+int getUserDoctorId(std::int64_t chatId);
 
 /* Установить день выбора специалиста */
-void setUserDay(long chatId, int day);
+void setUserDay(std::int64_t chatId, int day);
 
 /* Получить день выбора специалиста */
-int getUserDay(long chatId);
+int getUserDay(std::int64_t chatId);
 
 /* Получить флаг специалиста при выборе */
-SPECIALITY getUserSpec(long chatId);
+SPECIALITY getUserSpec(std::int64_t chatId);
 
 /* Сохраняем chatId пользователя */
-void saveChatId(long chatId);
+void saveChatId(std::int64_t chatId);

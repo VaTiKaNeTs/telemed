@@ -5,13 +5,14 @@
 #include "../libs/cJSON/cJSON.h"
 #include <stdio.h>
 #include <string.h>
+#include <cstdint>
 
 #include "../modules/keyBoard/keyBoardCfg.h"
 
 // Перечисление возможных специальностей
 typedef enum
 {
-    DEFAULT_SPEC,                 // Дефолт
+    DEFAULT_SPEC = 0,             // Дефолт
     THERAPIST,                    // Терапевт
     PEDIATRICIAN,                 // Педиатр
     SURGEON,                      // Хирург
@@ -71,7 +72,7 @@ typedef struct
 {
     int id;                     /**< Уникальный идентификатор врача */
 
-    long chatId;
+    int64_t chatId;
 
     SPECIALITY specialty;       /**< Медицинская специализация */
 
@@ -93,7 +94,7 @@ typedef struct
  * @brief Создает новый экземпляр Doctor
  * @return Указатель на созданную структуру PatientData или NULL в случае ошибки
  *******************************************************************************/
-Doctor* createDoctor(int id, long chatId, SPECIALITY specialty, const char* firstName, const char* lastName,
+Doctor* createDoctor(int id, int64_t chatId, SPECIALITY specialty, const char* firstName, const char* lastName,
     const char* middleName, float experience, const char* photo_path, float rating);
 
 /***************************************************************************//**

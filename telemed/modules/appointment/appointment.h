@@ -31,7 +31,7 @@ void appointmentEdit(int id, Appointment* ap);
 
 void appointmentChoiceDateDoctor(Bot& bot, int64_t curChatId, int doctorId);
 
-void appointmentChoiceTimeDoctor(Bot& bot, int64_t curChatId, const char* str);
+void appointmentChoiceTimeDoctor(Bot& bot, std::int64_t curChatId, const char* str);
 
 void findAppointmentPatientId(int* dst, int* size, int patientId);
 
