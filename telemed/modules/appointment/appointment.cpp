@@ -31,11 +31,24 @@ typedef struct
 } DOCTOR_INFO;
 
 /****************************************************************************************************/
-static std::string formatTime(int hours, int minutes) {
+static std::string formatTime(int hours, int minutes) 
+{
 	std::stringstream ss;
 	ss << std::setw(2) << std::setfill('0') << hours << ":"
 		<< std::setw(2) << std::setfill('0') << minutes;
 	return ss.str();
+}
+
+/****************************************************************************************************/
+std::string formatDate(int dayOfYear, int year, bool isLeapYear) 
+{
+	int month = monthOfYear(dayOfYear, isLeapYear);
+	int day = dayOfMonth(dayOfYear, isLeapYear);
+	std::ostringstream oss;
+	oss << std::setw(2) << std::setfill('0') << day << "."
+		<< std::setw(2) << std::setfill('0') << month << "."
+		<< year;
+	return oss.str();
 }
 
 /****************************************************************************************************/
@@ -62,7 +75,6 @@ void appointmentInit(void)
 		createAp(&ap, 0, 0, 0, 20, 3, 2025, 18, 30);
 		addAppointment(&ap);
 		memset(&ap, 0, sizeof(Appointment));
-
 		
 		createAp(&ap, 1, 0, 0, 20, 3, 2025, 19, 0);
 		addAppointment(&ap);
@@ -148,7 +160,7 @@ void appointmentReg(Bot& bot, long curChatId, int id)
 	appointmentEdit(ap.id, &ap);
 
 	std::string str{
-			u8"Вы записаны " + std::to_string(ap.day) + "." + std::to_string(ap.month) + "." + std::to_string(ap.year) +
+			u8"Вы записаны " + formatDate(dayOfYear(ap.day, ap.month, 0), ap.year + 1900, 0) + // std::to_string(ap.day) + "." + std::to_string(ap.month) + "." + std::to_string(ap.year + 1900) +
 			u8" в " + formatTime(ap.hour, ap.minute) +
 			u8"\n к " + doctor->firstName + " " + doctor->lastName + " " + doctor->middleName +
 			u8"\n Специализация " + SPECIALTY_NAMES[doctor->specialty]
@@ -213,10 +225,10 @@ void appointmentShow(Bot& bot, long curChatId)
 		{
 			Doctor* doctor = findDoctorId(ap.doctorId);
 			std::string tmp =
-			std::to_string(ap.day) + "." + std::to_string(ap.month) + "." + std::to_string(ap.year) +
+			std::to_string(ap.day) + "." + std::to_string(ap.month) + "." + std::to_string(ap.year + 1900) +
 			u8" в " + formatTime(ap.hour, ap.minute) +  // Используем функцию для форматирования времени
 			u8"\n к " + doctor->firstName + " " + doctor->lastName + " " + doctor->middleName +
-			u8"\n Специализация " + SPECIALTY_NAMES[doctor->specialty];
+			u8"\n Специализация: " + SPECIALTY_NAMES[doctor->specialty];
 			bot.getApi().sendMessage(curChatId, tmp, NULL, NULL, createSessionShowInlineKeyboard(ap.id));
 		}
 	}
@@ -335,7 +347,6 @@ void appointmentChoiceTimeDoctor(Bot& bot, long curChatId, const char* str)
 		};
 
 		bot.getApi().sendPhoto(curChatId, doctor->photo_path, strSpec, NULL, createChoiceTimeInlineKeyboard(times));
-		//bot.getApi().sendMessage(curChatId, u8"Выберите подходящее время приема: ", NULL, NULL, createChoiceTimeInlineKeyboard(times));
 		setUserProcess(curChatId, USER_PROCESS_CHOISE_TIME);
 	}
 }

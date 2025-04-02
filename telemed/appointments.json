@@ -14,8 +14,8 @@
 		"day":	2,
 		"month":	4,
 		"year":	125,
-		"hour":	20,
-		"min":	41
+		"hour":	10,
+		"min":	15
 	}, {
 		"id":	2,
 		"doctorId":	1,
