@@ -7,4 +7,8 @@ int dayOfYear(int day, int month, int is_leap_year);
 
 int monthOfYear(int dayOfYear, int isLeapYear);
 
+int getCurrentDayOfMonth(void);
+
+int getCurrentDayOfYear(void);
+
 #endif /* __GENERAL_H_ */

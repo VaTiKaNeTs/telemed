@@ -10,6 +10,7 @@
 #include "../doctors/doctors.h"
 #include "../appointment/appointment.h"
 #include "../group/group.h"
+#include "../general/general.h"
 
 #include <csignal>
 #include <cstdio>
@@ -338,10 +339,30 @@ void botCmdCallback(Bot& bot)
                     setUserProcess(curChatId, USER_PROCESS_GET_FIRSTNAME_REG);
                 }
 
-                /* Выбор времени для записи */
+                /* Выбор даты для записи */
                 else if (USER_PROCESS_CHOISE_DATE == getUserProcess(curChatId))
                 {
-                    appointmentChoiceTimeDoctor(bot, curChatId, query->data.c_str());
+                    if (StringTools::startsWith(query->data, KEYBOARD_LEFT))
+                    {
+                        if (getUserDay(curChatId) - 7 < getCurrentDayOfYear())
+                        {
+                            setUserDay(curChatId, getCurrentDayOfYear());
+                        }
+                        else
+                        {
+                            setUserDay(curChatId, getUserDay(curChatId) - 7);
+                        }
+                        appointmentChoiceDateDoctor(bot, curChatId, getUserDoctorId(curChatId));
+                    }
+                    else if (StringTools::startsWith(query->data, KEYBOARD_RIGHT))
+                    {
+                        setUserDay(curChatId, getUserDay(curChatId) + 7);
+                        appointmentChoiceDateDoctor(bot, curChatId, getUserDoctorId(curChatId));
+                    }
+                    else
+                    {
+                        appointmentChoiceTimeDoctor(bot, curChatId, query->data.c_str());
+                    }
                 }
 
                 else if (USER_PROCESS_CHOISE_SPEC == getUserProcess(curChatId))

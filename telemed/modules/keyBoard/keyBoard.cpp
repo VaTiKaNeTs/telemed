@@ -282,6 +282,7 @@ InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int day, int doctorId)
 {
     InlineKeyboardMarkup::Ptr keyboard(new InlineKeyboardMarkup);
     vector<InlineKeyboardButton::Ptr> row;
+    vector<InlineKeyboardButton::Ptr> row1;
     InlineKeyboardButton::Ptr day1(new InlineKeyboardButton);
     InlineKeyboardButton::Ptr day2(new InlineKeyboardButton);
     InlineKeyboardButton::Ptr day3(new InlineKeyboardButton);
@@ -289,7 +290,6 @@ InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int day, int doctorId)
     InlineKeyboardButton::Ptr day5(new InlineKeyboardButton);
     InlineKeyboardButton::Ptr day6(new InlineKeyboardButton);
     InlineKeyboardButton::Ptr day7(new InlineKeyboardButton);
-
 
     day1->text = std::to_string(dayOfMonth(day, 0));
     day1->callbackData = std::to_string(day) + " " + std::to_string(doctorId);
@@ -320,6 +320,19 @@ InlineKeyboardMarkup::Ptr createChoiceDateInlineKeyboard(int day, int doctorId)
     row.push_back(day7);
 
     keyboard->inlineKeyboard.push_back(row);
+
+    /******************************************************************/
+    InlineKeyboardButton::Ptr left(new InlineKeyboardButton);
+    left->text = KEYBOARD_LEFT;
+    left->callbackData = KEYBOARD_LEFT;
+    row1.push_back(left);
+
+    InlineKeyboardButton::Ptr right(new InlineKeyboardButton);
+    right->text = KEYBOARD_RIGHT;
+    right->callbackData = KEYBOARD_RIGHT;
+    row1.push_back(right);
+
+    keyboard->inlineKeyboard.push_back(row1);
 
     return keyboard;
 }

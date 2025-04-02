@@ -9,7 +9,7 @@ long usersChatId[MAX_CNT_USERS_CHAT_ID] = { 0 };
 USER_PROCESS flagCurUserProcess[MAX_CNT_USERS_CHAT_ID] = { 0 };
 SPECIALITY userCurSpec[MAX_CNT_USERS_CHAT_ID] = { 0 };
 int userCurDoctorId[MAX_CNT_USERS_CHAT_ID] = { 0 };
-//int userCurDay[MAX_CNT_USERS_CHAT_ID] = { 0 };
+int userCurDay[MAX_CNT_USERS_CHAT_ID] = { 0 };
 
 
 /* счетчик юзеров */
@@ -120,31 +120,31 @@ int getUserDoctorId(long chatId)
     }
 }
 
-///****************************************************************************************************/
-//void setUserDate(long chatId, int day)
-//{
-//    INT32 user = -1;
-//    user = findUser(chatId);
-//    if (user != -1)
-//    {
-//        userCurDay[user] = day;
-//    }
-//}
-//
-///****************************************************************************************************/
-//int getUserDay(long chatId)
-//{
-//    INT32 user = -1;
-//    user = findUser(chatId);
-//    if (user != -1)
-//    {
-//        return userCurDay[user];
-//    }
-//    else
-//    {
-//        return 0;
-//    }
-//}
+/****************************************************************************************************/
+void setUserDay(long chatId, int day)
+{
+    INT32 user = -1;
+    user = findUser(chatId);
+    if (user != -1)
+    {
+        userCurDay[user] = day;
+    }
+}
+
+/****************************************************************************************************/
+int getUserDay(long chatId)
+{
+    INT32 user = -1;
+    user = findUser(chatId);
+    if (user != -1)
+    {
+        return userCurDay[user];
+    }
+    else
+    {
+        return 0;
+    }
+}
 
 /****************************************************************************************************/
 void saveChatId(long chatId)

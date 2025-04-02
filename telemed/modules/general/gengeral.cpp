@@ -1,4 +1,5 @@
 #include "general.h"
+#include <time.h>
 
 /***********************************************************************************************/
 int dayOfMonth(int day_of_year, int is_leap_year)
@@ -51,4 +52,20 @@ int monthOfYear(int dayOfYear, int isLeapYear)
         month++;
     }
     return month + 1;
+}
+
+/***********************************************************************************************/
+int getCurrentDayOfMonth(void) 
+{
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    return tm.tm_mday;
+}
+
+/***********************************************************************************************/
+int getCurrentDayOfYear(void)
+{
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    return tm.tm_yday + 1; // tm_yday начинается с 0
 }

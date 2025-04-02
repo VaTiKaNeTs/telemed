@@ -47,11 +47,11 @@ void setUserDoctorId(long chatId, int doctorId);
 /* Получить айди доктора */
 int getUserDoctorId(long chatId);
 
-///* Установить день выбора специалиста */
-//void setUserDate(long chatId, int day);
-//
-///* Получить день выбора специалиста */
-//int getUserDay(long chatId);
+/* Установить день выбора специалиста */
+void setUserDay(long chatId, int day);
+
+/* Получить день выбора специалиста */
+int getUserDay(long chatId);
 
 /* Получить флаг специалиста при выборе */
 SPECIALITY getUserSpec(long chatId);

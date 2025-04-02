@@ -83,6 +83,8 @@ void appointment(Bot& bot, long curChatId, SPECIALITY spec)
 	int specsCnt = SPECS_MAX_CNT;
 	findDoctorSpec(specs, &specsCnt, spec);
 
+	setUserDay(curChatId, getCurrentDayOfYear());
+
 	if (!specsCnt)
 	{
 		bot.getApi().sendMessage(curChatId, u8"К сожалению таких специалистов сейчас нет", NULL, NULL, createStartKeyboard());
@@ -232,7 +234,11 @@ void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
 		std::time_t now = std::time(nullptr);
 		std::tm* ltm = std::localtime(&now);
 
-		int day = dayOfYear(ltm->tm_mday, ltm->tm_mon + 1, 0);
+		int day = getUserDay(curChatId);
+		if (day == 0)
+		{
+			day = dayOfYear(ltm->tm_mday, ltm->tm_mon + 1, 0);
+		}
 
 		DOCTOR_INFO info;
 		info.specialty = SPECIALTY_NAMES[doctor->specialty];
@@ -250,8 +256,8 @@ void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
 		};
 
 		bot.getApi().sendPhoto(curChatId, doctor->photo_path, strSpec, NULL, createChoiceDateInlineKeyboard(day, doctorId));
-		//bot.getApi().sendMessage(curChatId, u8"Выберите дату", NULL, NULL, createChoiceDateInlineKeyboard(day, doctorId));
 		setUserProcess(curChatId, USER_PROCESS_CHOISE_DATE);
+		setUserDay(curChatId, day);
 	}
 }
 
