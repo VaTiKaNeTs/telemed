@@ -61,7 +61,7 @@ void botCmdStart(Bot& bot)
     bot.getEvents().onCommand(CMD_START, [&bot](Message::Ptr message)
     {
         
-        long curChatId = 0;
+        int64_t curChatId = 0;
         printf("User wrote %s\n", message->text.c_str());
         curChatId = message->chat->id;
         saveChatId(curChatId);
@@ -89,7 +89,7 @@ void BotCmdAny(Bot& bot)
 {
     bot.getEvents().onAnyMessage([&bot](TgBot::Message::Ptr message)
         {
-            long curChatId = 0;
+            int64_t curChatId = 0;
             /* Проверка что пользователь зарегистрирован */
             if (findUser(message->chat->id) != -1)
             {

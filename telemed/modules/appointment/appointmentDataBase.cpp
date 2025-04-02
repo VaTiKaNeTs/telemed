@@ -9,19 +9,16 @@
 #include <iostream>
 
 /****************************************************************************************************/
-void createAp(Appointment* ap, int id, int doctorId, int patientId, int day, int month, int year,
-    int hour, int min)
+void createAp(Appointment* ap, int id, int doctorId, int patientId, int dayOfYear, int year, int minOfDay)
 {
     if (ap == NULL) return;
 
     ap->id = id;
     ap->doctorId = doctorId;
     ap->patientId = patientId;
-    ap->day = day;
-    ap->month = month;
+    ap->dayOfYear = dayOfYear;
     ap->year = year;
-    ap->hour = hour;
-    ap->minute = min;
+    ap->minOfDay = minOfDay;
 }
 
 /****************************************************************************************************/
@@ -44,11 +41,9 @@ cJSON* apToJson(Appointment* ap)
     cJSON_AddNumberToObject(json, "id", ap->id);
     cJSON_AddNumberToObject(json, "doctorId", ap->doctorId);
     cJSON_AddNumberToObject(json, "patientId", ap->patientId);
-    cJSON_AddNumberToObject(json, "day", ap->day);
-    cJSON_AddNumberToObject(json, "month", ap->month);
+    cJSON_AddNumberToObject(json, "dayOfYear", ap->dayOfYear);
     cJSON_AddNumberToObject(json, "year", ap->year);
-    cJSON_AddNumberToObject(json, "hour", ap->hour);
-    cJSON_AddNumberToObject(json, "min", ap->minute);
+    cJSON_AddNumberToObject(json, "minOfDay", ap->minOfDay);
 
     return json;
 }
@@ -62,11 +57,9 @@ void jsonToAp(cJSON* json, Appointment *ap)
         (int)cJSON_GetObjectItem(json, "id")->valueint,
         (int)cJSON_GetObjectItem(json, "doctorId")->valueint,
         (int)cJSON_GetObjectItem(json, "patientId")->valueint,
-        (int)cJSON_GetObjectItem(json, "day")->valueint,
-        (int)cJSON_GetObjectItem(json, "month")->valueint,
+        (int)cJSON_GetObjectItem(json, "dayOfYear")->valueint,
         (int)cJSON_GetObjectItem(json, "year")->valueint,
-        (int)cJSON_GetObjectItem(json, "hour")->valueint,
-        (int)cJSON_GetObjectItem(json, "min")->valueint
+        (int)cJSON_GetObjectItem(json, "minOfDay")->valueint
     );
 }
 

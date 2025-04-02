@@ -3,6 +3,7 @@
 #include "../modules/appointment/appointment.h"
 #include "../modules/patients/patients.h"
 #include "../modules/doctors/doctors.h"
+#include "../general/general.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -43,8 +44,8 @@ void group(Bot& bot)
     int year = localTime->tm_year + 1900;
     int hour = localTime->tm_hour;
     int min = localTime->tm_min;
-    int size = findAppointment(buf, GROUP_MAX_BUF, ANY, ANY, ANY, localTime->tm_mday, localTime->tm_mon + 1, localTime->tm_year + 1900, 
-        localTime->tm_hour, localTime->tm_min);
+    int size = findAppointment(buf, GROUP_MAX_BUF, ANY, ANY, ANY, dayOfYear(localTime->tm_mday, localTime->tm_mon + 1, 0), localTime->tm_year + 1900,
+        minOfDay(localTime->tm_hour, localTime->tm_min));
 
     /* проверяем не пора ли добавить в группу врача и пациента */
     while (size)

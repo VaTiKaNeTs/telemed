@@ -14,18 +14,16 @@ typedef struct
 
     int patientId;
 
-    int day;
-    int month;
+    int dayOfYear;
+
     int year;
 
-    int hour;
-    int minute;
+    int minOfDay;
 
 } Appointment;
 
 /****************************************************************************************************/
-void createAp(Appointment* ap, int id, int doctorId, int patientId, int day, int month, int yaer,
-    int hour, int min);
+void createAp(Appointment* ap, int id, int doctorId, int patientId, int dayOfYear, int year, int minOfDay);
 
 /****************************************************************************************************/
 void freeAp(Appointment* ap);

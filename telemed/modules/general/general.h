@@ -11,4 +11,10 @@ int getCurrentDayOfMonth(void);
 
 int getCurrentDayOfYear(void);
 
+int minOfDay(int hours, int minutes);
+
+int hourOfDay(int totalMinutes);
+
+int minOfDay(int totalMinutes);
+
 #endif /* __GENERAL_H_ */

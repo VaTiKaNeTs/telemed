@@ -31,8 +31,11 @@ typedef struct
 } DOCTOR_INFO;
 
 /****************************************************************************************************/
-static std::string formatTime(int hours, int minutes) 
+static std::string formatTime(int totalMinutes)
 {
+	int hours = totalMinutes / 60;
+	int minutes = totalMinutes % 60;
+
 	std::stringstream ss;
 	ss << std::setw(2) << std::setfill('0') << hours << ":"
 		<< std::setw(2) << std::setfill('0') << minutes;
@@ -71,25 +74,59 @@ void appointmentInit(void)
 			fprintf(stderr, "Ошибка: не удалось сохранить базу данных\n");
 		}
 
+#define TODAY getCurrentDayOfYear()
 		Appointment ap = { 0 };
-		createAp(&ap, 0, 0, 0, 20, 3, 2025, 18, 30);
+		int id = 1;
+#if 0
+		createAp(&ap, 0, 1, 0, TODAY, 2025, minOfDay(18, 30));
 		addAppointment(&ap);
-		memset(&ap, 0, sizeof(Appointment));
 		
-		createAp(&ap, 1, 0, 0, 20, 3, 2025, 19, 0);
+		createAp(&ap, 1, 1, 0, TODAY, 2025, minOfDay(19, 0));
 		addAppointment(&ap);
-		memset(&ap, 0, sizeof(Appointment));
 
-		createAp(&ap, 2, 0, 0, 20, 3, 2025, 19, 30);
+		createAp(&ap, 2, 1, 0, TODAY, 2025, minOfDay(19, 30));
 		addAppointment(&ap);
-		memset(&ap, 0, sizeof(Appointment));
+#else 
+		// Для каждого врача от 1 до 22
+		for (int doctorId = 1; doctorId <= 22; doctorId++) 
+		{
+			// Вычисляем базовое время для данного врача:
+			// Базовый час: от 8 до 15 часов
+			int baseHour = 8 + (doctorId % 8);
+			// Базовая минута: 0 для чётных doctorId, 30 для нечётных
+			int baseMinute = (doctorId % 2 == 0) ? 0 : 30;
 
+			// Создаем первую встречу для врача: базовое время
+			createAp(&ap, id++, doctorId, 0, TODAY, 2025, minOfDay(baseHour, baseMinute));
+			addAppointment(&ap);
+
+			// Создаем вторую встречу: через 30 минут от базового времени
+			int minute2 = baseMinute + 30;
+			int hour2 = baseHour;
+			if (minute2 >= 60) {
+				minute2 -= 60;
+				hour2++;
+			}
+			createAp(&ap, id++, doctorId, 0, TODAY, 2025, minOfDay(hour2, minute2));
+			addAppointment(&ap);
+
+			// Создаем третью встречу: через 60 минут от базового времени
+			int minute3 = baseMinute + 60;
+			int hour3 = baseHour;
+			if (minute3 >= 60) {
+				minute3 -= 60;
+				hour3++;
+			}
+			createAp(&ap, id++, doctorId, 0, TODAY, 2025, minOfDay(hour3, minute3));
+			addAppointment(&ap);
+		}
+#endif
 		aps = loadDoctor("appointments.json");
 	}
 }
 
 /****************************************************************************************************/
-void appointment(Bot& bot, long curChatId, SPECIALITY spec)
+void appointment(Bot& bot, int64_t curChatId, SPECIALITY spec)
 {
 	int specs[SPECS_MAX_CNT];
 	int specsCnt = SPECS_MAX_CNT;
@@ -139,7 +176,7 @@ void appointment(Bot& bot, long curChatId, SPECIALITY spec)
 }
 
 /****************************************************************************************************/
-void appointmentReg(Bot& bot, long curChatId, int id)
+void appointmentReg(Bot& bot, int64_t curChatId, int id)
 {
 	Appointment ap = { 0 };
 	findAppointmentId(&ap, id);
@@ -160,8 +197,8 @@ void appointmentReg(Bot& bot, long curChatId, int id)
 	appointmentEdit(ap.id, &ap);
 
 	std::string str{
-			u8"Вы записаны " + formatDate(dayOfYear(ap.day, ap.month, 0), ap.year + 1900, 0) + // std::to_string(ap.day) + "." + std::to_string(ap.month) + "." + std::to_string(ap.year + 1900) +
-			u8" в " + formatTime(ap.hour, ap.minute) +
+			u8"Вы записаны " + formatDate(ap.dayOfYear, ap.year + 1900, 0) +
+			u8" в " + formatTime(ap.minOfDay) +
 			u8"\n к " + doctor->firstName + " " + doctor->lastName + " " + doctor->middleName +
 			u8"\n Специализация " + SPECIALTY_NAMES[doctor->specialty]
 	};
@@ -170,7 +207,7 @@ void appointmentReg(Bot& bot, long curChatId, int id)
 }
 
 /****************************************************************************************************/
-void appointmentDelete(Bot& bot, long curChatId, int id)
+void appointmentDelete(Bot& bot, int64_t curChatId, int id)
 {
 	Appointment ap = { 0 }; 
 	findAppointmentId(&ap, id);
@@ -190,10 +227,10 @@ void appointmentDelete(Bot& bot, long curChatId, int id)
 	setUserProcess(curChatId, USER_PROCESS_MAIN_MENU);
 }
 
-#define MAX_CNT 10
+#define MAX_CNT 50
 
 /****************************************************************************************************/
-void appointmentShow(Bot& bot, long curChatId)
+void appointmentShow(Bot& bot, int64_t curChatId)
 {
 	PatientData* patient = findPatientChatId(curChatId);
 
@@ -225,8 +262,7 @@ void appointmentShow(Bot& bot, long curChatId)
 		{
 			Doctor* doctor = findDoctorId(ap.doctorId);
 			std::string tmp =
-			std::to_string(ap.day) + "." + std::to_string(ap.month) + "." + std::to_string(ap.year + 1900) +
-			u8" в " + formatTime(ap.hour, ap.minute) +  // Используем функцию для форматирования времени
+			formatDate(ap.dayOfYear, ap.year + 1900, 0) + u8" в " + formatTime(ap.minOfDay) + 
 			u8"\n к " + doctor->firstName + " " + doctor->lastName + " " + doctor->middleName +
 			u8"\n Специализация: " + SPECIALTY_NAMES[doctor->specialty];
 			bot.getApi().sendMessage(curChatId, tmp, NULL, NULL, createSessionShowInlineKeyboard(ap.id));
@@ -237,7 +273,7 @@ void appointmentShow(Bot& bot, long curChatId)
 }
 
 /****************************************************************************************************/
-void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId)
+void appointmentChoiceDateDoctor(Bot& bot, int64_t curChatId, int doctorId)
 {
 	if (doctorId)
 	{
@@ -285,8 +321,23 @@ static void parseAppointment(const char* input, APPOINTMENT_DATE_DATA* dateData)
 	sscanf(input, "%d %d", &dateData->dayOfYear, &dateData->doctorId);
 }
 
+// Функция сравнения для qsort
+static int compareAppointments(const void* a, const void* b) 
+{
+	const Appointment* appA = (const Appointment*)a;
+	const Appointment* appB = (const Appointment*)b;
+	return appA->minOfDay - appB->minOfDay;
+}
+
+// Функция сортировки массива структур Appointment
+static Appointment* sortAppointments(Appointment* appointments, size_t count) 
+{
+	qsort(appointments, count, sizeof(Appointment), compareAppointments);
+	return appointments;
+}
+
 /****************************************************************************************************/
-void appointmentChoiceTimeDoctor(Bot& bot, long curChatId, const char* str)
+void appointmentChoiceTimeDoctor(Bot& bot, int64_t curChatId, const char* str)
 {
 	if (str != NULL)
 	{
@@ -298,16 +349,16 @@ void appointmentChoiceTimeDoctor(Bot& bot, long curChatId, const char* str)
 		std::time_t now = std::time(nullptr);
 		std::tm* ltm = std::localtime(&now);
 
-		int day = dayOfMonth(dateData.dayOfYear, 0);
-		int month = monthOfYear(dateData.dayOfYear, 0);
+		//int day = dayOfMonth(dateData.dayOfYear, 0);
+		//int month = monthOfYear(dateData.dayOfYear, 0);
 		int year = ltm->tm_year + 1900;
 
 		int appointments[MAX_CNT];
 		int appointmentsCnt = MAX_CNT;		
 
-		findAppointmentDoctorIdAndDate(appointments, &appointmentsCnt, doctor->id, day, month, year);
+		findAppointmentDoctorIdAndDate(appointments, &appointmentsCnt, doctor->id, dateData.dayOfYear, year);
 
-		if (!appointmentsCnt)
+		if (!appointmentsCnt || appointmentsCnt > MAX_CNT)
 		{
 			bot.getApi().sendMessage(curChatId, u8"К сожалению свободных приемов в этот день нет");
 			appointmentChoiceDateDoctor(bot, curChatId, doctor->id);
@@ -316,18 +367,24 @@ void appointmentChoiceTimeDoctor(Bot& bot, long curChatId, const char* str)
 			return;
 		}
 
-		std::vector<std::string> times;
-
+		/* Находим все приемы и сортируем их */
+		Appointment ap[MAX_CNT] = { 0 };
 		for (UINT32 i = 0; i < appointmentsCnt; i++)
 		{
-			Appointment ap = { 0 };
-			findAppointmentId(&ap, appointments[i]);
+			findAppointmentId(&ap[i], appointments[i]);	
+		}
+		sortAppointments(ap, appointmentsCnt);
 
+
+		/* формируем строку времен */
+		std::vector<std::string> times;
+		for (UINT32 i = 0; i < appointmentsCnt; i++)
+		{
 			if (&ap != NULL)
 			{
-				std::string tmp = formatTime(ap.hour, ap.minute);
+				std::string tmp = formatTime(ap[i].minOfDay);
 				times.push_back(tmp);
-				times.push_back(std::to_string(ap.id));
+				times.push_back(std::to_string(ap[i].id));
 			}
 		}
 
@@ -470,7 +527,7 @@ void findAppointmentDoctorId(int *dst, int* size, int doctorId)
 }
 
 /****************************************************************************************************/
-void findAppointmentDoctorIdAndDate(int* dst, int* size, int doctorId, int day, int month, int year)
+void findAppointmentDoctorIdAndDate(int* dst, int* size, int doctorId, int dayOfYear, int year)
 {
 	int slider = 0;
 
@@ -493,14 +550,14 @@ void findAppointmentDoctorIdAndDate(int* dst, int* size, int doctorId, int day, 
 			cJSON* apDoctorId = cJSON_GetObjectItem(apJson, "doctorId");
 			if (apDoctorId != NULL && (int)apDoctorId->valuedouble == doctorId)
 			{
-				cJSON* apDay = cJSON_GetObjectItem(apJson, "day");
-				cJSON* apMonth = cJSON_GetObjectItem(apJson, "month");
+				cJSON* apDay = cJSON_GetObjectItem(apJson, "dayOfYear");
+				//cJSON* apMonth = cJSON_GetObjectItem(apJson, "month");
 				cJSON* apYear = cJSON_GetObjectItem(apJson, "year");
 				cJSON* apPatientId = cJSON_GetObjectItem(apJson, "patientId");
 				//char strDate[12] = { 0 };
 				//sprintf(strDate, "%d.3.2025", date);
 				/* Проверка что даты совпадают, и никто еще не записан */
-				if (apDay->valueint == day && apMonth->valueint == month && apYear->valueint + 1900 == year && !apPatientId->valueint)
+				if (apDay->valueint == dayOfYear && apYear->valueint == year && !apPatientId->valueint)
 				{
 					cJSON* apId = cJSON_GetObjectItem(apJson, "id");
 					dst[slider++] = apId->valuedouble;
@@ -537,7 +594,7 @@ STATUS addAppointment(Appointment* ap)
 }
 
 /****************************************************************************************************/
-int findAppointment(int* dst, int size, int id, int doctorId, int patientId, int day, int month, int year, int hour, int minute) 
+int findAppointment(int* dst, int size, int id, int doctorId, int patientId, int day, int year, int minute) 
 {
 	cJSON* appointment;
 	int count = cJSON_GetArraySize(aps);
@@ -549,20 +606,20 @@ int findAppointment(int* dst, int size, int id, int doctorId, int patientId, int
 		int appId = cJSON_GetObjectItem(appointment, "id")->valueint;
 		int appDoctorId = cJSON_GetObjectItem(appointment, "doctorId")->valueint;
 		int appPatientId = cJSON_GetObjectItem(appointment, "patientId")->valueint;
-		int appDay = cJSON_GetObjectItem(appointment, "day")->valueint;
-		int appMonth = cJSON_GetObjectItem(appointment, "month")->valueint;
+		int appDay = cJSON_GetObjectItem(appointment, "dayOfYear")->valueint;
+		//int appMonth = cJSON_GetObjectItem(appointment, "month")->valueint;
 		int appYear = cJSON_GetObjectItem(appointment, "year")->valueint;
-		int appHour = cJSON_GetObjectItem(appointment, "hour")->valueint;
-		int appMin = cJSON_GetObjectItem(appointment, "min")->valueint;
+		//int appHour = cJSON_GetObjectItem(appointment, "hour")->valueint;
+		int appMin = cJSON_GetObjectItem(appointment, "minOfDay")->valueint;
 
 		int match = 1;
 		if (id != 0xFFFFFFFF && appId != id) match = 0;
 		if (doctorId != 0xFFFFFFFF && appDoctorId != doctorId) match = 0;
 		if (patientId != 0xFFFFFFFF && appPatientId != patientId) match = 0;
 		if (day != 0xFFFFFFFF && appDay != day) match = 0;
-		if (month != 0xFFFFFFFF && appMonth != month) match = 0;
+		//if (month != 0xFFFFFFFF && appMonth != month) match = 0;
 		if (year != 0xFFFFFFFF && appYear != year) match = 0;
-		if (hour != 0xFFFFFFFF && appHour != hour) match = 0;
+		//if (hour != 0xFFFFFFFF && appHour != hour) match = 0;
 		if (minute != 0xFFFFFFFF && appMin != minute) match = 0;
 
 		if (match) 

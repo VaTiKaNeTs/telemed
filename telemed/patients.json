@@ -8,26 +8,10 @@
 		"gender":	"мужской"
 	}, {
 		"id":	1,
-		"chatId":	365545361,
-		"firstName":	"Кирилл",
-		"lastName":	"NULL",
-		"middleName":	"NULL",
-		"age":	0,
-		"gender":	"NULL"
-	}, {
-		"id":	2,
 		"chatId":	1026490921,
 		"firstName":	"Кирилл",
-		"lastName":	"NULL",
-		"middleName":	"NULL",
-		"age":	0,
-		"gender":	"NULL"
-	}, {
-		"id":	3,
-		"chatId":	958781908,
-		"firstName":	"Иван",
-		"lastName":	"А",
-		"middleName":	"Б",
-		"age":	19,
+		"lastName":	"Таровик",
+		"middleName":	"Михайлович",
+		"age":	23,
 		"gender":	"Мужской"
 	}]

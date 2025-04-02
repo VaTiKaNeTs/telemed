@@ -17,30 +17,30 @@ void appointmentInit(void);
 
 void findAppointmentId(Appointment* ap, int id);
 
-void appointment(Bot& bot, long curChatId, SPECIALITY spec);
+void appointment(Bot& bot, int64_t curChatId, SPECIALITY spec);
 
-void appointmentReg(Bot& bot, long curChatId, int id);
+void appointmentReg(Bot& bot, int64_t curChatId, int id);
 
-void appointmentDelete(Bot& bot, long curChatId, int id);
+void appointmentDelete(Bot& bot, int64_t curChatId, int id);
 
-void appointmentShow(Bot& bot, long curChatId);
+void appointmentShow(Bot& bot, int64_t curChatId);
 
 STATUS addAppointment(Appointment* ap);
 
 void appointmentEdit(int id, Appointment* ap);
 
-void appointmentChoiceDateDoctor(Bot& bot, long curChatId, int doctorId);
+void appointmentChoiceDateDoctor(Bot& bot, int64_t curChatId, int doctorId);
 
-void appointmentChoiceTimeDoctor(Bot& bot, long curChatId, const char* str);
+void appointmentChoiceTimeDoctor(Bot& bot, int64_t curChatId, const char* str);
 
 void findAppointmentPatientId(int* dst, int* size, int patientId);
 
 void findAppointmentDoctorId(int* dst, int* size, int doctorId);
 
-void findAppointmentDoctorIdAndDate(int* dst, int* size, int doctorId, int day, int month, int year);
+void findAppointmentDoctorIdAndDate(int* dst, int* size, int doctorId, int dayOfYear, int year);
 
 void findAppointmentDateAndTime();
 
-int findAppointment(int* dst, int size, int id, int doctorId, int patientId, int day, int month, int year, int hour, int min);
+int findAppointment(int* dst, int size, int id, int doctorId, int patientId, int day, int year, int minute);
 
 //STATUS appointmentCreateByDoctor(std::int64_t c);
